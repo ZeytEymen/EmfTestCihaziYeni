@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,15 +9,26 @@ namespace EmfTestCihazi
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            // Programın sadece bir örneğinin çalışmasını istiyoruz bu sebeple mutex ile kitleyeceğiz
+            bool createdNew;
+            using (Mutex mutex = new Mutex(true, "SingleInstanceAppMutex", out createdNew))
+            {
+                if (createdNew)
+                {
+                    // Eğer mutex oluşturulduysa, uygulama örneğini başlat
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new MainForm());
+                }
+                else
+                {
+                    // Uygulama zaten çalışıyor
+                    MessageBox.Show("UYGULAMA ZATEN ÇALIŞIYOR YENİSİNİ AÇAMAZSINIZ !!!", "HATA !!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

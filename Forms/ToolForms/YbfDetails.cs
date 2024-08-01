@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmfTestCihazi
+namespace EmfTestCihazi.Forms.ToolForms
 {
-    public partial class UserControl1 : UserControl
+    public partial class YbfDetails : Form
     {
-        public UserControl1()
+        public YbfDetails()
         {
             InitializeComponent();
         }

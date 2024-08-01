@@ -35,7 +35,7 @@ namespace EmfTestCihazi.Classes
                             tabControl.SelectedTab = tabControl.TabPages["tbPageAbtfAlistirma"];
                             break;
                         case "btnYbfTestIslemleri":
-                            tabControl.SelectedTab = tabControl.TabPages["tbPageYbfTestIslemleri"];
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageYbfTestIslem"];
                             break;
                         case "btnYbfAlistirma":
                             tabControl.SelectedTab = tabControl.TabPages["tbPageYbfAlistirma"];
@@ -52,6 +52,19 @@ namespace EmfTestCihazi.Classes
                         case "btnYbfStatik":
                             tabControl.SelectedTab = tabControl.TabPages["tbPageYbfStatik"];
                             break;
+                        case "btnFirmaAyar":
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageFirmaAyar"];
+                            break;
+                        case "btnTestAyar":
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageTestOnAyar"];
+                            break;
+                        case "btnFrenGrupAyar":
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageFrenGrupAyar"];
+                            break;
+                        case "btnProgramAyar":
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageProgramAyar"];
+                            break;
+
                         default:
                             tabControl.SelectedTab = tabControl.TabPages["tbPageAbtfTestIslem"];
                             break;

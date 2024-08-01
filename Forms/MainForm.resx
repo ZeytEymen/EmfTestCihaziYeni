@@ -121,7 +121,7 @@
   <data name="pctEmergencyStop.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAlgAAAJYCAYAAAC+ZpjcAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vwAADr8BOAVTJAAA4JRJREFUeF7snQecFdX1x+0ae29Ro4kmscSo/0SNGltsMUZg2V22917pvYiAir2D
+        vAAADrwBlbxySQAA4JRJREFUeF7snQecFdX1x+0ae29Ro4kmscSo/0SNGltsMUZg2V22917pvYiAir2D
         KMWCCqhYQOmIinTpIL33ukuv939+O0PYXc7uvrkz897Me+f3+Xz17mX33PvmzZ05c+fec45TSgmCIDhC
         QlS904gLiWuIW4j7iXpEalZSfIuCzLTuhVnp7xZmZXxG/x9JP0/Mz0idlZuWvCQnJXFNZlL85vT4RmWp
         cTG7UmIb7k2OiTqQ2LD+Ifr7w4Qy/38YdUnRDQ7id/C7GQmNtmclJWzKTk5YC1uwSUwi+2OKsjMG0f/7
@@ -1318,4 +1318,26 @@
         jFkaWWgMqcQK/1zYgsUYY8wNsbn1/wCZl88Cu0r17AAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="button11.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAA
+        qAAAAKgBefSzxgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAGQSURBVEhLzdZb
+        KwVRGMbxyQUpSu6cc/gQRPkMlCIR5VoScumjkAvlVk4pbnwGlOSQa4eQQ07/Z5t3WrNnttmTdeGpX6Y1
+        e613W9ZBkJE2zGEXV3jGO86xjVk0I3fasQoN9pXhDStogJuF8Gcio7hH2mC/ucUAlCU8/TzGo+n4hNtR
+        UzGJTlSHujCFPbif/cBm+JwoMAL3w8foRVb6cQq3r8QK6I/5AHt5gDqUm3pcomSBNdgLffM8gyuac3dw
+        iQq0QnNnL/qQJ2mDyzoKWYQ17qjBd7RKrMCEGnznGlZAy897tP2tgNb4v08V7As/qsF3OmAFtDe8ZwxW
+        YEMNvuOuynk1KIewRpc2UZ70wA5LHfVNKETb+q+D1+II1l/3SZTiAhfIcx7VYB/WXwdnC6Kk/QYnKOdc
+        6oYOSOunKRpCLFZAl4V78IkuFR0hunAqUQHt+HFswb2g9DyNRFTA5nwQuv7cIuW4wzBSU3xB6wJfxivS
+        BnNptejS17GfO42YgabuDC+4gRaB2vRvi27DEgmCbw55wwRdPJzcAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="tmrMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>108, 17</value>
+  </metadata>
 </root>
