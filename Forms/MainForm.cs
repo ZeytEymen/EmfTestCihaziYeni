@@ -22,7 +22,13 @@ namespace EmfTestCihazi
         private readonly DBLogHelper _DBlog;
 
         //PLC Haberleşmesi İçin//
+        //
         private readonly S7Client _plc;
+        const string _plcConnectionAdress = "192.168.69.70";
+        const int _plcConnectionRack = 0;
+        const int _plcConnectionSlot = 0;
+        byte[] _buffer = new byte[178];
+        //
         public AbtfTest _abtfTest;
         public Alistirma _alistirma;
         public GlobalValues _globalValues;
@@ -53,19 +59,22 @@ namespace EmfTestCihazi
             _ybfStatik = new YbfStatik();
         }
 
+
+        #region PLC_METHODLARI
+
         public int StartPlcConnection()
         {
             int connectResult = -1;
             try
             {
-                connectResult = _plc.ConnectTo("192.168.69.70", 0, 0);
+                connectResult = _plc.ConnectTo(_plcConnectionAdress, _plcConnectionRack, _plcConnectionSlot);
                 if (connectResult != 0)
-                    MessageBox.Show("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + _plc.ErrorText(connectResult), "HATA !!");
-                _DBlog.AddLog("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + _plc.ErrorText(connectResult));
+                    throw new Exception(_plc.ErrorText(connectResult));
             }
             catch (Exception ex)
             {
-                MessageBox.Show("PLC Bağlantısı Başarısız\n" + ex.Message, "HATA");
+                MessageBox.Show("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
+                _DBlog.AddLog("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
             }
             return connectResult;
         }
@@ -79,15 +88,13 @@ namespace EmfTestCihazi
                 {
                     stopResult = _plc.Disconnect();
                     if (stopResult != 0)
-                    {
-                        MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + _plc.ErrorText(stopResult), "HATA !!");
-                        _DBlog.AddLog("PLC Bağlantısı Sonlandırılamadı\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + _plc.ErrorText(stopResult));
-                    }
+                        throw new Exception(_plc.ErrorText(stopResult));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nFROM : StopPlcConnection" + ex.Message, "HATA");
+                MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
+                _DBlog.AddLog("PLC Bağlantısı Sonlandırılamadız\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
             }
             return stopResult;
         }
@@ -96,16 +103,54 @@ namespace EmfTestCihazi
         {
             try
             {
-                StartPlcConnection();
-                tmrMain.Start();
+                if (StartPlcConnection() == 0)
+                    tmrMain.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nFROM : StopPlcConnection" + ex.Message, "HATA");
+                MessageBox.Show("\"PLC Bağlantısı Başarısız\nFROM : StartReadindPlcDataBlock" + ex.Message, "HATA");
             }
 
         }
 
+        public void StopReadindPlcDataBlock()
+        {
+            try
+            {
+                tmrMain.Stop();
+                StopPlcConnection();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nFROM : StopReadindPlcDataBlock" + ex.Message, "HATA");
+            }
+        }
+
+        public void ReadActualValues()
+        {
+            int readResult = -1;
+            try
+            {
+                readResult = _plc.DBRead(100, 0, 26, _buffer);
+                if (readResult != 0)
+                    throw new Exception(_plc.ErrorText(readResult));
+                _globalValues.ACT_VOLT  = S7.GetRealAt(_buffer, GlobalValues.adr_ACT_VOLT);
+                _globalValues.ACT_TORK  = S7.GetRealAt(_buffer,GlobalValues.adr_ACT_TORK);
+                _globalValues.ACT_AKIM  = S7.GetRealAt(_buffer,GlobalValues.adr_ACT_AKIM);
+                _globalValues.ACIL_STOP = S7.GetBitAt(_buffer,GlobalValues.adr_ACIL_STOP,0);
+                _globalValues.FREN_220  = S7.GetBitAt(_buffer,GlobalValues.adr_FREN_220,0);
+                _globalValues.FREN_24   = S7.GetBitAt(_buffer,GlobalValues.adr_FREN_24,0);
+            }
+            catch (Exception ex)
+            {
+                StopReadindPlcDataBlock();
+                StopPlcConnection();
+                MessageBox.Show("PLC Data Block Okuması Başarısız\nHATA KODU : " + $"0x{readResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
+                _DBlog.AddLog("PLC Data Block Okuması Başarısız\nHATA KODU : " + $"0x{readResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
+            }
+        }
+
+        #endregion
         #region MainFormLoad
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -143,7 +188,6 @@ namespace EmfTestCihazi
                 MessageBox.Show("Test esnasında diğer sayfalara erişim sağlayamazsınız\nLütfen testin bitmesini bekleyin.", "HATA !!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             //Sidebar üzerindeki butonların tıklanma olayında ilgili tabpage sayfası açılır
             OpenTabPageWithButton(sender, tabControlMain);
         }
@@ -227,5 +271,25 @@ namespace EmfTestCihazi
             dgvYbfTestIslem.DataSource = table;
         }
 
+        private void tmrMain_Tick(object sender, EventArgs e)
+        {
+            ReadActualValues();
+            txt_ACT_VOLT.Text = _globalValues.ACT_VOLT.ToString("F2");
+            txt_ACT_TORK.Text = _globalValues.ACT_TORK.ToString("F2");
+            txt_ACT_AKIM.Text = _globalValues.ACT_AKIM.ToString("F2");
+
+            if(_globalValues.ACIL_STOP)
+                flashTimer.Start();
+            else
+            {
+                flashTimer.Stop();
+                pctEmergencyStop.Visible = true;
+            }
+        }
+
+        private void flashTimer_Tick(object sender, EventArgs e)
+        {
+            pctEmergencyStop.Visible = !pctEmergencyStop.Visible;
+        }
     }
 }

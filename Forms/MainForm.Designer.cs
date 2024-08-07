@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnMinimizeApplicaton = new System.Windows.Forms.Button();
             this.btnCloseApplication = new System.Windows.Forms.Button();
@@ -182,6 +182,8 @@
             this.textBox24 = new System.Windows.Forms.TextBox();
             this.label64 = new System.Windows.Forms.Label();
             this.tbPageAbtfTestIslem = new System.Windows.Forms.TabPage();
+            this.label173 = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.button13 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -191,6 +193,9 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
             this.textBox13 = new System.Windows.Forms.TextBox();
@@ -414,11 +419,7 @@
             this.tbPageProgramAyar = new System.Windows.Forms.TabPage();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrMain = new System.Windows.Forms.Timer(this.components);
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.label173 = new System.Windows.Forms.Label();
+            this.flashTimer = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.grpBoxKomutVoltaj.SuspendLayout();
@@ -1261,8 +1262,8 @@
             // 
             this.dgvYbfTestIslem.AllowUserToAddRows = false;
             this.dgvYbfTestIslem.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Silver;
-            this.dgvYbfTestIslem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
+            this.dgvYbfTestIslem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvYbfTestIslem.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvYbfTestIslem.BackgroundColor = System.Drawing.Color.Silver;
             this.dgvYbfTestIslem.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -2312,6 +2313,27 @@
             this.tbPageAbtfTestIslem.TabIndex = 0;
             this.tbPageAbtfTestIslem.Text = "tbPageAbtfTestIslem";
             // 
+            // label173
+            // 
+            this.label173.Font = new System.Drawing.Font("Arial Narrow", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label173.ForeColor = System.Drawing.Color.Purple;
+            this.label173.Location = new System.Drawing.Point(696, 155);
+            this.label173.Name = "label173";
+            this.label173.Size = new System.Drawing.Size(167, 31);
+            this.label173.TabIndex = 11;
+            this.label173.Text = "Kayıt dışı testler özel ürünler içindir veritabanına kayıt edilmez";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.checkBox2.Location = new System.Drawing.Point(560, 162);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(130, 20);
+            this.checkBox2.TabIndex = 10;
+            this.checkBox2.Text = "KAYIT DIŞI TEST";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // panel6
             // 
             this.panel6.Location = new System.Drawing.Point(15, 235);
@@ -2413,6 +2435,35 @@
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ürün Bilgileri";
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.Color.Silver;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.textBox2.Location = new System.Drawing.Point(173, 51);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(84, 20);
+            this.textBox2.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(137, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 16);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Tork :";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(260, 23);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(58, 20);
+            this.checkBox1.TabIndex = 11;
+            this.checkBox1.Text = "TAMİR";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // textBox11
             // 
@@ -4073,8 +4124,8 @@
             // 
             this.dgvFirmaAyarlari.AllowUserToAddRows = false;
             this.dgvFirmaAyarlari.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Silver;
-            this.dgvFirmaAyarlari.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
+            this.dgvFirmaAyarlari.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvFirmaAyarlari.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvFirmaAyarlari.BackgroundColor = System.Drawing.Color.Silver;
             this.dgvFirmaAyarlari.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -4832,56 +4883,13 @@
             // tmrMain
             // 
             this.tmrMain.Enabled = true;
+            this.tmrMain.Tick += new System.EventHandler(this.tmrMain_Tick);
             // 
-            // checkBox1
+            // flashTimer
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(260, 23);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(58, 20);
-            this.checkBox1.TabIndex = 11;
-            this.checkBox1.Text = "TAMİR";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // textBox2
-            // 
-            this.textBox2.BackColor = System.Drawing.Color.Silver;
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox2.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.textBox2.Location = new System.Drawing.Point(173, 51);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(84, 20);
-            this.textBox2.TabIndex = 13;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(137, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 16);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Tork :";
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.checkBox2.Location = new System.Drawing.Point(560, 162);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(130, 20);
-            this.checkBox2.TabIndex = 10;
-            this.checkBox2.Text = "KAYIT DIŞI TEST";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // label173
-            // 
-            this.label173.Font = new System.Drawing.Font("Arial Narrow", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label173.ForeColor = System.Drawing.Color.Purple;
-            this.label173.Location = new System.Drawing.Point(696, 155);
-            this.label173.Name = "label173";
-            this.label173.Size = new System.Drawing.Size(167, 31);
-            this.label173.TabIndex = 11;
-            this.label173.Text = "Kayıt dışı testler özel ürünler içindir veritabanına kayıt edilmez";
+            this.flashTimer.Enabled = true;
+            this.flashTimer.Interval = 500;
+            this.flashTimer.Tick += new System.EventHandler(this.flashTimer_Tick);
             // 
             // MainForm
             // 
@@ -5399,6 +5407,7 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer flashTimer;
     }
 }
 

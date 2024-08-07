@@ -13,7 +13,8 @@ namespace EmfTestCihazi.Classes.PlcCommunication
         public const int adr_ACT_AKIM = 14;
         public const int adr_FREN_220 = 18;
         public const int adr_FREN_24 = 24;
-        public const int adr_CMD_VOLT = 4;
+        public const int adr_CMD_VOLT = 20;
+        public const int adr_ACIL_STOP = 12;
 
         public float CMD_VOLT { get; set; }
         public float ACT_VOLT { get; set; }
