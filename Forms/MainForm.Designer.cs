@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnMinimizeApplicaton = new System.Windows.Forms.Button();
             this.btnCloseApplication = new System.Windows.Forms.Button();
@@ -129,7 +129,7 @@
             this.label38 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
-            this.button18 = new System.Windows.Forms.Button();
+            this.btn_abtf_alistirma_basla = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.button12 = new System.Windows.Forms.Button();
             this.textBox16 = new System.Windows.Forms.TextBox();
@@ -148,19 +148,19 @@
             this.label25 = new System.Windows.Forms.Label();
             this.tbPageYbfAlistirma = new System.Windows.Forms.TabPage();
             this.button21 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
+            this.btn_ybf_alistirma_basla = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.label65 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.button15 = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.btnRefreshYbfAlistirma = new System.Windows.Forms.Button();
+            this.lblInfoYbfAlistirmaSonOkuma = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.label49 = new System.Windows.Forms.Label();
-            this.label50 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaFrenKapali = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaFrenVoltaj = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaSagaDonus = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaSolaDonus = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaFrenAcik = new System.Windows.Forms.Label();
+            this.lblInfoYbfAlistirmaFrekans = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
             this.label55 = new System.Windows.Forms.Label();
@@ -185,7 +185,7 @@
             this.label173 = new System.Windows.Forms.Label();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.button13 = new System.Windows.Forms.Button();
+            this.btn_abtf_test_basla = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.button11 = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
@@ -220,7 +220,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tbPageYbfBirakma = new System.Windows.Forms.TabPage();
             this.button31 = new System.Windows.Forms.Button();
-            this.button32 = new System.Windows.Forms.Button();
+            this.btn_ybf_birakma_basla = new System.Windows.Forms.Button();
             this.button33 = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.button22 = new System.Windows.Forms.Button();
@@ -249,7 +249,7 @@
             this.label66 = new System.Windows.Forms.Label();
             this.tbPageYbfYakalama = new System.Windows.Forms.TabPage();
             this.button34 = new System.Windows.Forms.Button();
-            this.button35 = new System.Windows.Forms.Button();
+            this.btn_ybf_yakalama_basla = new System.Windows.Forms.Button();
             this.button36 = new System.Windows.Forms.Button();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.button24 = new System.Windows.Forms.Button();
@@ -278,7 +278,7 @@
             this.label67 = new System.Windows.Forms.Label();
             this.tbPageYbfDinamik = new System.Windows.Forms.TabPage();
             this.button37 = new System.Windows.Forms.Button();
-            this.button38 = new System.Windows.Forms.Button();
+            this.btn_ybf_dinamik_basla = new System.Windows.Forms.Button();
             this.button39 = new System.Windows.Forms.Button();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.button29 = new System.Windows.Forms.Button();
@@ -307,7 +307,7 @@
             this.label68 = new System.Windows.Forms.Label();
             this.tbPageYbfStatik = new System.Windows.Forms.TabPage();
             this.button40 = new System.Windows.Forms.Button();
-            this.button41 = new System.Windows.Forms.Button();
+            this.btn_ybf_statik_basla = new System.Windows.Forms.Button();
             this.button42 = new System.Windows.Forms.Button();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.button26 = new System.Windows.Forms.Button();
@@ -349,16 +349,16 @@
             this.label145 = new System.Windows.Forms.Label();
             this.dgvFirmaAyarlari = new System.Windows.Forms.DataGridView();
             this.tbPageTestOnAyar = new System.Windows.Forms.TabPage();
-            this.groupBox30 = new System.Windows.Forms.GroupBox();
+            this.grpBox_testOnAyar_varolanKayit = new System.Windows.Forms.GroupBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label170 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button48 = new System.Windows.Forms.Button();
             this.label171 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.groupBox29 = new System.Windows.Forms.GroupBox();
+            this.radio_testOnAyar_varolanKayit = new System.Windows.Forms.RadioButton();
+            this.radio_testOnAyar_yeniKayit = new System.Windows.Forms.RadioButton();
+            this.grpBox_testOnAyar_yeniKayit = new System.Windows.Forms.GroupBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label169 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -420,6 +420,7 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tmrMain = new System.Windows.Forms.Timer(this.components);
             this.flashTimer = new System.Windows.Forms.Timer(this.components);
+            this.tmrTest = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.grpBoxKomutVoltaj.SuspendLayout();
@@ -471,9 +472,9 @@
             this.groupBox23.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFirmaAyarlari)).BeginInit();
             this.tbPageTestOnAyar.SuspendLayout();
-            this.groupBox30.SuspendLayout();
+            this.grpBox_testOnAyar_varolanKayit.SuspendLayout();
             this.panel7.SuspendLayout();
-            this.groupBox29.SuspendLayout();
+            this.grpBox_testOnAyar_yeniKayit.SuspendLayout();
             this.groupBox28.SuspendLayout();
             this.groupBox27.SuspendLayout();
             this.groupBox26.SuspendLayout();
@@ -1262,8 +1263,8 @@
             // 
             this.dgvYbfTestIslem.AllowUserToAddRows = false;
             this.dgvYbfTestIslem.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.dgvYbfTestIslem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dgvYbfTestIslem.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvYbfTestIslem.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvYbfTestIslem.BackgroundColor = System.Drawing.Color.Silver;
             this.dgvYbfTestIslem.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -1528,7 +1529,7 @@
             this.tbPageAbtfAlistirma.BackColor = System.Drawing.Color.Silver;
             this.tbPageAbtfAlistirma.Controls.Add(this.button17);
             this.tbPageAbtfAlistirma.Controls.Add(this.groupBox7);
-            this.tbPageAbtfAlistirma.Controls.Add(this.button18);
+            this.tbPageAbtfAlistirma.Controls.Add(this.btn_abtf_alistirma_basla);
             this.tbPageAbtfAlistirma.Controls.Add(this.groupBox6);
             this.tbPageAbtfAlistirma.Controls.Add(this.button28);
             this.tbPageAbtfAlistirma.Controls.Add(this.label25);
@@ -1715,17 +1716,18 @@
             this.label35.TabIndex = 6;
             this.label35.Text = "Frekans :";
             // 
-            // button18
+            // btn_abtf_alistirma_basla
             // 
-            this.button18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button18.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button18.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button18.Location = new System.Drawing.Point(717, 161);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(151, 30);
-            this.button18.TabIndex = 15;
-            this.button18.Text = "Testi Başlat";
-            this.button18.UseVisualStyleBackColor = true;
+            this.btn_abtf_alistirma_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_alistirma_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_alistirma_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_alistirma_basla.Location = new System.Drawing.Point(717, 161);
+            this.btn_abtf_alistirma_basla.Name = "btn_abtf_alistirma_basla";
+            this.btn_abtf_alistirma_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_abtf_alistirma_basla.TabIndex = 15;
+            this.btn_abtf_alistirma_basla.Text = "Testi Başlat";
+            this.btn_abtf_alistirma_basla.UseVisualStyleBackColor = true;
+            this.btn_abtf_alistirma_basla.Click += new System.EventHandler(this.btn_abtf_alistirma_basla_Click);
             // 
             // groupBox6
             // 
@@ -1916,7 +1918,7 @@
             this.tbPageYbfAlistirma.AutoScroll = true;
             this.tbPageYbfAlistirma.BackColor = System.Drawing.Color.Silver;
             this.tbPageYbfAlistirma.Controls.Add(this.button21);
-            this.tbPageYbfAlistirma.Controls.Add(this.button19);
+            this.tbPageYbfAlistirma.Controls.Add(this.btn_ybf_alistirma_basla);
             this.tbPageYbfAlistirma.Controls.Add(this.button20);
             this.tbPageYbfAlistirma.Controls.Add(this.label65);
             this.tbPageYbfAlistirma.Controls.Add(this.groupBox8);
@@ -1939,17 +1941,18 @@
             this.button21.Text = "Ayarları PLC\'den Getir";
             this.button21.UseVisualStyleBackColor = true;
             // 
-            // button19
+            // btn_ybf_alistirma_basla
             // 
-            this.button19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button19.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button19.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button19.Location = new System.Drawing.Point(717, 161);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(151, 30);
-            this.button19.TabIndex = 12;
-            this.button19.Text = "Testi Başlat";
-            this.button19.UseVisualStyleBackColor = true;
+            this.btn_ybf_alistirma_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ybf_alistirma_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_ybf_alistirma_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_ybf_alistirma_basla.Location = new System.Drawing.Point(717, 161);
+            this.btn_ybf_alistirma_basla.Name = "btn_ybf_alistirma_basla";
+            this.btn_ybf_alistirma_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_ybf_alistirma_basla.TabIndex = 12;
+            this.btn_ybf_alistirma_basla.Text = "Testi Başlat";
+            this.btn_ybf_alistirma_basla.UseVisualStyleBackColor = true;
+            this.btn_ybf_alistirma_basla.Click += new System.EventHandler(this.btn_ybf_alistirma_basla_Click);
             // 
             // button20
             // 
@@ -1976,15 +1979,15 @@
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.button15);
-            this.groupBox8.Controls.Add(this.label8);
+            this.groupBox8.Controls.Add(this.btnRefreshYbfAlistirma);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaSonOkuma);
             this.groupBox8.Controls.Add(this.label39);
-            this.groupBox8.Controls.Add(this.label41);
-            this.groupBox8.Controls.Add(this.label48);
-            this.groupBox8.Controls.Add(this.label49);
-            this.groupBox8.Controls.Add(this.label50);
-            this.groupBox8.Controls.Add(this.label51);
-            this.groupBox8.Controls.Add(this.label52);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaFrenKapali);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaFrenVoltaj);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaSagaDonus);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaSolaDonus);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaFrenAcik);
+            this.groupBox8.Controls.Add(this.lblInfoYbfAlistirmaFrekans);
             this.groupBox8.Controls.Add(this.label53);
             this.groupBox8.Controls.Add(this.label54);
             this.groupBox8.Controls.Add(this.label55);
@@ -1999,27 +2002,28 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "PLC\'den Okunan Veriler";
             // 
-            // button15
+            // btnRefreshYbfAlistirma
             // 
-            this.button15.BackgroundImage = global::EmfTestCihazi.Properties.Resources.refresh;
-            this.button15.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button15.FlatAppearance.BorderSize = 0;
-            this.button15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button15.Font = new System.Drawing.Font("Franklin Gothic Medium Cond", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button15.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button15.Location = new System.Drawing.Point(171, 11);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(20, 20);
-            this.button15.TabIndex = 7;
-            this.button15.UseVisualStyleBackColor = true;
+            this.btnRefreshYbfAlistirma.BackgroundImage = global::EmfTestCihazi.Properties.Resources.refresh;
+            this.btnRefreshYbfAlistirma.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRefreshYbfAlistirma.FlatAppearance.BorderSize = 0;
+            this.btnRefreshYbfAlistirma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshYbfAlistirma.Font = new System.Drawing.Font("Franklin Gothic Medium Cond", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnRefreshYbfAlistirma.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btnRefreshYbfAlistirma.Location = new System.Drawing.Point(171, 11);
+            this.btnRefreshYbfAlistirma.Name = "btnRefreshYbfAlistirma";
+            this.btnRefreshYbfAlistirma.Size = new System.Drawing.Size(20, 20);
+            this.btnRefreshYbfAlistirma.TabIndex = 7;
+            this.btnRefreshYbfAlistirma.UseVisualStyleBackColor = true;
+            this.btnRefreshYbfAlistirma.Click += new System.EventHandler(this.btnRefreshYbfAlistirma_Click);
             // 
-            // label8
+            // lblInfoYbfAlistirmaSonOkuma
             // 
-            this.label8.Location = new System.Drawing.Point(112, 20);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(51, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "HH:MM";
+            this.lblInfoYbfAlistirmaSonOkuma.Location = new System.Drawing.Point(112, 20);
+            this.lblInfoYbfAlistirmaSonOkuma.Name = "lblInfoYbfAlistirmaSonOkuma";
+            this.lblInfoYbfAlistirmaSonOkuma.Size = new System.Drawing.Size(51, 13);
+            this.lblInfoYbfAlistirmaSonOkuma.TabIndex = 7;
+            this.lblInfoYbfAlistirmaSonOkuma.Text = "HH:MM";
             // 
             // label39
             // 
@@ -2030,59 +2034,59 @@
             this.label39.TabIndex = 8;
             this.label39.Text = "Son Okuma Zamanı :";
             // 
-            // label41
+            // lblInfoYbfAlistirmaFrenKapali
             // 
-            this.label41.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label41.Location = new System.Drawing.Point(170, 80);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(28, 13);
-            this.label41.TabIndex = 6;
-            this.label41.Text = "99";
+            this.lblInfoYbfAlistirmaFrenKapali.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaFrenKapali.Location = new System.Drawing.Point(170, 80);
+            this.lblInfoYbfAlistirmaFrenKapali.Name = "lblInfoYbfAlistirmaFrenKapali";
+            this.lblInfoYbfAlistirmaFrenKapali.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaFrenKapali.TabIndex = 6;
+            this.lblInfoYbfAlistirmaFrenKapali.Text = "99";
             // 
-            // label48
+            // lblInfoYbfAlistirmaFrenVoltaj
             // 
-            this.label48.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label48.Location = new System.Drawing.Point(170, 45);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(28, 13);
-            this.label48.TabIndex = 6;
-            this.label48.Text = "99";
+            this.lblInfoYbfAlistirmaFrenVoltaj.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaFrenVoltaj.Location = new System.Drawing.Point(170, 45);
+            this.lblInfoYbfAlistirmaFrenVoltaj.Name = "lblInfoYbfAlistirmaFrenVoltaj";
+            this.lblInfoYbfAlistirmaFrenVoltaj.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaFrenVoltaj.TabIndex = 6;
+            this.lblInfoYbfAlistirmaFrenVoltaj.Text = "99";
             // 
-            // label49
+            // lblInfoYbfAlistirmaSagaDonus
             // 
-            this.label49.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label49.Location = new System.Drawing.Point(73, 63);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(28, 13);
-            this.label49.TabIndex = 6;
-            this.label49.Text = "99";
+            this.lblInfoYbfAlistirmaSagaDonus.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaSagaDonus.Location = new System.Drawing.Point(73, 63);
+            this.lblInfoYbfAlistirmaSagaDonus.Name = "lblInfoYbfAlistirmaSagaDonus";
+            this.lblInfoYbfAlistirmaSagaDonus.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaSagaDonus.TabIndex = 6;
+            this.lblInfoYbfAlistirmaSagaDonus.Text = "99";
             // 
-            // label50
+            // lblInfoYbfAlistirmaSolaDonus
             // 
-            this.label50.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label50.Location = new System.Drawing.Point(170, 62);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(28, 13);
-            this.label50.TabIndex = 6;
-            this.label50.Text = "99";
+            this.lblInfoYbfAlistirmaSolaDonus.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaSolaDonus.Location = new System.Drawing.Point(170, 62);
+            this.lblInfoYbfAlistirmaSolaDonus.Name = "lblInfoYbfAlistirmaSolaDonus";
+            this.lblInfoYbfAlistirmaSolaDonus.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaSolaDonus.TabIndex = 6;
+            this.lblInfoYbfAlistirmaSolaDonus.Text = "99";
             // 
-            // label51
+            // lblInfoYbfAlistirmaFrenAcik
             // 
-            this.label51.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label51.Location = new System.Drawing.Point(73, 80);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(28, 13);
-            this.label51.TabIndex = 6;
-            this.label51.Text = "99";
+            this.lblInfoYbfAlistirmaFrenAcik.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaFrenAcik.Location = new System.Drawing.Point(73, 80);
+            this.lblInfoYbfAlistirmaFrenAcik.Name = "lblInfoYbfAlistirmaFrenAcik";
+            this.lblInfoYbfAlistirmaFrenAcik.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaFrenAcik.TabIndex = 6;
+            this.lblInfoYbfAlistirmaFrenAcik.Text = "99";
             // 
-            // label52
+            // lblInfoYbfAlistirmaFrekans
             // 
-            this.label52.ForeColor = System.Drawing.Color.ForestGreen;
-            this.label52.Location = new System.Drawing.Point(73, 45);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(28, 13);
-            this.label52.TabIndex = 6;
-            this.label52.Text = "99";
+            this.lblInfoYbfAlistirmaFrekans.ForeColor = System.Drawing.Color.ForestGreen;
+            this.lblInfoYbfAlistirmaFrekans.Location = new System.Drawing.Point(73, 45);
+            this.lblInfoYbfAlistirmaFrekans.Name = "lblInfoYbfAlistirmaFrekans";
+            this.lblInfoYbfAlistirmaFrekans.Size = new System.Drawing.Size(28, 13);
+            this.lblInfoYbfAlistirmaFrekans.TabIndex = 6;
+            this.lblInfoYbfAlistirmaFrekans.Text = "99";
             // 
             // label53
             // 
@@ -2299,7 +2303,7 @@
             this.tbPageAbtfTestIslem.Controls.Add(this.label173);
             this.tbPageAbtfTestIslem.Controls.Add(this.checkBox2);
             this.tbPageAbtfTestIslem.Controls.Add(this.panel6);
-            this.tbPageAbtfTestIslem.Controls.Add(this.button13);
+            this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_basla);
             this.tbPageAbtfTestIslem.Controls.Add(this.groupBox4);
             this.tbPageAbtfTestIslem.Controls.Add(this.groupBox3);
             this.tbPageAbtfTestIslem.Controls.Add(this.button7);
@@ -2341,17 +2345,18 @@
             this.panel6.Size = new System.Drawing.Size(852, 413);
             this.panel6.TabIndex = 9;
             // 
-            // button13
+            // btn_abtf_test_basla
             // 
-            this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button13.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button13.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button13.Location = new System.Drawing.Point(716, 199);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(151, 30);
-            this.button13.TabIndex = 8;
-            this.button13.Text = "Testi Başlat";
-            this.button13.UseVisualStyleBackColor = true;
+            this.btn_abtf_test_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_test_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_test_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_test_basla.Location = new System.Drawing.Point(716, 199);
+            this.btn_abtf_test_basla.Name = "btn_abtf_test_basla";
+            this.btn_abtf_test_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_abtf_test_basla.TabIndex = 8;
+            this.btn_abtf_test_basla.Text = "Testi Başlat";
+            this.btn_abtf_test_basla.UseVisualStyleBackColor = true;
+            this.btn_abtf_test_basla.Click += new System.EventHandler(this.btn_abtf_test_basla_Click);
             // 
             // groupBox4
             // 
@@ -2699,7 +2704,7 @@
             // 
             this.tbPageYbfBirakma.BackColor = System.Drawing.Color.Silver;
             this.tbPageYbfBirakma.Controls.Add(this.button31);
-            this.tbPageYbfBirakma.Controls.Add(this.button32);
+            this.tbPageYbfBirakma.Controls.Add(this.btn_ybf_birakma_basla);
             this.tbPageYbfBirakma.Controls.Add(this.button33);
             this.tbPageYbfBirakma.Controls.Add(this.groupBox10);
             this.tbPageYbfBirakma.Controls.Add(this.groupBox11);
@@ -2722,17 +2727,18 @@
             this.button31.Text = "Ayarları PLC\'den Getir";
             this.button31.UseVisualStyleBackColor = true;
             // 
-            // button32
+            // btn_ybf_birakma_basla
             // 
-            this.button32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button32.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button32.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button32.Location = new System.Drawing.Point(706, 155);
-            this.button32.Name = "button32";
-            this.button32.Size = new System.Drawing.Size(151, 30);
-            this.button32.TabIndex = 15;
-            this.button32.Text = "Testi Başlat";
-            this.button32.UseVisualStyleBackColor = true;
+            this.btn_ybf_birakma_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ybf_birakma_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_ybf_birakma_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_ybf_birakma_basla.Location = new System.Drawing.Point(706, 155);
+            this.btn_ybf_birakma_basla.Name = "btn_ybf_birakma_basla";
+            this.btn_ybf_birakma_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_ybf_birakma_basla.TabIndex = 15;
+            this.btn_ybf_birakma_basla.Text = "Testi Başlat";
+            this.btn_ybf_birakma_basla.UseVisualStyleBackColor = true;
+            this.btn_ybf_birakma_basla.Click += new System.EventHandler(this.btn_ybf_birakma_basla_Click);
             // 
             // button33
             // 
@@ -2933,7 +2939,7 @@
             this.textBox27.Name = "textBox27";
             this.textBox27.Size = new System.Drawing.Size(67, 20);
             this.textBox27.TabIndex = 12;
-            this.toolTip.SetToolTip(this.textBox27, "Test başlangıç gerilimi");
+            this.toolTip.SetToolTip(this.textBox27, "Test Başlangıç Gerilimi");
             // 
             // label86
             // 
@@ -2973,7 +2979,7 @@
             this.textBox29.Name = "textBox29";
             this.textBox29.Size = new System.Drawing.Size(106, 20);
             this.textBox29.TabIndex = 8;
-            this.toolTip.SetToolTip(this.textBox29, "test bitiş gerilimi");
+            this.toolTip.SetToolTip(this.textBox29, "Fren Voltajını Giriniz");
             // 
             // label88
             // 
@@ -3019,7 +3025,7 @@
             this.tbPageYbfYakalama.AllowDrop = true;
             this.tbPageYbfYakalama.BackColor = System.Drawing.Color.Silver;
             this.tbPageYbfYakalama.Controls.Add(this.button34);
-            this.tbPageYbfYakalama.Controls.Add(this.button35);
+            this.tbPageYbfYakalama.Controls.Add(this.btn_ybf_yakalama_basla);
             this.tbPageYbfYakalama.Controls.Add(this.button36);
             this.tbPageYbfYakalama.Controls.Add(this.groupBox12);
             this.tbPageYbfYakalama.Controls.Add(this.groupBox13);
@@ -3042,17 +3048,18 @@
             this.button34.Text = "Ayarları PLC\'den Getir";
             this.button34.UseVisualStyleBackColor = true;
             // 
-            // button35
+            // btn_ybf_yakalama_basla
             // 
-            this.button35.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button35.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button35.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button35.Location = new System.Drawing.Point(706, 155);
-            this.button35.Name = "button35";
-            this.button35.Size = new System.Drawing.Size(151, 30);
-            this.button35.TabIndex = 15;
-            this.button35.Text = "Testi Başlat";
-            this.button35.UseVisualStyleBackColor = true;
+            this.btn_ybf_yakalama_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ybf_yakalama_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_ybf_yakalama_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_ybf_yakalama_basla.Location = new System.Drawing.Point(706, 155);
+            this.btn_ybf_yakalama_basla.Name = "btn_ybf_yakalama_basla";
+            this.btn_ybf_yakalama_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_ybf_yakalama_basla.TabIndex = 15;
+            this.btn_ybf_yakalama_basla.Text = "Testi Başlat";
+            this.btn_ybf_yakalama_basla.UseVisualStyleBackColor = true;
+            this.btn_ybf_yakalama_basla.Click += new System.EventHandler(this.btn_ybf_yakalama_basla_Click);
             // 
             // button36
             // 
@@ -3338,7 +3345,7 @@
             // 
             this.tbPageYbfDinamik.BackColor = System.Drawing.Color.Silver;
             this.tbPageYbfDinamik.Controls.Add(this.button37);
-            this.tbPageYbfDinamik.Controls.Add(this.button38);
+            this.tbPageYbfDinamik.Controls.Add(this.btn_ybf_dinamik_basla);
             this.tbPageYbfDinamik.Controls.Add(this.button39);
             this.tbPageYbfDinamik.Controls.Add(this.groupBox16);
             this.tbPageYbfDinamik.Controls.Add(this.groupBox17);
@@ -3361,17 +3368,18 @@
             this.button37.Text = "Ayarları PLC\'den Getir";
             this.button37.UseVisualStyleBackColor = true;
             // 
-            // button38
+            // btn_ybf_dinamik_basla
             // 
-            this.button38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button38.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button38.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button38.Location = new System.Drawing.Point(706, 155);
-            this.button38.Name = "button38";
-            this.button38.Size = new System.Drawing.Size(151, 30);
-            this.button38.TabIndex = 19;
-            this.button38.Text = "Testi Başlat";
-            this.button38.UseVisualStyleBackColor = true;
+            this.btn_ybf_dinamik_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ybf_dinamik_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_ybf_dinamik_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_ybf_dinamik_basla.Location = new System.Drawing.Point(706, 155);
+            this.btn_ybf_dinamik_basla.Name = "btn_ybf_dinamik_basla";
+            this.btn_ybf_dinamik_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_ybf_dinamik_basla.TabIndex = 19;
+            this.btn_ybf_dinamik_basla.Text = "Testi Başlat";
+            this.btn_ybf_dinamik_basla.UseVisualStyleBackColor = true;
+            this.btn_ybf_dinamik_basla.Click += new System.EventHandler(this.btn_ybf_dinamik_basla_Click);
             // 
             // button39
             // 
@@ -3657,7 +3665,7 @@
             // 
             this.tbPageYbfStatik.BackColor = System.Drawing.Color.Silver;
             this.tbPageYbfStatik.Controls.Add(this.button40);
-            this.tbPageYbfStatik.Controls.Add(this.button41);
+            this.tbPageYbfStatik.Controls.Add(this.btn_ybf_statik_basla);
             this.tbPageYbfStatik.Controls.Add(this.button42);
             this.tbPageYbfStatik.Controls.Add(this.groupBox14);
             this.tbPageYbfStatik.Controls.Add(this.groupBox15);
@@ -3680,17 +3688,18 @@
             this.button40.Text = "Ayarları PLC\'den Getir";
             this.button40.UseVisualStyleBackColor = true;
             // 
-            // button41
+            // btn_ybf_statik_basla
             // 
-            this.button41.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button41.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button41.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button41.Location = new System.Drawing.Point(706, 155);
-            this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(151, 30);
-            this.button41.TabIndex = 17;
-            this.button41.Text = "Testi Başlat";
-            this.button41.UseVisualStyleBackColor = true;
+            this.btn_ybf_statik_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_ybf_statik_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_ybf_statik_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_ybf_statik_basla.Location = new System.Drawing.Point(706, 155);
+            this.btn_ybf_statik_basla.Name = "btn_ybf_statik_basla";
+            this.btn_ybf_statik_basla.Size = new System.Drawing.Size(151, 30);
+            this.btn_ybf_statik_basla.TabIndex = 17;
+            this.btn_ybf_statik_basla.Text = "Testi Başlat";
+            this.btn_ybf_statik_basla.UseVisualStyleBackColor = true;
+            this.btn_ybf_statik_basla.Click += new System.EventHandler(this.btn_ybf_statik_basla_Click);
             // 
             // button42
             // 
@@ -4124,8 +4133,8 @@
             // 
             this.dgvFirmaAyarlari.AllowUserToAddRows = false;
             this.dgvFirmaAyarlari.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
-            this.dgvFirmaAyarlari.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.dgvFirmaAyarlari.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvFirmaAyarlari.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvFirmaAyarlari.BackgroundColor = System.Drawing.Color.Silver;
             this.dgvFirmaAyarlari.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -4140,9 +4149,9 @@
             // tbPageTestOnAyar
             // 
             this.tbPageTestOnAyar.BackColor = System.Drawing.Color.Silver;
-            this.tbPageTestOnAyar.Controls.Add(this.groupBox30);
+            this.tbPageTestOnAyar.Controls.Add(this.grpBox_testOnAyar_varolanKayit);
             this.tbPageTestOnAyar.Controls.Add(this.panel7);
-            this.tbPageTestOnAyar.Controls.Add(this.groupBox29);
+            this.tbPageTestOnAyar.Controls.Add(this.grpBox_testOnAyar_yeniKayit);
             this.tbPageTestOnAyar.Controls.Add(this.groupBox28);
             this.tbPageTestOnAyar.Controls.Add(this.groupBox27);
             this.tbPageTestOnAyar.Controls.Add(this.groupBox26);
@@ -4155,20 +4164,21 @@
             this.tbPageTestOnAyar.TabIndex = 9;
             this.tbPageTestOnAyar.Text = "tbPageTestOnAyar";
             // 
-            // groupBox30
+            // grpBox_testOnAyar_varolanKayit
             // 
-            this.groupBox30.Controls.Add(this.comboBox3);
-            this.groupBox30.Controls.Add(this.label170);
-            this.groupBox30.Controls.Add(this.comboBox4);
-            this.groupBox30.Controls.Add(this.button48);
-            this.groupBox30.Controls.Add(this.label171);
-            this.groupBox30.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.groupBox30.Location = new System.Drawing.Point(24, 135);
-            this.groupBox30.Name = "groupBox30";
-            this.groupBox30.Size = new System.Drawing.Size(840, 60);
-            this.groupBox30.TabIndex = 26;
-            this.groupBox30.TabStop = false;
-            this.groupBox30.Text = "Varolan Kayıt İçin Fren Seçimi";
+            this.grpBox_testOnAyar_varolanKayit.Controls.Add(this.comboBox3);
+            this.grpBox_testOnAyar_varolanKayit.Controls.Add(this.label170);
+            this.grpBox_testOnAyar_varolanKayit.Controls.Add(this.comboBox4);
+            this.grpBox_testOnAyar_varolanKayit.Controls.Add(this.button48);
+            this.grpBox_testOnAyar_varolanKayit.Controls.Add(this.label171);
+            this.grpBox_testOnAyar_varolanKayit.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.grpBox_testOnAyar_varolanKayit.Location = new System.Drawing.Point(24, 135);
+            this.grpBox_testOnAyar_varolanKayit.Name = "grpBox_testOnAyar_varolanKayit";
+            this.grpBox_testOnAyar_varolanKayit.Size = new System.Drawing.Size(840, 60);
+            this.grpBox_testOnAyar_varolanKayit.TabIndex = 26;
+            this.grpBox_testOnAyar_varolanKayit.TabStop = false;
+            this.grpBox_testOnAyar_varolanKayit.Text = "Varolan Kayıt İçin Fren Seçimi";
+            this.grpBox_testOnAyar_varolanKayit.Visible = false;
             // 
             // comboBox3
             // 
@@ -4222,49 +4232,51 @@
             // 
             // panel7
             // 
-            this.panel7.Controls.Add(this.radioButton2);
-            this.panel7.Controls.Add(this.radioButton1);
+            this.panel7.Controls.Add(this.radio_testOnAyar_varolanKayit);
+            this.panel7.Controls.Add(this.radio_testOnAyar_yeniKayit);
             this.panel7.Location = new System.Drawing.Point(238, 33);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(295, 31);
             this.panel7.TabIndex = 25;
             // 
-            // radioButton2
+            // radio_testOnAyar_varolanKayit
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(145, 7);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(135, 17);
-            this.radioButton2.TabIndex = 0;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Varolan Kaydı Güncelle";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radio_testOnAyar_varolanKayit.AutoSize = true;
+            this.radio_testOnAyar_varolanKayit.Location = new System.Drawing.Point(145, 7);
+            this.radio_testOnAyar_varolanKayit.Name = "radio_testOnAyar_varolanKayit";
+            this.radio_testOnAyar_varolanKayit.Size = new System.Drawing.Size(135, 17);
+            this.radio_testOnAyar_varolanKayit.TabIndex = 0;
+            this.radio_testOnAyar_varolanKayit.TabStop = true;
+            this.radio_testOnAyar_varolanKayit.Text = "Varolan Kaydı Güncelle";
+            this.radio_testOnAyar_varolanKayit.UseVisualStyleBackColor = true;
+            this.radio_testOnAyar_varolanKayit.CheckedChanged += new System.EventHandler(this.radio_testOnAyar_checkedChanged);
             // 
-            // radioButton1
+            // radio_testOnAyar_yeniKayit
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(19, 7);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(108, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Yeni Kayıt Oluştur";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radio_testOnAyar_yeniKayit.AutoSize = true;
+            this.radio_testOnAyar_yeniKayit.Location = new System.Drawing.Point(19, 7);
+            this.radio_testOnAyar_yeniKayit.Name = "radio_testOnAyar_yeniKayit";
+            this.radio_testOnAyar_yeniKayit.Size = new System.Drawing.Size(108, 17);
+            this.radio_testOnAyar_yeniKayit.TabIndex = 0;
+            this.radio_testOnAyar_yeniKayit.TabStop = true;
+            this.radio_testOnAyar_yeniKayit.Text = "Yeni Kayıt Oluştur";
+            this.radio_testOnAyar_yeniKayit.UseVisualStyleBackColor = true;
             // 
-            // groupBox29
+            // grpBox_testOnAyar_yeniKayit
             // 
-            this.groupBox29.Controls.Add(this.comboBox2);
-            this.groupBox29.Controls.Add(this.label169);
-            this.groupBox29.Controls.Add(this.comboBox1);
-            this.groupBox29.Controls.Add(this.button47);
-            this.groupBox29.Controls.Add(this.label168);
-            this.groupBox29.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.groupBox29.Location = new System.Drawing.Point(24, 68);
-            this.groupBox29.Name = "groupBox29";
-            this.groupBox29.Size = new System.Drawing.Size(840, 60);
-            this.groupBox29.TabIndex = 24;
-            this.groupBox29.TabStop = false;
-            this.groupBox29.Text = "Yeni Kayıt İçin Fren Seçimi";
+            this.grpBox_testOnAyar_yeniKayit.Controls.Add(this.comboBox2);
+            this.grpBox_testOnAyar_yeniKayit.Controls.Add(this.label169);
+            this.grpBox_testOnAyar_yeniKayit.Controls.Add(this.comboBox1);
+            this.grpBox_testOnAyar_yeniKayit.Controls.Add(this.button47);
+            this.grpBox_testOnAyar_yeniKayit.Controls.Add(this.label168);
+            this.grpBox_testOnAyar_yeniKayit.Font = new System.Drawing.Font("Arial Narrow", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.grpBox_testOnAyar_yeniKayit.Location = new System.Drawing.Point(24, 68);
+            this.grpBox_testOnAyar_yeniKayit.Name = "grpBox_testOnAyar_yeniKayit";
+            this.grpBox_testOnAyar_yeniKayit.Size = new System.Drawing.Size(840, 60);
+            this.grpBox_testOnAyar_yeniKayit.TabIndex = 24;
+            this.grpBox_testOnAyar_yeniKayit.TabStop = false;
+            this.grpBox_testOnAyar_yeniKayit.Text = "Yeni Kayıt İçin Fren Seçimi";
+            this.grpBox_testOnAyar_yeniKayit.Visible = false;
             // 
             // comboBox2
             // 
@@ -4882,14 +4894,19 @@
             // 
             // tmrMain
             // 
-            this.tmrMain.Enabled = true;
+            this.tmrMain.Interval = 50;
             this.tmrMain.Tick += new System.EventHandler(this.tmrMain_Tick);
             // 
             // flashTimer
             // 
-            this.flashTimer.Enabled = true;
             this.flashTimer.Interval = 500;
+            this.flashTimer.Tag = "";
             this.flashTimer.Tick += new System.EventHandler(this.flashTimer_Tick);
+            // 
+            // tmrTest
+            // 
+            this.tmrTest.Interval = 500;
+            this.tmrTest.Tick += new System.EventHandler(this.tmrTest_Tick);
             // 
             // MainForm
             // 
@@ -4996,12 +5013,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvFirmaAyarlari)).EndInit();
             this.tbPageTestOnAyar.ResumeLayout(false);
             this.tbPageTestOnAyar.PerformLayout();
-            this.groupBox30.ResumeLayout(false);
-            this.groupBox30.PerformLayout();
+            this.grpBox_testOnAyar_varolanKayit.ResumeLayout(false);
+            this.grpBox_testOnAyar_varolanKayit.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            this.groupBox29.ResumeLayout(false);
-            this.groupBox29.PerformLayout();
+            this.grpBox_testOnAyar_yeniKayit.ResumeLayout(false);
+            this.grpBox_testOnAyar_yeniKayit.PerformLayout();
             this.groupBox28.ResumeLayout(false);
             this.groupBox28.PerformLayout();
             this.groupBox27.ResumeLayout(false);
@@ -5107,7 +5124,7 @@
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button btn_abtf_test_basla;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.GroupBox groupBox6;
@@ -5142,15 +5159,15 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label65;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnRefreshYbfAlistirma;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaSonOkuma;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.Label label49;
-        private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaFrenKapali;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaFrenVoltaj;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaSagaDonus;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaSolaDonus;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaFrenAcik;
+        private System.Windows.Forms.Label lblInfoYbfAlistirmaFrekans;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label55;
@@ -5172,7 +5189,7 @@
         private System.Windows.Forms.TextBox textBox24;
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.Button button21;
-        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button btn_ybf_alistirma_basla;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.Label label67;
@@ -5251,16 +5268,16 @@
         private System.Windows.Forms.TextBox textBox39;
         private System.Windows.Forms.Label label114;
         private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button btn_abtf_alistirma_basla;
         private System.Windows.Forms.Button button28;
         private System.Windows.Forms.Button button31;
-        private System.Windows.Forms.Button button32;
+        private System.Windows.Forms.Button btn_ybf_birakma_basla;
         private System.Windows.Forms.Button button33;
         private System.Windows.Forms.Button button34;
-        private System.Windows.Forms.Button button35;
+        private System.Windows.Forms.Button btn_ybf_yakalama_basla;
         private System.Windows.Forms.Button button36;
         private System.Windows.Forms.Button button37;
-        private System.Windows.Forms.Button button38;
+        private System.Windows.Forms.Button btn_ybf_dinamik_basla;
         private System.Windows.Forms.Button button39;
         private System.Windows.Forms.GroupBox groupBox16;
         private System.Windows.Forms.Button button29;
@@ -5287,7 +5304,7 @@
         private System.Windows.Forms.TextBox textBox44;
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.Button button40;
-        private System.Windows.Forms.Button button41;
+        private System.Windows.Forms.Button btn_ybf_statik_basla;
         private System.Windows.Forms.Button button42;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Label label130;
@@ -5383,21 +5400,21 @@
         private System.Windows.Forms.Label label153;
         private System.Windows.Forms.Label label155;
         private System.Windows.Forms.Label label156;
-        private System.Windows.Forms.GroupBox groupBox29;
+        private System.Windows.Forms.GroupBox grpBox_testOnAyar_yeniKayit;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label168;
         private System.Windows.Forms.Button button48;
         private System.Windows.Forms.Button button47;
         private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radio_testOnAyar_yeniKayit;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label169;
-        private System.Windows.Forms.GroupBox groupBox30;
+        private System.Windows.Forms.GroupBox grpBox_testOnAyar_varolanKayit;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label170;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label171;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radio_testOnAyar_varolanKayit;
         private System.Windows.Forms.TabPage tbPageFrenGrupAyar;
         private System.Windows.Forms.Label label172;
         private System.Windows.Forms.TabPage tbPageProgramAyar;
@@ -5408,6 +5425,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer flashTimer;
+        private System.Windows.Forms.Timer tmrTest;
     }
 }
 

@@ -16,6 +16,8 @@ namespace EmfTestCihazi.Classes.PlcCommunication
         public const int adr_CMD_VOLT = 20;
         public const int adr_ACIL_STOP = 12;
 
+
+
         public float CMD_VOLT { get; set; }
         public float ACT_VOLT { get; set; }
         public float ACT_TORK { get; set; }

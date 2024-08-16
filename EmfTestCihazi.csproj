@@ -123,6 +123,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\DataBlock.cs" />
     <Compile Include="Classes\DBHelper.cs" />
     <Compile Include="Classes\DBLogHelper.cs" />
     <Compile Include="Classes\InputValidationHelper.cs" />
@@ -146,6 +147,12 @@
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PLC_DENEME.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PLC_DENEME.Designer.cs">
+      <DependentUpon>PLC_DENEME.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProgramSettings.cs">
       <SubType>Form</SubType>
@@ -190,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PLC_DENEME.resx">
+      <DependentUpon>PLC_DENEME.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProgramSettings.resx">
       <DependentUpon>ProgramSettings.cs</DependentUpon>

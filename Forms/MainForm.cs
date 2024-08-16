@@ -13,10 +13,23 @@ using EmfTestCihazi.Classes;
 using Sharp7;
 using EmfTestCihazi.Classes.PlcCommunication;
 
+
 namespace EmfTestCihazi
 {
     public partial class MainForm : Form
     {
+        public enum TEST
+        {
+            RODAJ = 1,
+            YBF_BIRAKMA = 2,
+            YBF_YAKALAMA = 3,
+            YBF_DINAMIK = 4,
+            YBF_STATIK = 5,
+            ABTF_TEST = 6
+        }
+
+        TEST AktifTest;
+
         //Helpers//
         private readonly DBHelper _DB;
         private readonly DBLogHelper _DBlog;
@@ -27,7 +40,7 @@ namespace EmfTestCihazi
         const string _plcConnectionAdress = "192.168.69.70";
         const int _plcConnectionRack = 0;
         const int _plcConnectionSlot = 0;
-        byte[] _buffer = new byte[178];
+        byte[] _buffer = new byte[140];
         //
         public AbtfTest _abtfTest;
         public Alistirma _alistirma;
@@ -48,7 +61,6 @@ namespace EmfTestCihazi
             LoadData();
             _DB = new DBHelper();
             _DBlog = new DBLogHelper(_DB);
-            _DBlog.AddLog("Program Çalıştırıldı");//Programının ilk açılısında dbye log atıyorum
             _plc = new S7Client();
             _abtfTest = new AbtfTest();
             _alistirma = new Alistirma();
@@ -126,20 +138,70 @@ namespace EmfTestCihazi
             }
         }
 
-        public void ReadActualValues()
+
+
+        public void ReadAllDataBlock()
         {
             int readResult = -1;
             try
             {
-                readResult = _plc.DBRead(100, 0, 26, _buffer);
+                readResult = _plc.DBRead(100, 0, _buffer.Length, _buffer);
                 if (readResult != 0)
                     throw new Exception(_plc.ErrorText(readResult));
-                _globalValues.ACT_VOLT  = S7.GetRealAt(_buffer, GlobalValues.adr_ACT_VOLT);
-                _globalValues.ACT_TORK  = S7.GetRealAt(_buffer,GlobalValues.adr_ACT_TORK);
-                _globalValues.ACT_AKIM  = S7.GetRealAt(_buffer,GlobalValues.adr_ACT_AKIM);
-                _globalValues.ACIL_STOP = S7.GetBitAt(_buffer,GlobalValues.adr_ACIL_STOP,0);
-                _globalValues.FREN_220  = S7.GetBitAt(_buffer,GlobalValues.adr_FREN_220,0);
-                _globalValues.FREN_24   = S7.GetBitAt(_buffer,GlobalValues.adr_FREN_24,0);
+
+                _globalValues.ACT_VOLT = S7.GetRealAt(_buffer, GlobalValues.adr_ACT_VOLT);
+                _globalValues.ACT_TORK = S7.GetRealAt(_buffer, GlobalValues.adr_ACT_TORK);
+                _globalValues.ACT_AKIM = S7.GetRealAt(_buffer, GlobalValues.adr_ACT_AKIM);
+                _globalValues.ACIL_STOP = S7.GetBitAt(_buffer, GlobalValues.adr_ACIL_STOP, 0);
+                _globalValues.FREN_24 = S7.GetBitAt(_buffer, GlobalValues.adr_FREN_24, 0);
+                _globalValues.FREN_220 = S7.GetBitAt(_buffer, GlobalValues.adr_FREN_220, 0);
+                _globalValues.CMD_VOLT = S7.GetRealAt(_buffer, GlobalValues.adr_CMD_VOLT);
+
+                _ybfYakalama.TestStart = S7.GetBitAt(_buffer, YbfYakalama.adr_test_basla, 0);
+                _ybfYakalama.Frekans = S7.GetIntAt(_buffer, YbfYakalama.adr_frekans);
+                _ybfYakalama.BaslangicGerilim = S7.GetRealAt(_buffer, YbfYakalama.adr_baslangic_gerilimi);
+                _ybfYakalama.BitisGerilim = S7.GetRealAt(_buffer, YbfYakalama.adr_bitis_gerilim);
+                _ybfYakalama.TorkAlgilama = S7.GetRealAt(_buffer, YbfYakalama.adr_algilama_tork);
+                _ybfYakalama.TestSonuc = S7.GetRealAt(_buffer, YbfYakalama.adr_test_sonuc);
+                _ybfYakalama.TestBitti = S7.GetBitAt(_buffer, YbfYakalama.adr_test_bitti, 0);
+
+                _ybfBirakma.TestStart = S7.GetBitAt(_buffer, YbfBirakma.adr_test_basla, 0);
+                _ybfBirakma.Frekans = S7.GetIntAt(_buffer, YbfBirakma.adr_frekans);
+                _ybfBirakma.BaslangicGerilim = S7.GetRealAt(_buffer, YbfBirakma.adr_baslangic_gerilimi);
+                _ybfBirakma.BitisGerilim = S7.GetRealAt(_buffer, YbfBirakma.adr_bitis_gerilim);
+                _ybfBirakma.TorkAlgilama = S7.GetRealAt(_buffer, YbfBirakma.adr_tork_algilama);
+                _ybfBirakma.TestSonuc = S7.GetRealAt(_buffer, YbfBirakma.adr_test_sonuc);
+                _ybfBirakma.TestBitti = S7.GetBitAt(_buffer, YbfBirakma.adr_test_bitti, 0);
+
+                _ybfStatik.TestStart = S7.GetBitAt(_buffer, YbfStatik.adr_test_basla, 0);
+                _ybfStatik.Frekans = S7.GetIntAt(_buffer, YbfStatik.adr_frekans);
+                _ybfStatik.BaslangicGerilim = S7.GetRealAt(_buffer, YbfStatik.adr_baslangic_gerilimi);
+                _ybfStatik.BitisGerilim = S7.GetRealAt(_buffer, YbfStatik.adr_bitis_gerilim);
+                _ybfStatik.TorkAlgilama = S7.GetRealAt(_buffer, YbfStatik.adr_algilama_tork);
+                _ybfStatik.TestSonuc = S7.GetRealAt(_buffer, YbfStatik.adr_test_sonuc);
+                _ybfStatik.TestBitti = S7.GetBitAt(_buffer, YbfStatik.adr_test_bitti, 0);
+
+                _ybfDinamik.TestStart = S7.GetBitAt(_buffer, YbfDinamik.adr_test_basla, 0);
+                _ybfDinamik.Frekans = S7.GetIntAt(_buffer, YbfDinamik.adr_frekans);
+                _ybfDinamik.BaslangicGerilim = S7.GetRealAt(_buffer, YbfDinamik.adr_baslangic_gerilimi);
+                _ybfDinamik.BitisGerilim = S7.GetRealAt(_buffer, YbfDinamik.adr_bitis_gerilim);
+                _ybfDinamik.TestSure = S7.GetIntAt(_buffer, YbfDinamik.adr_test_sure);
+                _ybfDinamik.TestSonuc = S7.GetRealAt(_buffer, YbfDinamik.adr_test_sonuc);
+                _ybfDinamik.TestBitti = S7.GetBitAt(_buffer, YbfDinamik.adr_test_bitti, 0);
+
+                _alistirma.TestBasla = S7.GetBitAt(_buffer, Alistirma.adr_test_basla, 0);
+                _alistirma.Frekans = S7.GetIntAt(_buffer, Alistirma.adr_frekans);
+                _alistirma.FrenVoltaj = S7.GetRealAt(_buffer, Alistirma.adr_fren_voltaj);
+                _alistirma.SureSag = S7.GetIntAt(_buffer, Alistirma.adr_düz_süre);
+                _alistirma.SureSol = S7.GetIntAt(_buffer, Alistirma.adr_ters_süre);
+                _alistirma.FrenAcikSure = S7.GetIntAt(_buffer, Alistirma.adr_fren_ac_süre);
+                _alistirma.FrenKapalıSure = S7.GetIntAt(_buffer, Alistirma.adr_fren_kapa_süre);
+                _alistirma.TestBitti = S7.GetBitAt(_buffer, Alistirma.adr_test_bitti, 0);
+
+                _abtfTest.TestBasla = S7.GetBitAt(_buffer, AbtfTest.adr_test_basla, 0);
+                _abtfTest.Frekans = S7.GetIntAt(_buffer, AbtfTest.adr_frekans);
+                _abtfTest.TestBitti = S7.GetBitAt(_buffer, AbtfTest.adr_test_bitti, 0);
+
             }
             catch (Exception ex)
             {
@@ -150,16 +212,21 @@ namespace EmfTestCihazi
             }
         }
 
+
+
+
         #endregion
         #region MainFormLoad
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // _DBlog.AddLog("Program Çalıştırıldı");//Programının ilk açılısında dbye log atıyorum
+
             //Sidebardaki butonları kullanmak için TabControl butonlarını gizler
             HideTabControlHeaderButtons(tabControlMain);
             //Açılışta default olarak Ybf Test İşlem Sayfasını Açıyorum
             tabControlMain.SelectedTab = tabControlMain.TabPages["tbPageYbfTestIslem"];
-            StartPlcConnection();
 
+            //  StartReadindPlcDataBlock();
             //tmrMain.Start();
         }
 
@@ -271,14 +338,17 @@ namespace EmfTestCihazi
             dgvYbfTestIslem.DataSource = table;
         }
 
+
         private void tmrMain_Tick(object sender, EventArgs e)
         {
-            ReadActualValues();
-            txt_ACT_VOLT.Text = _globalValues.ACT_VOLT.ToString("F2");
-            txt_ACT_TORK.Text = _globalValues.ACT_TORK.ToString("F2");
-            txt_ACT_AKIM.Text = _globalValues.ACT_AKIM.ToString("F2");
+            //ReadActualValues();
 
-            if(_globalValues.ACIL_STOP)
+            //txt_ACT_VOLT.Text = float.Parse(d).ToString();
+            //txt_ACT_VOLT.Text = _globalValues.ACT_VOLT.ToString();
+            //txt_ACT_TORK.Text = _globalValues.ACT_TORK.ToString();
+            //txt_ACT_AKIM.Text = _globalValues.ACT_AKIM.ToString();
+
+            if (_globalValues.ACIL_STOP)
                 flashTimer.Start();
             else
             {
@@ -290,6 +360,100 @@ namespace EmfTestCihazi
         private void flashTimer_Tick(object sender, EventArgs e)
         {
             pctEmergencyStop.Visible = !pctEmergencyStop.Visible;
+        }
+
+        private void btnRefreshYbfAlistirma_Click(object sender, EventArgs e)
+        {
+            //  GetBiseyBisey();
+            // lblInfoYbfAlistirmaSonOkuma.Text = DateTime.Now.ToShortTimeString();
+            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+        }
+
+        private void tmrTest_Tick(object sender, EventArgs e)
+        {
+            switch (AktifTest)
+            {
+                case TEST.RODAJ:
+                    MessageBox.Show("rodaj");
+                    break;
+                case TEST.YBF_BIRAKMA:
+                    MessageBox.Show("bırakma");
+                    break;
+                case TEST.YBF_YAKALAMA:
+                    MessageBox.Show("yakalama");
+                    break;
+                case TEST.YBF_DINAMIK:
+                    MessageBox.Show("dinamik");
+                    break;
+                case TEST.YBF_STATIK:
+                    MessageBox.Show("statik");
+                    break;
+                case TEST.ABTF_TEST:
+                    MessageBox.Show("abtftest");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void btn_abtf_alistirma_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.RODAJ;
+            tmrTest.Start();
+        }
+
+        private void btn_ybf_alistirma_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.RODAJ;
+            tmrTest.Start();
+        }
+
+        private void btn_abtf_test_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.ABTF_TEST;
+            tmrTest.Start();
+        }
+
+        private void btn_ybf_birakma_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.YBF_BIRAKMA;
+            tmrTest.Start();
+        }
+
+        private void btn_ybf_yakalama_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.YBF_YAKALAMA;
+            tmrTest.Start();
+        }
+
+        private void btn_ybf_dinamik_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.YBF_DINAMIK;
+            tmrTest.Start();
+        }
+
+        private void btn_ybf_statik_basla_Click(object sender, EventArgs e)
+        {
+            AktifTest = TEST.YBF_STATIK;
+            tmrTest.Start();
+        }
+
+        private void radio_testOnAyar_checkedChanged(object sender, EventArgs e)
+        {
+            if (radio_testOnAyar_yeniKayit.Checked)
+            {
+                grpBox_testOnAyar_yeniKayit.Visible = true;
+                grpBox_testOnAyar_varolanKayit.Visible = false;
+            }
+            else
+            {
+                grpBox_testOnAyar_yeniKayit.Visible = false;
+                grpBox_testOnAyar_varolanKayit.Visible = true;
+            }
         }
     }
 }
