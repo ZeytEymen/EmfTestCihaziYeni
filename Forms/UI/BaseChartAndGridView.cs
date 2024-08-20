@@ -62,9 +62,24 @@ namespace EmfTestCihazi.Forms.UI
 
         }
 
-        public void AddValuesToChart(double volt, double tork, double akim)
+        public void ClearChartAndDataGridView()
         {
+            chartAnlik.Series["Volt"].Points.Clear();
+            chartAnlik.Series["Tork"].Points.Clear();
+            chartAnlik.Series["Akim"].Points.Clear();
 
+            dgvAnlik.Rows.Clear();
+        }
+
+        public void AddValues(int sure,double volt, double tork, double akim)
+        {
+            chartAnlik.Series["Volt"].Points.AddXY(sure, volt);
+            chartAnlik.Series["Tork"].Points.AddXY(sure, tork);
+            chartAnlik.Series["Akim"].Points.AddXY(sure, akim);
+
+            dgvAnlik.Rows.Add(sure,volt,tork,akim);
+
+            dgvAnlik.FirstDisplayedScrollingRowIndex = dgvAnlik.Rows.Count - 1;
         }
     }
 }

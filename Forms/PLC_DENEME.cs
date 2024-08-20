@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sharp7;
-using S7;
-using S7.Net;
 using EmfTestCihazi.Classes;
 
 namespace EmfTestCihazi.Forms
@@ -55,7 +53,7 @@ namespace EmfTestCihazi.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PLC.Open();
+          //  PLC.Open();
             timer1.Start();
 
             //var ACIL_STOP = PLC.Read("DB1.DBX14.1");
@@ -73,8 +71,8 @@ namespace EmfTestCihazi.Forms
         private void timer1_Tick(object sender, EventArgs e)
         {
             int db = 1;
-            if (PLC.IsConnected)
-                PLC.ReadClass(aaa, db);
+            //if (PLC.IsConnected)
+            //    PLC.ReadClass(aaa, db);
         
             l_test_start.Text = aaa.TEST_START.ToString();
             l_fren_volt.Text = aaa.FREN_VOLTAJ.ToString();
@@ -91,9 +89,9 @@ namespace EmfTestCihazi.Forms
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (!PLC.IsConnected)
-                return;
-            PLC.Write("DB1.DBX0.0", bool.Parse(t_start.Text));
+            //if (!PLC.IsConnected)
+            //    return;
+            //PLC.Write("DB1.DBX0.0", bool.Parse(t_start.Text));
             //PLC.Write("DB1.DBD2.0", float.Parse(t_volt.Text));
             //PLC.Write("DB1.DBW6.0", short.Parse(t_acik.Text));
             //PLC.Write("DB1.DBW8.0", short.Parse(t_kapali.Text));

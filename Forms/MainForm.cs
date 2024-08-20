@@ -29,6 +29,7 @@ namespace EmfTestCihazi
         }
 
         TEST AktifTest;
+        int _testSure = 0;
 
         //Helpers//
         private readonly DBHelper _DB;
@@ -57,8 +58,6 @@ namespace EmfTestCihazi
         public MainForm()
         {
             InitializeComponent();
-            InitializeDataGridView();
-            LoadData();
             _DB = new DBHelper();
             _DBlog = new DBLogHelper(_DB);
             _plc = new S7Client();
@@ -216,7 +215,8 @@ namespace EmfTestCihazi
 
 
         #endregion
-        #region MainFormLoad
+
+        #region Form Eventleri
         private void MainForm_Load(object sender, EventArgs e)
         {
             // _DBlog.AddLog("Program Çalıştırıldı");//Programının ilk açılısında dbye log atıyorum
@@ -226,13 +226,13 @@ namespace EmfTestCihazi
             //Açılışta default olarak Ybf Test İşlem Sayfasını Açıyorum
             tabControlMain.SelectedTab = tabControlMain.TabPages["tbPageYbfTestIslem"];
 
+            // Herhangi bir veri yenileme butonuna click eventi verdim sayfa açıldığında boş veriler gözükmesin diye
+          
+
             //  StartReadindPlcDataBlock();
             //tmrMain.Start();
+
         }
-
-        #endregion
-
-
 
         //Uygulamayı görev çubuğuna indirir
         private void btnMinimizeApplicaton_Click(object sender, EventArgs e)
@@ -245,6 +245,7 @@ namespace EmfTestCihazi
             Application.Exit();
         }
 
+        #endregion
 
         #region OrtakEventler
         //Sidebar butonlarının ortak click olayı
@@ -267,78 +268,19 @@ namespace EmfTestCihazi
         }
         #endregion
 
-
-
-        private void InitializeDataGridView()
+        #region Methodlar
+        private bool CheckButtonClick()
         {
-
-
-            // ID Kolonu
-            DataGridViewTextBoxColumn idColumn = new DataGridViewTextBoxColumn();
-            idColumn.DataPropertyName = "ID";
-            idColumn.HeaderText = "ID";
-            dgvYbfTestIslem.Columns.Add(idColumn);
-
-            // Name Kolonu
-            DataGridViewTextBoxColumn nameColumn = new DataGridViewTextBoxColumn();
-            nameColumn.DataPropertyName = "Name";
-            nameColumn.HeaderText = "Name";
-            dgvYbfTestIslem.Columns.Add(nameColumn);
-
-            // Age Kolonu
-            DataGridViewTextBoxColumn ageColumn = new DataGridViewTextBoxColumn();
-            ageColumn.DataPropertyName = "Age";
-            ageColumn.HeaderText = "Age";
-            dgvYbfTestIslem.Columns.Add(ageColumn);
-
-            // City Kolonu
-            DataGridViewTextBoxColumn cityColumn = new DataGridViewTextBoxColumn();
-            cityColumn.DataPropertyName = "City";
-            cityColumn.HeaderText = "City";
-            dgvYbfTestIslem.Columns.Add(cityColumn);
-
-            // Güncelle Butonu Kolonu
-            DataGridViewButtonColumn updateButtonColumn = new DataGridViewButtonColumn();
-            updateButtonColumn.HeaderText = "Update";
-            updateButtonColumn.Text = "Güncelle";
-            updateButtonColumn.UseColumnTextForButtonValue = true;
-            dgvYbfTestIslem.Columns.Add(updateButtonColumn);
-
-            // Sil Butonu Kolonu
-            DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn();
-            deleteButtonColumn.HeaderText = "Delete";
-            deleteButtonColumn.Text = "Sil";
-            deleteButtonColumn.UseColumnTextForButtonValue = true;
-            dgvYbfTestIslem.Columns.Add(deleteButtonColumn);
-
-        }
-
-        private void LoadData()
-        {
-            DataTable table = new DataTable();
-            table.Columns.Add("ID", typeof(int));
-            table.Columns.Add("Name", typeof(string));
-            table.Columns.Add("Age", typeof(int));
-            table.Columns.Add("City", typeof(string));
-
-            string[] names = { "John", "Jane", "Alice", "Bob", "Chris", "Diana", "Eve", "Frank", "Grace", "Hank" };
-            string[] cities = { "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose" };
-
-            Random rnd = new Random();
-            for (int i = 1; i <= 15; i++)
+            if (disableButtonClicks)
             {
-                DataRow row = table.NewRow();
-                row["ID"] = i;
-                row["Name"] = names[rnd.Next(names.Length)];
-                row["Age"] = rnd.Next(18, 65);
-                row["City"] = cities[rnd.Next(cities.Length)];
-                table.Rows.Add(row);
+                MessageBox.Show("Test esnasında diğer kontrollere eririm sağlayamazsınız\nLütfen testin bitmesini bekleyin.", "HATA !!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-
-            dgvYbfTestIslem.DataSource = table;
+            return true;
         }
+        #endregion
 
-
+        #region TimerTicks
         private void tmrMain_Tick(object sender, EventArgs e)
         {
             //ReadActualValues();
@@ -362,85 +304,220 @@ namespace EmfTestCihazi
             pctEmergencyStop.Visible = !pctEmergencyStop.Visible;
         }
 
-        private void btnRefreshYbfAlistirma_Click(object sender, EventArgs e)
-        {
-            //  GetBiseyBisey();
-            // lblInfoYbfAlistirmaSonOkuma.Text = DateTime.Now.ToShortTimeString();
-            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
-            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
-            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
-            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
-            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
-        }
-
         private void tmrTest_Tick(object sender, EventArgs e)
         {
+            _testSure++;
             switch (AktifTest)
             {
                 case TEST.RODAJ:
-                    MessageBox.Show("rodaj");
+                    baseChartAndGridViewAbtfAlistirma.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    baseChartAndGridViewYbfAlistirma.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_alistirma.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Rodaj Testi Bitti";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Rodaj Testi 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 case TEST.YBF_BIRAKMA:
-                    MessageBox.Show("bırakma");
+                    baseChartAndGridViewBirakma.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_ybfBirakma.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Bırakma Gerilimi Ölçümü Testi Bitti";
+                        txtBirakmaTestSonuc.Text = _ybfBirakma.TestSonuc.ToString();
+                        txtTestIslemBirakmaSonuc.Text = _ybfBirakma.TestSonuc.ToString();
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Bırakma Gerilimi Ölçümü 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 case TEST.YBF_YAKALAMA:
-                    MessageBox.Show("yakalama");
+                    baseChartAndGridViewYakalama.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_ybfYakalama.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Yakalama Gerilimi Ölçümü Testi Bitti";
+                        txtYakalamaTestSonuc.Text = _ybfYakalama.TestSonuc.ToString();
+                        txtTestIslemYakalamaSonuc.Text = _ybfYakalama.TestSonuc.ToString();
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Yakalama Gerilimi Ölçümü 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 case TEST.YBF_DINAMIK:
-                    MessageBox.Show("dinamik");
+                    baseChartAndGridViewDinamik.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_ybfDinamik.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Dinamik Tork Ölçümü Testi Bitti";
+                        txtDinamikTestSonuc.Text = _ybfDinamik.TestSonuc.ToString();
+                        txtTestIslemDinamikSonuc.Text = _ybfDinamik.TestSonuc.ToString();
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Dinamik Tork Ölçümü 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 case TEST.YBF_STATIK:
-                    MessageBox.Show("statik");
+                    baseChartAndGridViewStatik.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_ybfStatik.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Statik Tork Ölçümü Testi Bitti";
+                        txtStatikTestSonuc.Text = _ybfStatik.TestSonuc.ToString();
+                        txtTestIslemStatikSonuc.Text = _ybfStatik.TestSonuc.ToString();
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "Statik Tork Ölçümü 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 case TEST.ABTF_TEST:
-                    MessageBox.Show("abtftest");
+                    baseChartAndGridViewAbtfTest.AddValues(_testSure, _globalValues.ACT_VOLT, _globalValues.ACT_TORK, _globalValues.ACT_AKIM);
+                    if (_abtfTest.TestBitti)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "ABTF Testi Bitti";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
+                    if (_globalValues.ACIL_STOP)
+                    {
+                        tmrTest.Stop();
+                        txtState.Text = "ABTF Testi 'ACİL STOP ' ile sonlandırıldı";
+                        disableButtonClicks = false;
+                        _testSure = 0;
+                    }
                     break;
+
                 default:
+                    tmrTest.Stop();
+                    MessageBox.Show("Beklenmeyen Şekilde Test Başlatıldı");
+                    disableButtonClicks = false;
+                    _testSure = 0;
                     break;
             }
         }
 
+        #endregion
+
+        #region TestBaşlamaClickEventleri
+
         private void btn_abtf_alistirma_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.RODAJ;
+            disableButtonClicks = true;
+            txtState.Text = "Rodaj Testine Başlandı";
+            baseChartAndGridViewAbtfAlistirma.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_ybf_alistirma_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.RODAJ;
+            disableButtonClicks = true;
+            txtState.Text = "Rodaj Testine Başlandı";
+            baseChartAndGridViewYbfAlistirma.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_abtf_test_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.ABTF_TEST;
+            disableButtonClicks = true;
+            txtState.Text = "ABTF Testine Başlandı";
+            baseChartAndGridViewAbtfTest.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_ybf_birakma_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.YBF_BIRAKMA;
+            disableButtonClicks = true;
+            txtState.Text = "Bırakma Gerilimi Ölçümü Testine Başlandı";
+            baseChartAndGridViewBirakma.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_ybf_yakalama_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.YBF_YAKALAMA;
+            disableButtonClicks = true;
+            txtState.Text = "Yakalama Gerilimi Ölçümü Testine Başlandı";
+            baseChartAndGridViewYakalama.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_ybf_dinamik_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.YBF_DINAMIK;
+            disableButtonClicks = true;
+            txtState.Text = "Dinamik Tork Ölçümü Testine Başlandı";
+            baseChartAndGridViewDinamik.ClearChartAndDataGridView();
             tmrTest.Start();
         }
 
         private void btn_ybf_statik_basla_Click(object sender, EventArgs e)
         {
+            if (!CheckButtonClick())
+                return;
             AktifTest = TEST.YBF_STATIK;
+            disableButtonClicks = true;
+            txtState.Text = "Statik Tork Ölçümü Testine Başlandı";
+            baseChartAndGridViewStatik.ClearChartAndDataGridView();
             tmrTest.Start();
         }
+
+        #endregion
+
 
         private void radio_testOnAyar_checkedChanged(object sender, EventArgs e)
         {
@@ -455,5 +532,124 @@ namespace EmfTestCihazi
                 grpBox_testOnAyar_varolanKayit.Visible = true;
             }
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            tmrTest.Stop();
+            disableButtonClicks = false;
+            tmrMain.Stop();
+        }
+
+        //Plcdeki verileri sayfadan okumak için olan alanın ortak okuma eventi
+        private void RefreshButtons_Click(object sender, EventArgs e)
+        {
+            string now = DateTime.Now.ToShortTimeString();
+
+            lblInfoAbtfAlistirmaSonOkuma.Text = now;
+            lblInfoAbtfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoAbtfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
+            lblInfoAbtfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoAbtfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoAbtfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoAbtfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+
+            lblInfoYbfAlistirmaSonOkuma.Text = now;
+            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoYbfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
+            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+
+            lblInfoYakalamaSonOkuma.Text = now;
+            lblInfoYakalamaFrekans.Text = _ybfYakalama.Frekans.ToString();
+            lblInfoYakalamaBaslangicGerilim.Text = _ybfYakalama.BaslangicGerilim.ToString();
+            lblInfoYakalamaBitisGerilim.Text = _ybfYakalama.BitisGerilim.ToString();
+            lblInfoYakalamaTorkSeviye.Text = _ybfYakalama.TorkAlgilama.ToString();
+
+            lblInfoBirakmaSonOkuma.Text = now;
+            lblInfoBirakmaFrekans.Text = _ybfBirakma.Frekans.ToString();
+            lblInfoBirakmaBaslangicGerilim.Text = _ybfBirakma.BaslangicGerilim.ToString();
+            lblInfoBirakmaBitisGerilim.Text = _ybfBirakma.BitisGerilim.ToString();
+            lblInfoBirakmaTorkSeviye.Text = _ybfBirakma.TorkAlgilama.ToString();
+
+            lblInfoStatikSonOkuma.Text = now;
+            lblInfoStatikFrekans.Text = _ybfStatik.Frekans.ToString();
+            lblInfoStatikBaslangicGerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
+            lblInfoStatikBitisGerilim.Text = _ybfStatik.BitisGerilim.ToString();
+            lblInfoStatikTorkSeviye.Text = _ybfStatik.TorkAlgilama.ToString();
+
+            lblInfoDinamikSonOkuma.Text = now;
+            lblInfoDinamikFrekans.Text = _ybfDinamik.Frekans.ToString();
+            lblInfoDinamikBaslangicGerilim.Text = _ybfDinamik.BaslangicGerilim.ToString();
+            lblInfoDinamikBitisGerilim.Text = _ybfDinamik.BitisGerilim.ToString();
+            lblInfoDinamikTestSure.Text = _ybfDinamik.TestSure.ToString();
+        }
+
+        private void btn_abtf_alistirma_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_abtf_alistirma_frekans.Text = _alistirma.Frekans.ToString();
+            txt_abtf_alistirma_fren_voltaj.Text =_alistirma.FrenVoltaj.ToString();
+            txt_abtf_alistirma_fren_acik.Text = _alistirma.FrenAcikSure.ToString();
+            txt_abtf_alistirma_fren_kapali.Text = _alistirma.FrenKapalıSure.ToString();
+            txt_abtf_alistirma_saga_donus.Text = _alistirma.SureSag.ToString();
+            txt_abtf_alistirma_sola_donus.Text = _alistirma.SureSol.ToString();
+        }
+
+        private void btn_ybf_alistirma_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_ybf_alistirma_frekans.Text = _alistirma.Frekans.ToString();
+            txt_ybf_alistirma_fren_voltaj.Text = _alistirma.FrenVoltaj.ToString();
+            txt_ybf_alistirma_fren_acik.Text = _alistirma.FrenAcikSure.ToString();
+            txt_ybf_alistirma_fren_kapali.Text = _alistirma.FrenKapalıSure.ToString();
+            txt_ybf_alistirma_saga_donus.Text = _alistirma.SureSag.ToString();
+            txt_ybf_alistirma_sola_donus.Text = _alistirma.SureSol.ToString();
+        }
+
+        private void btn_birakma_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_birakma_frekans.Text = _ybfBirakma.Frekans.ToString();
+            txt_birakma_baslangic_gerilim.Text = _ybfBirakma.BaslangicGerilim.ToString();
+            txt_birakma_bitis_gerilim.Text = _ybfBirakma.BitisGerilim.ToString();
+            txt_birakma_tork_seviye.Text = _ybfBirakma.TorkAlgilama.ToString();
+        }
+
+        private void btn_yakalama_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_yakalama_frekans.Text = _ybfYakalama.Frekans.ToString();
+            txt_yakalama_baslangic_gerilim.Text = _ybfYakalama.BaslangicGerilim.ToString();
+            txt_yakalama_bitis_gerilim.Text = _ybfYakalama.BitisGerilim.ToString();
+            txt_yakalama_tork_seviye.Text = _ybfYakalama.TorkAlgilama.ToString();
+        }
+
+        private void btn_dinamik_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_dinamik_frekans.Text = _ybfDinamik.Frekans.ToString();
+            txt_dinamik_baslangic_gerilim.Text = _ybfDinamik.BaslangicGerilim.ToString();
+            txt_dinamik_bitis_gerilim.Text = _ybfDinamik.BitisGerilim.ToString();
+            txt_dinamik_test_sure.Text = _ybfDinamik.TestSure.ToString();
+        }
+
+        private void btn_statik_plc_ayar_getir_Click(object sender, EventArgs e)
+        {
+            txt_statik_frekans.Text = _ybfStatik.Frekans.ToString();
+            txt_statik_baslangic_gerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
+            txt_statik_bitis_gerilim.Text = _ybfStatik.BitisGerilim.ToString();
+            txt_statik_tork_seviye.Text = _ybfStatik.TorkAlgilama.ToString();
+        }
     }
 }
+
+
+/*
+ *   private void btnRefreshYbfAlistirma_Click(object sender, EventArgs e)
+        {
+            //  GetBiseyBisey();
+            // lblInfoYbfAlistirmaSonOkuma.Text = DateTime.Now.ToShortTimeString();
+            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+        }
+ */
