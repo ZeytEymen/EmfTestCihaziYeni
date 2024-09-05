@@ -12,12 +12,20 @@ using static EmfTestCihazi.Classes.InputValidationHelper;
 using EmfTestCihazi.Classes;
 using Sharp7;
 using EmfTestCihazi.Classes.PlcCommunication;
+using EmfTestCihazi.Forms.ToolForms;
+using MySql.Data.MySqlClient;
+using System.Threading;
+using EmfTestCihazi.Forms;
+using System.Security.Cryptography;
+using System.Timers;
 
 
 namespace EmfTestCihazi
 {
     public partial class MainForm : Form
     {
+        #region GLOBAL VARIABLES
+        //Global Program İçi
         public enum TEST
         {
             RODAJ = 1,
@@ -27,22 +35,20 @@ namespace EmfTestCihazi
             YBF_STATIK = 5,
             ABTF_TEST = 6
         }
-
         TEST AktifTest;
         int _testSure = 0;
-
         //Helpers//
         private readonly DBHelper _DB;
-        private readonly DBLogHelper _DBlog;
-
         //PLC Haberleşmesi İçin//
         //
         private readonly S7Client _plc;
-        const string _plcConnectionAdress = "192.168.69.70";
+        //const string _plcConnectionAdress = "192.168.69.70";
+        const string _plcConnectionAdress = "10.10.1.86";
+
         const int _plcConnectionRack = 0;
         const int _plcConnectionSlot = 0;
         byte[] _buffer = new byte[140];
-        //
+        //DataBlock Erişimi
         public AbtfTest _abtfTest;
         public Alistirma _alistirma;
         public GlobalValues _globalValues;
@@ -50,16 +56,14 @@ namespace EmfTestCihazi
         public YbfYakalama _ybfYakalama;
         public YbfDinamik _ybfDinamik;
         public YbfStatik _ybfStatik;
-
         //Program içi Global Değişkenler//
         //test esnasında istenilen buton click eventlerini programı hataya sokmaması için eventleri geçersiz kılmaya yarıyor
         bool disableButtonClicks = false;
-
+        #endregion
         public MainForm()
         {
             InitializeComponent();
             _DB = new DBHelper();
-            _DBlog = new DBLogHelper(_DB);
             _plc = new S7Client();
             _abtfTest = new AbtfTest();
             _alistirma = new Alistirma();
@@ -69,10 +73,7 @@ namespace EmfTestCihazi
             _ybfDinamik = new YbfDinamik();
             _ybfStatik = new YbfStatik();
         }
-
-
         #region PLC_METHODLARI
-
         public int StartPlcConnection()
         {
             int connectResult = -1;
@@ -85,11 +86,10 @@ namespace EmfTestCihazi
             catch (Exception ex)
             {
                 MessageBox.Show("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
-                _DBlog.AddLog("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
+                _DB.AddLog("PLC Bağlantısı Başarısız\nHATA KODU : " + $"0x{connectResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
             }
             return connectResult;
         }
-
         public int StopPlcConnection()
         {
             int stopResult = 0;
@@ -105,11 +105,10 @@ namespace EmfTestCihazi
             catch (Exception ex)
             {
                 MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
-                _DBlog.AddLog("PLC Bağlantısı Sonlandırılamadız\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
+                _DB.AddLog("PLC Bağlantısı Sonlandırılamadız\nHATA KODU : " + $"0x{stopResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
             }
             return stopResult;
         }
-
         public void StartReadindPlcDataBlock()
         {
             try
@@ -123,7 +122,6 @@ namespace EmfTestCihazi
             }
 
         }
-
         public void StopReadindPlcDataBlock()
         {
             try
@@ -136,9 +134,6 @@ namespace EmfTestCihazi
                 MessageBox.Show("PLC Bağlantısı Sonlandırılamadı\nFROM : StopReadindPlcDataBlock" + ex.Message, "HATA");
             }
         }
-
-
-
         public void ReadAllDataBlock()
         {
             int readResult = -1;
@@ -188,7 +183,7 @@ namespace EmfTestCihazi
                 _ybfDinamik.TestSonuc = S7.GetRealAt(_buffer, YbfDinamik.adr_test_sonuc);
                 _ybfDinamik.TestBitti = S7.GetBitAt(_buffer, YbfDinamik.adr_test_bitti, 0);
 
-                _alistirma.TestBasla = S7.GetBitAt(_buffer, Alistirma.adr_test_basla, 0);
+                _alistirma.TestStart = S7.GetBitAt(_buffer, Alistirma.adr_test_basla, 0);
                 _alistirma.Frekans = S7.GetIntAt(_buffer, Alistirma.adr_frekans);
                 _alistirma.FrenVoltaj = S7.GetRealAt(_buffer, Alistirma.adr_fren_voltaj);
                 _alistirma.SureSag = S7.GetIntAt(_buffer, Alistirma.adr_düz_süre);
@@ -197,9 +192,10 @@ namespace EmfTestCihazi
                 _alistirma.FrenKapalıSure = S7.GetIntAt(_buffer, Alistirma.adr_fren_kapa_süre);
                 _alistirma.TestBitti = S7.GetBitAt(_buffer, Alistirma.adr_test_bitti, 0);
 
-                _abtfTest.TestBasla = S7.GetBitAt(_buffer, AbtfTest.adr_test_basla, 0);
+                _abtfTest.TestStart = S7.GetBitAt(_buffer, AbtfTest.adr_test_basla, 0);
                 _abtfTest.Frekans = S7.GetIntAt(_buffer, AbtfTest.adr_frekans);
                 _abtfTest.TestBitti = S7.GetBitAt(_buffer, AbtfTest.adr_test_bitti, 0);
+
 
             }
             catch (Exception ex)
@@ -207,31 +203,32 @@ namespace EmfTestCihazi
                 StopReadindPlcDataBlock();
                 StopPlcConnection();
                 MessageBox.Show("PLC Data Block Okuması Başarısız\nHATA KODU : " + $"0x{readResult:X5}\nHATA AÇIKLAMASI : \n" + ex, "HATA !!");
-                _DBlog.AddLog("PLC Data Block Okuması Başarısız\nHATA KODU : " + $"0x{readResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
+                _DB.AddLog("PLC Data Block Okuması Başarısız\nHATA KODU : " + $"0x{readResult:X5}\nHATA AÇIKLAMASI : \n" + ex);
             }
         }
-
-
-
-
         #endregion
 
         #region Form Eventleri
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // _DBlog.AddLog("Program Çalıştırıldı");//Programının ilk açılısında dbye log atıyorum
-
             //Sidebardaki butonları kullanmak için TabControl butonlarını gizler
             HideTabControlHeaderButtons(tabControlMain);
+
             //Açılışta default olarak Ybf Test İşlem Sayfasını Açıyorum
             tabControlMain.SelectedTab = tabControlMain.TabPages["tbPageYbfTestIslem"];
 
-            // Herhangi bir veri yenileme butonuna click eventi verdim sayfa açıldığında boş veriler gözükmesin diye
-          
 
-            //  StartReadindPlcDataBlock();
-            //tmrMain.Start();
 
+
+            //_DB.AddLog("Program Çalıştırıldı");//Programının ilk açılısında dbye log atıyorum
+            StartReadindPlcDataBlock();
+            GetAllValuesFromPLCtoTextBox();//Boş kalmaması adına plcdeki varolan veriler ilgili yerlere yazılı
+            RefreshGroupBoxes();//Son okuma kutucuklarını dolduruyorum
+            Task.Run(() =>
+            {
+                LoadDgvCompany();
+                LoadDgvProducts();
+            });
         }
 
         //Uygulamayı görev çubuğuna indirir
@@ -266,6 +263,60 @@ namespace EmfTestCihazi
             //Sadece TamSayı ve kontrol butonları(backspace ctrl kombinasyonları vs)
             ValidateOnlyDigit(e);
         }
+
+        public void RefreshGroupBoxes()
+        {
+            string now = DateTime.Now.ToShortTimeString();
+
+            lblInfoAbtfTestSonOkuma.Text = now;
+            lblInfoAbtfTestFrekans.Text = _abtfTest.Frekans.ToString();
+
+            lblInfoAbtfAlistirmaSonOkuma.Text = now;
+            lblInfoAbtfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoAbtfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
+            lblInfoAbtfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoAbtfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoAbtfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoAbtfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+
+            lblInfoYbfAlistirmaSonOkuma.Text = now;
+            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
+            lblInfoYbfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
+            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
+            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
+            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
+            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
+
+            lblInfoYakalamaSonOkuma.Text = now;
+            lblInfoYakalamaFrekans.Text = _ybfYakalama.Frekans.ToString();
+            lblInfoYakalamaBaslangicGerilim.Text = _ybfYakalama.BaslangicGerilim.ToString();
+            lblInfoYakalamaBitisGerilim.Text = _ybfYakalama.BitisGerilim.ToString();
+            lblInfoYakalamaTorkSeviye.Text = _ybfYakalama.TorkAlgilama.ToString();
+
+            lblInfoBirakmaSonOkuma.Text = now;
+            lblInfoBirakmaFrekans.Text = _ybfBirakma.Frekans.ToString();
+            lblInfoBirakmaBaslangicGerilim.Text = _ybfBirakma.BaslangicGerilim.ToString();
+            lblInfoBirakmaBitisGerilim.Text = _ybfBirakma.BitisGerilim.ToString();
+            lblInfoBirakmaTorkSeviye.Text = _ybfBirakma.TorkAlgilama.ToString();
+
+            lblInfoStatikSonOkuma.Text = now;
+            lblInfoStatikFrekans.Text = _ybfStatik.Frekans.ToString();
+            lblInfoStatikBaslangicGerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
+            lblInfoStatikBitisGerilim.Text = _ybfStatik.BitisGerilim.ToString();
+            lblInfoStatikTorkSeviye.Text = _ybfStatik.TorkAlgilama.ToString();
+
+            lblInfoDinamikSonOkuma.Text = now;
+            lblInfoDinamikFrekans.Text = _ybfDinamik.Frekans.ToString();
+            lblInfoDinamikBaslangicGerilim.Text = _ybfDinamik.BaslangicGerilim.ToString();
+            lblInfoDinamikBitisGerilim.Text = _ybfDinamik.BitisGerilim.ToString();
+            lblInfoDinamikTestSure.Text = _ybfDinamik.TestSure.ToString();
+        }
+
+        //Plcdeki verileri sayfadan okumak için olan alanın ortak okuma eventi
+        private void RefreshButtons_Click(object sender, EventArgs e)
+        {
+            RefreshGroupBoxes();
+        }
         #endregion
 
         #region Methodlar
@@ -278,17 +329,55 @@ namespace EmfTestCihazi
             }
             return true;
         }
+        public void CheckPresetExistsAndAdd(int id)
+        {
+            try
+            {
+                MySqlParameter[] parameter =
+                {
+                    new MySqlParameter("@id",id),
+                };
+                if (!_DB.RecordExists("SELECT * FROM test_presets WHERE product_id = @id", parameter))
+                {
+                    if (!_DB.ExecuteQuery("INSERT INTO test_presets (`product_id`) VALUES (@id)", parameter))
+                        throw new Exception($"Yeni test ön kaydı eklenemedi, CheckPresetExists(int id) = {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu = Main.CheckPresetExistsAndAdd");
+                _DB.AddLog(ex.Message, "Main.CheckPresetExistsAndAdd");
+            }
+        }
+        public bool CheckPresetExists(int id)
+        {
+            try
+            {
+                MySqlParameter[] parameter =
+                {
+                    new MySqlParameter("@id",id),
+                };
+                if (!_DB.RecordExists("SELECT * FROM test_presets WHERE product_id = @id", parameter))
+                    return false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu = Main.CheckPresetExists");
+                _DB.AddLog(ex.Message, "Main.CheckPresetExists");
+                return false;
+            }
+        }
         #endregion
 
         #region TimerTicks
         private void tmrMain_Tick(object sender, EventArgs e)
         {
-            //ReadActualValues();
-
-            //txt_ACT_VOLT.Text = float.Parse(d).ToString();
-            //txt_ACT_VOLT.Text = _globalValues.ACT_VOLT.ToString();
-            //txt_ACT_TORK.Text = _globalValues.ACT_TORK.ToString();
-            //txt_ACT_AKIM.Text = _globalValues.ACT_AKIM.ToString();
+            ReadAllDataBlock();
+            txt_ACT_VOLT.Text = _globalValues.ACT_VOLT.ToString();
+            txt_ACT_TORK.Text = _globalValues.ACT_TORK.ToString();
+            txt_ACT_AKIM.Text = _globalValues.ACT_AKIM.ToString();
+            lbl_CMD_VOLT.Text = _globalValues.CMD_VOLT.ToString();
 
             if (_globalValues.ACIL_STOP)
                 flashTimer.Start();
@@ -437,12 +526,47 @@ namespace EmfTestCihazi
 
         #endregion
 
+        public void StartTest(int startAdress)
+        {
+            int startAddress = startAdress;
+            byte[] tmpBuffer = new byte[2];
+            int result = -1;
+            try
+            {
+                S7.SetBitAt(tmpBuffer, 0, 0, true);
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.StartTest \n" + ex.StackTrace);
+                _DB.AddLog(ex.Message, "Main.StartTest");
+            }
+        }
+
         #region TestBaşlamaClickEventleri
 
-        private void btn_abtf_alistirma_basla_Click(object sender, EventArgs e)
+        private async void btn_abtf_alistirma_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(Alistirma.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_alistirma.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_alistirma.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.RODAJ;
             disableButtonClicks = true;
             txtState.Text = "Rodaj Testine Başlandı";
@@ -450,10 +574,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_ybf_alistirma_basla_Click(object sender, EventArgs e)
+        private async void btn_ybf_alistirma_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(Alistirma.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_alistirma.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_alistirma.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.RODAJ;
             disableButtonClicks = true;
             txtState.Text = "Rodaj Testine Başlandı";
@@ -461,10 +601,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_abtf_test_basla_Click(object sender, EventArgs e)
+        private async void btn_abtf_test_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(AbtfTest.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_abtfTest.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_abtfTest.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.ABTF_TEST;
             disableButtonClicks = true;
             txtState.Text = "ABTF Testine Başlandı";
@@ -472,10 +628,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_ybf_birakma_basla_Click(object sender, EventArgs e)
+        private async void btn_ybf_birakma_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(YbfBirakma.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_ybfBirakma.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_ybfBirakma.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.YBF_BIRAKMA;
             disableButtonClicks = true;
             txtState.Text = "Bırakma Gerilimi Ölçümü Testine Başlandı";
@@ -483,10 +655,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_ybf_yakalama_basla_Click(object sender, EventArgs e)
+        private async void btn_ybf_yakalama_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(YbfYakalama.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_ybfYakalama.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_ybfYakalama.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.YBF_YAKALAMA;
             disableButtonClicks = true;
             txtState.Text = "Yakalama Gerilimi Ölçümü Testine Başlandı";
@@ -494,10 +682,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_ybf_dinamik_basla_Click(object sender, EventArgs e)
+        private async void btn_ybf_dinamik_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(YbfDinamik.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_ybfDinamik.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_ybfDinamik.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.YBF_DINAMIK;
             disableButtonClicks = true;
             txtState.Text = "Dinamik Tork Ölçümü Testine Başlandı";
@@ -505,10 +709,26 @@ namespace EmfTestCihazi
             tmrTest.Start();
         }
 
-        private void btn_ybf_statik_basla_Click(object sender, EventArgs e)
+        private async void btn_ybf_statik_basla_Click(object sender, EventArgs e)
         {
             if (!CheckButtonClick())
                 return;
+            StartTest(YbfStatik.adr_test_basla);
+            await Task.Run(() =>
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (_ybfStatik.TestStart)
+                        return;
+                    Thread.Sleep(50);
+                }
+                return;
+            });
+            if (!_ybfStatik.TestStart)
+            {
+                txtState.Text = "Test Başlatılamadı";
+                return;
+            }
             AktifTest = TEST.YBF_STATIK;
             disableButtonClicks = true;
             txtState.Text = "Statik Tork Ölçümü Testine Başlandı";
@@ -519,77 +739,51 @@ namespace EmfTestCihazi
         #endregion
 
 
-        private void radio_testOnAyar_checkedChanged(object sender, EventArgs e)
+        public void GetAllValuesFromPLCtoTextBox()
         {
-            if (radio_testOnAyar_yeniKayit.Checked)
-            {
-                grpBox_testOnAyar_yeniKayit.Visible = true;
-                grpBox_testOnAyar_varolanKayit.Visible = false;
-            }
-            else
-            {
-                grpBox_testOnAyar_yeniKayit.Visible = false;
-                grpBox_testOnAyar_varolanKayit.Visible = true;
-            }
+            ReadAllDataBlock();
+            txt_abtf_alistirma_frekans.Text = _alistirma.Frekans.ToString();
+            txt_abtf_alistirma_fren_voltaj.Text = _alistirma.FrenVoltaj.ToString();
+            txt_abtf_alistirma_fren_acik.Text = _alistirma.FrenAcikSure.ToString();
+            txt_abtf_alistirma_fren_kapali.Text = _alistirma.FrenKapalıSure.ToString();
+            txt_abtf_alistirma_saga_donus.Text = _alistirma.SureSag.ToString();
+            txt_abtf_alistirma_sola_donus.Text = _alistirma.SureSol.ToString();
+
+            txt_ybf_alistirma_frekans.Text = _alistirma.Frekans.ToString();
+            txt_ybf_alistirma_fren_voltaj.Text = _alistirma.FrenVoltaj.ToString();
+            txt_ybf_alistirma_fren_acik.Text = _alistirma.FrenAcikSure.ToString();
+            txt_ybf_alistirma_fren_kapali.Text = _alistirma.FrenKapalıSure.ToString();
+            txt_ybf_alistirma_saga_donus.Text = _alistirma.SureSag.ToString();
+            txt_ybf_alistirma_sola_donus.Text = _alistirma.SureSol.ToString();
+
+            txt_birakma_frekans.Text = _ybfBirakma.Frekans.ToString();
+            txt_birakma_baslangic_gerilim.Text = _ybfBirakma.BaslangicGerilim.ToString();
+            txt_birakma_bitis_gerilim.Text = _ybfBirakma.BitisGerilim.ToString();
+            txt_birakma_tork_seviye.Text = _ybfBirakma.TorkAlgilama.ToString();
+
+            txt_yakalama_frekans.Text = _ybfYakalama.Frekans.ToString();
+            txt_yakalama_baslangic_gerilim.Text = _ybfYakalama.BaslangicGerilim.ToString();
+            txt_yakalama_bitis_gerilim.Text = _ybfYakalama.BitisGerilim.ToString();
+            txt_yakalama_tork_seviye.Text = _ybfYakalama.TorkAlgilama.ToString();
+
+            txt_dinamik_frekans.Text = _ybfDinamik.Frekans.ToString();
+            txt_dinamik_baslangic_gerilim.Text = _ybfDinamik.BaslangicGerilim.ToString();
+            txt_dinamik_bitis_gerilim.Text = _ybfDinamik.BitisGerilim.ToString();
+            txt_dinamik_test_sure.Text = _ybfDinamik.TestSure.ToString();
+
+            txt_statik_frekans.Text = _ybfStatik.Frekans.ToString();
+            txt_statik_baslangic_gerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
+            txt_statik_bitis_gerilim.Text = _ybfStatik.BitisGerilim.ToString();
+            txt_statik_tork_seviye.Text = _ybfStatik.TorkAlgilama.ToString();
         }
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            tmrTest.Stop();
-            disableButtonClicks = false;
-            tmrMain.Stop();
-        }
+        #region PLC AYAR GONDER/GETIR
 
-        //Plcdeki verileri sayfadan okumak için olan alanın ortak okuma eventi
-        private void RefreshButtons_Click(object sender, EventArgs e)
-        {
-            string now = DateTime.Now.ToShortTimeString();
-
-            lblInfoAbtfAlistirmaSonOkuma.Text = now;
-            lblInfoAbtfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
-            lblInfoAbtfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
-            lblInfoAbtfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
-            lblInfoAbtfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
-            lblInfoAbtfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
-            lblInfoAbtfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
-
-            lblInfoYbfAlistirmaSonOkuma.Text = now;
-            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
-            lblInfoYbfAlistirmaFrenVoltaj.Text = _alistirma.FrenVoltaj.ToString();
-            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
-            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
-            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
-            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
-
-            lblInfoYakalamaSonOkuma.Text = now;
-            lblInfoYakalamaFrekans.Text = _ybfYakalama.Frekans.ToString();
-            lblInfoYakalamaBaslangicGerilim.Text = _ybfYakalama.BaslangicGerilim.ToString();
-            lblInfoYakalamaBitisGerilim.Text = _ybfYakalama.BitisGerilim.ToString();
-            lblInfoYakalamaTorkSeviye.Text = _ybfYakalama.TorkAlgilama.ToString();
-
-            lblInfoBirakmaSonOkuma.Text = now;
-            lblInfoBirakmaFrekans.Text = _ybfBirakma.Frekans.ToString();
-            lblInfoBirakmaBaslangicGerilim.Text = _ybfBirakma.BaslangicGerilim.ToString();
-            lblInfoBirakmaBitisGerilim.Text = _ybfBirakma.BitisGerilim.ToString();
-            lblInfoBirakmaTorkSeviye.Text = _ybfBirakma.TorkAlgilama.ToString();
-
-            lblInfoStatikSonOkuma.Text = now;
-            lblInfoStatikFrekans.Text = _ybfStatik.Frekans.ToString();
-            lblInfoStatikBaslangicGerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
-            lblInfoStatikBitisGerilim.Text = _ybfStatik.BitisGerilim.ToString();
-            lblInfoStatikTorkSeviye.Text = _ybfStatik.TorkAlgilama.ToString();
-
-            lblInfoDinamikSonOkuma.Text = now;
-            lblInfoDinamikFrekans.Text = _ybfDinamik.Frekans.ToString();
-            lblInfoDinamikBaslangicGerilim.Text = _ybfDinamik.BaslangicGerilim.ToString();
-            lblInfoDinamikBitisGerilim.Text = _ybfDinamik.BitisGerilim.ToString();
-            lblInfoDinamikTestSure.Text = _ybfDinamik.TestSure.ToString();
-        }
-
+        #region Ayar Getir
         private void btn_abtf_alistirma_plc_ayar_getir_Click(object sender, EventArgs e)
         {
             txt_abtf_alistirma_frekans.Text = _alistirma.Frekans.ToString();
-            txt_abtf_alistirma_fren_voltaj.Text =_alistirma.FrenVoltaj.ToString();
+            txt_abtf_alistirma_fren_voltaj.Text = _alistirma.FrenVoltaj.ToString();
             txt_abtf_alistirma_fren_acik.Text = _alistirma.FrenAcikSure.ToString();
             txt_abtf_alistirma_fren_kapali.Text = _alistirma.FrenKapalıSure.ToString();
             txt_abtf_alistirma_saga_donus.Text = _alistirma.SureSag.ToString();
@@ -636,6 +830,843 @@ namespace EmfTestCihazi
             txt_statik_baslangic_gerilim.Text = _ybfStatik.BaslangicGerilim.ToString();
             txt_statik_bitis_gerilim.Text = _ybfStatik.BitisGerilim.ToString();
             txt_statik_tork_seviye.Text = _ybfStatik.TorkAlgilama.ToString();
+        }
+        #endregion
+
+        #region Ayar Gönder
+        private void btn_abtf_alistirma_plc_ayar_gönder_Click(object sender, EventArgs e)
+        {
+            int startAddress = Alistirma.adr_frekans;
+            byte[] tmpBuffer = new byte[14];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_frekans - startAddress, short.Parse(txt_abtf_alistirma_frekans.Text));
+                S7.SetRealAt(tmpBuffer, Alistirma.adr_fren_voltaj - startAddress, float.Parse(txt_abtf_alistirma_fren_voltaj.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_düz_süre - startAddress, short.Parse(txt_abtf_alistirma_saga_donus.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_ters_süre - startAddress, short.Parse(txt_abtf_alistirma_sola_donus.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_fren_ac_süre - startAddress, short.Parse(txt_abtf_alistirma_fren_acik.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_fren_kapa_süre - startAddress, short.Parse(txt_abtf_alistirma_fren_kapali.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "ABTF ALIŞTIRMA Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btn_abtf_alistirma_plc_ayar_gönder_Click");
+                _DB.AddLog(ex.Message, "Main.btn_abtf_alistirma_plc_ayar_gönder_Click");
+            }
+        }
+
+        private void btn_ybf_alistirma_plc_ayar_gonder_Click(object sender, EventArgs e)
+        {
+            int startAddress = Alistirma.adr_frekans;
+            byte[] tmpBuffer = new byte[14];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_frekans - startAddress, short.Parse(txt_ybf_alistirma_frekans.Text));
+                S7.SetRealAt(tmpBuffer, Alistirma.adr_fren_voltaj - startAddress, float.Parse(txt_ybf_alistirma_fren_voltaj.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_düz_süre - startAddress, short.Parse(txt_ybf_alistirma_saga_donus.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_ters_süre - startAddress, short.Parse(txt_ybf_alistirma_sola_donus.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_fren_ac_süre - startAddress, short.Parse(txt_ybf_alistirma_fren_acik.Text));
+                S7.SetIntAt(tmpBuffer, Alistirma.adr_fren_kapa_süre - startAddress, short.Parse(txt_ybf_alistirma_fren_kapali.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "YBF ALIŞTIRMA Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btn_ybf_alistirma_plc_ayar_gonder_Click");
+                _DB.AddLog(ex.Message, "Main.btn_ybf_alistirma_plc_ayar_gonder_Click");
+            }
+
+        }
+
+        private void btn_birakma_plc_ayar_gönder_Click(object sender, EventArgs e)
+        {
+            int startAddress = YbfBirakma.adr_frekans;
+            byte[] tmpBuffer = new byte[14];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, YbfBirakma.adr_frekans - startAddress, short.Parse(txt_birakma_frekans.Text));
+                S7.SetRealAt(tmpBuffer, YbfBirakma.adr_baslangic_gerilimi - startAddress, float.Parse(txt_birakma_baslangic_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfBirakma.adr_bitis_gerilim - startAddress, float.Parse(txt_birakma_bitis_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfBirakma.adr_tork_algilama - startAddress, float.Parse(txt_birakma_tork_seviye.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "BIRAKMA Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " \nHata Yolu : Main.btn_birakma_plc_ayar_gönder_Click\n");
+                _DB.AddLog(ex.Message, "Main.btn_birakma_plc_ayar_gönder_Click");
+            }
+        }
+
+        private void btn_yakalama_plc_ayar_gonder_Click(object sender, EventArgs e)
+        {
+            int startAddress = YbfYakalama.adr_frekans;
+            byte[] tmpBuffer = new byte[14];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, YbfYakalama.adr_frekans - startAddress, short.Parse(txt_yakalama_frekans.Text));
+                S7.SetRealAt(tmpBuffer, YbfYakalama.adr_baslangic_gerilimi - startAddress, float.Parse(txt_yakalama_baslangic_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfYakalama.adr_bitis_gerilim - startAddress, float.Parse(txt_yakalama_bitis_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfYakalama.adr_algilama_tork - startAddress, float.Parse(txt_yakalama_tork_seviye.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "YAKALAMA Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btn_yakalama_plc_ayar_gonder_Click");
+                _DB.AddLog(ex.Message, "Main.btn_yakalama_plc_ayar_gonder_Click");
+            }
+        }
+
+        private void btn_dinamik_plc_ayar_gonder_Click(object sender, EventArgs e)
+        {
+            int startAddress = YbfDinamik.adr_frekans;
+            byte[] tmpBuffer = new byte[12];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, YbfDinamik.adr_frekans - startAddress, short.Parse(txt_dinamik_frekans.Text));
+                S7.SetRealAt(tmpBuffer, YbfDinamik.adr_baslangic_gerilimi - startAddress, float.Parse(txt_dinamik_baslangic_gerilim.Text));
+                S7.SetIntAt(tmpBuffer, YbfDinamik.adr_test_sure - startAddress, short.Parse(txt_dinamik_test_sure.Text));
+                S7.SetRealAt(tmpBuffer, YbfDinamik.adr_bitis_gerilim - startAddress, float.Parse(txt_dinamik_bitis_gerilim.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "DİNAMİK Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btn_dinamik_plc_ayar_gonder_Click");
+                _DB.AddLog(ex.Message, "Main.btn_dinamik_plc_ayar_gonder_Click");
+            }
+        }
+
+        private void btn_statik_plc_ayar_gonder_Click(object sender, EventArgs e)
+        {
+            int startAddress = YbfStatik.adr_frekans;
+            byte[] tmpBuffer = new byte[14];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, YbfStatik.adr_frekans - startAddress, short.Parse(txt_statik_frekans.Text));
+                S7.SetRealAt(tmpBuffer, YbfStatik.adr_baslangic_gerilimi - startAddress, float.Parse(txt_statik_baslangic_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfStatik.adr_bitis_gerilim - startAddress, float.Parse(txt_statik_bitis_gerilim.Text));
+                S7.SetRealAt(tmpBuffer, YbfStatik.adr_algilama_tork - startAddress, float.Parse(txt_statik_tork_seviye.Text));
+
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "STATİK Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btn_statik_plc_ayar_gonder_Click");
+                _DB.AddLog(ex.Message, "Main.btn_statik_plc_ayar_gonder_Click");
+            }
+        }
+        #endregion
+        #endregion
+
+        #region DB Preset İşlemleri
+
+        #region ABTF ALIŞTIRMA
+        private void btn_abtf_alistirma_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_abtf_alistir_freq`= @freq," +
+                        "`p_abtf_alistir_voltage`=@voltage," +
+                        "`p_abtf_alistir_time_right`=@right," +
+                        "`p_abtf_alistir_time_left`=@left," +
+                        "`p_abtf_alistir_brake_open`=@open," +
+                        "`p_abtf_alistir_brake_close`=@close" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_abtf_alistirma_frekans.Text)),
+                        new MySqlParameter("@voltage",Convert.ToInt16(txt_abtf_alistirma_fren_voltaj.Text)),
+                        new MySqlParameter("@right",Convert.ToInt16(txt_abtf_alistirma_saga_donus.Text)),
+                        new MySqlParameter("@left",Convert.ToInt16(txt_abtf_alistirma_sola_donus.Text)),
+                        new MySqlParameter("@open",Convert.ToInt16(txt_abtf_alistirma_fren_acik.Text)),
+                        new MySqlParameter("@close",Convert.ToInt16(txt_abtf_alistirma_fren_kapali.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Hata Yolu = Main.btn_abtf_alistirma_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + "Main.btn_abtf_alistirma_ayar_kaydet_Click");
+                }
+
+            }
+        }
+        private void btn_abtf_alistirma_ön_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_abtf_alistir_freq`," +
+                        " `p_abtf_alistir_voltage`," +
+                        " `p_abtf_alistir_time_right`," +
+                        " `p_abtf_alistir_time_left`," +
+                        " `p_abtf_alistir_brake_open`," +
+                        " `p_abtf_alistir_brake_close`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_abtf_alistirma_frekans.Text = dt.Rows[0]["p_abtf_alistir_freq"].ToString();
+                    txt_abtf_alistirma_fren_voltaj.Text = dt.Rows[0]["p_abtf_alistir_voltage"].ToString();
+                    txt_abtf_alistirma_saga_donus.Text = dt.Rows[0]["p_abtf_alistir_time_right"].ToString();
+                    txt_abtf_alistirma_sola_donus.Text = dt.Rows[0]["p_abtf_alistir_time_left"].ToString();
+                    txt_abtf_alistirma_fren_acik.Text = dt.Rows[0]["p_abtf_alistir_brake_open"].ToString();
+                    txt_abtf_alistirma_fren_kapali.Text = dt.Rows[0]["p_abtf_alistir_brake_close"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Hata Yolu = Main.btn_abtf_alistirma_ön_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + "Main.btn_abtf_alistirma_ön_ayar_getir_Click");
+                }
+
+            }
+        }
+
+
+        #endregion
+
+        #region YBF ALIŞTIRMA
+        private void btn_ybf_alistirma_on_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_ybf_alistir_freq`," +
+                        " `p_ybf_alistir_voltage`," +
+                        " `p_ybf_alistir_time_right`," +
+                        " `p_ybf_alistir_time_left`," +
+                        " `p_ybf_alistir_brake_open`," +
+                        " `p_ybf_alistir_brake_close`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_ybf_alistirma_frekans.Text = dt.Rows[0]["p_ybf_alistir_freq"].ToString();
+                    txt_ybf_alistirma_fren_voltaj.Text = dt.Rows[0]["p_ybf_alistir_voltage"].ToString();
+                    txt_ybf_alistirma_saga_donus.Text = dt.Rows[0]["p_ybf_alistir_time_right"].ToString();
+                    txt_ybf_alistirma_sola_donus.Text = dt.Rows[0]["p_ybf_alistir_time_left"].ToString();
+                    txt_ybf_alistirma_fren_acik.Text = dt.Rows[0]["p_ybf_alistir_brake_open"].ToString();
+                    txt_ybf_alistirma_fren_kapali.Text = dt.Rows[0]["p_ybf_alistir_brake_close"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Hata Yolu = Main.btn_ybf_alistirma_on_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + "Main.btn_ybf_alistirma_on_ayar_getir_Click");
+                }
+            }
+        }
+        private void btn_ybf_alistirma_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_ybf_alistir_freq`= @freq," +
+                        "`p_ybf_alistir_voltage`=@voltage," +
+                        "`p_ybf_alistir_time_right`=@right," +
+                        "`p_ybf_alistir_time_left`=@left," +
+                        "`p_ybf_alistir_brake_open`=@open," +
+                        "`p_ybf_alistir_brake_close`=@close" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_ybf_alistirma_frekans.Text)),
+                        new MySqlParameter("@voltage",Convert.ToInt16(txt_ybf_alistirma_fren_voltaj.Text)),
+                        new MySqlParameter("@right",Convert.ToInt16(txt_ybf_alistirma_saga_donus.Text)),
+                        new MySqlParameter("@left",Convert.ToInt16(txt_ybf_alistirma_sola_donus.Text)),
+                        new MySqlParameter("@open",Convert.ToInt16(txt_ybf_alistirma_fren_acik.Text)),
+                        new MySqlParameter("@close",Convert.ToInt16(txt_ybf_alistirma_fren_kapali.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Hata Yolu = Main.btn_ybf_alistirma_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + "Main.btn_ybf_alistirma_ayar_kaydet_Click");
+                }
+
+            }
+        }
+        #endregion
+
+        #region BIRAKMA
+        private void btn_birakma_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_birakma_freq`= @freq," +
+                        "`p_birakma_voltage_start`=@v_start," +
+                        "`p_birakma_voltage_finish`=@v_finish," +
+                        "`p_birakma_torque`=@torque" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_birakma_frekans.Text)),
+                        new MySqlParameter("@v_start",Convert.ToInt16(txt_birakma_baslangic_gerilim.Text)),
+                        new MySqlParameter("@v_finish",Convert.ToInt16(txt_birakma_bitis_gerilim.Text)),
+                        new MySqlParameter("@torque",Convert.ToInt16(txt_birakma_tork_seviye.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_birakma_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_birakma_ayar_kaydet_Click");
+                }
+            }
+        }
+        private void btn_birakma_on_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_birakma_freq`," +
+                        " `p_birakma_voltage_start`," +
+                        " `p_birakma_voltage_finish`," +
+                        " `p_birakma_torque`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_birakma_frekans.Text = dt.Rows[0]["p_birakma_freq"].ToString();
+                    txt_birakma_baslangic_gerilim.Text = dt.Rows[0]["p_birakma_voltage_start"].ToString();
+                    txt_birakma_bitis_gerilim.Text = dt.Rows[0]["p_birakma_voltage_finish"].ToString();
+                    txt_birakma_tork_seviye.Text = dt.Rows[0]["p_birakma_torque"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_birakma_on_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_birakma_on_ayar_getir_Click");
+                }
+            }
+        }
+        #endregion
+
+        #region YAKALAMA
+        private void btn_yakalama_on_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_yakalama_freq`," +
+                        " `p_yakalama_voltage_start`," +
+                        " `p_yakalama_voltage_finish`," +
+                        " `p_yakalama_torque`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_yakalama_frekans.Text = dt.Rows[0]["p_yakalama_freq"].ToString();
+                    txt_yakalama_baslangic_gerilim.Text = dt.Rows[0]["p_yakalama_voltage_start"].ToString();
+                    txt_yakalama_bitis_gerilim.Text = dt.Rows[0]["p_yakalama_voltage_finish"].ToString();
+                    txt_yakalama_tork_seviye.Text = dt.Rows[0]["p_yakalama_torque"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_yakalama_on_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_yakalama_on_ayar_getir_Click");
+                }
+            }
+        }
+        private void btn_yakalama_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_yakalama_freq`= @freq," +
+                        "`p_yakalama_voltage_start`=@v_start," +
+                        "`p_yakalama_voltage_finish`=@v_finish," +
+                        "`p_yakalama_torque`=@torque" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_yakalama_frekans.Text)),
+                        new MySqlParameter("@v_start",Convert.ToInt16(txt_yakalama_baslangic_gerilim.Text)),
+                        new MySqlParameter("@v_finish",Convert.ToInt16(txt_yakalama_bitis_gerilim.Text)),
+                        new MySqlParameter("@torque",Convert.ToInt16(txt_yakalama_tork_seviye.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_yakalama_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_yakalama_ayar_kaydet_Click");
+                }
+            }
+        }
+        #endregion
+
+        #region DINAMIK
+        private void btn_dinamik_on_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_dinamik_freq`," +
+                        " `p_dinamik_voltage_start`," +
+                        " `p_dinamik_voltage_finish`," +
+                        " `p_dinamik_test_time`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_dinamik_frekans.Text = dt.Rows[0]["p_dinamik_freq"].ToString();
+                    txt_dinamik_baslangic_gerilim.Text = dt.Rows[0]["p_dinamik_voltage_start"].ToString();
+                    txt_dinamik_bitis_gerilim.Text = dt.Rows[0]["p_dinamik_voltage_finish"].ToString();
+                    txt_dinamik_test_sure.Text = dt.Rows[0]["p_dinamik_test_time"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_dinamik_on_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_dinamik_on_ayar_getir_Click");
+                }
+            }
+        }
+        private void btn_dinamik_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_dinamik_freq`= @freq," +
+                        "`p_dinamik_voltage_start`=@v_start," +
+                        "`p_dinamik_voltage_finish`=@v_finish," +
+                        "`p_dinamik_test_time`=@time" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_dinamik_frekans.Text)),
+                        new MySqlParameter("@v_start",Convert.ToInt16(txt_dinamik_baslangic_gerilim.Text)),
+                        new MySqlParameter("@v_finish",Convert.ToInt16(txt_dinamik_bitis_gerilim.Text)),
+                        new MySqlParameter("@time",Convert.ToInt16(txt_dinamik_test_sure.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_dinamik_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_dinamik_ayar_kaydet_Click");
+                }
+
+            }
+        }
+        #endregion
+
+        #region STATIK
+        private void btn_statik_on_ayar_getir_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset ayarGetir = new SelectProductPreset();
+            if (ayarGetir.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if (!CheckPresetExists(ayarGetir.ProductId))
+                    {
+                        MessageBox.Show("Seçilen Gruba Ait Ön Kayıt Yok Önce Ekleyiniz");
+                        return;
+                    }
+                    string query = "SELECT `p_statik_freq`," +
+                        " `p_statik_voltage_start`," +
+                        " `p_statik_voltage_finish`," +
+                        " `p_statik_torque`" +
+                        " FROM `test_presets` WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",ayarGetir.ProductId)
+                    };
+                    DataTable dt = _DB.GetMultiple(query, parameters);
+                    if (dt == null)
+                        throw new Exception("Verileri Getirirken Bir Hata Oluştu, -> GetMultiple");
+                    txt_statik_frekans.Text = dt.Rows[0]["p_statik_freq"].ToString();
+                    txt_statik_baslangic_gerilim.Text = dt.Rows[0]["p_statik_voltage_start"].ToString();
+                    txt_statik_bitis_gerilim.Text = dt.Rows[0]["p_statik_voltage_finish"].ToString();
+                    txt_statik_tork_seviye.Text = dt.Rows[0]["p_statik_torque"].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_statik_on_ayar_getir_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_statik_on_ayar_getir_Click");
+                }
+            }
+        }
+        private void btn_statik_ayar_kaydet_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset kaydet = new SelectProductPreset();
+            if (kaydet.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    CheckPresetExistsAndAdd(kaydet.ProductId);
+                    string query = "UPDATE `test_presets`" +
+                        " SET " +
+                        "`p_statik_freq`= @freq," +
+                        "`p_statik_voltage_start`=@v_start," +
+                        "`p_statik_voltage_finish`=@v_finish," +
+                        "`p_statik_torque`=@torque" +
+                        " WHERE product_id = @id";
+                    MySqlParameter[] parameters =
+                    {
+                        new MySqlParameter("@id",kaydet.ProductId),
+                        new MySqlParameter("@freq",Convert.ToInt16(txt_statik_frekans.Text)),
+                        new MySqlParameter("@v_start",Convert.ToInt16(txt_statik_baslangic_gerilim.Text)),
+                        new MySqlParameter("@v_finish",Convert.ToInt16(txt_statik_bitis_gerilim.Text)),
+                        new MySqlParameter("@torque",Convert.ToInt16(txt_statik_tork_seviye.Text))
+                    };
+                    if (_DB.ExecuteQuery(query, parameters))
+                        MessageBox.Show($"[{kaydet.TypeName + " " + kaydet.GroupName}] Ürününe Ait Ön Kayıt Değişikliği Kaydedildi");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " Hata Yolu = Main.btn_statik_ayar_kaydet_Click");
+                    _DB.AddLog(ex.Message + " Main.btn_statik_ayar_kaydet_Click");
+                }
+            }
+        }
+        #endregion
+
+
+        #endregion
+
+        private void radio_testOnAyar_checkedChanged(object sender, EventArgs e)
+        {
+            if (radio_testOnAyar_yeniKayit.Checked)
+            {
+                grpBox_testOnAyar_yeniKayit.Visible = true;
+                grpBox_testOnAyar_varolanKayit.Visible = false;
+            }
+            else
+            {
+                grpBox_testOnAyar_yeniKayit.Visible = false;
+                grpBox_testOnAyar_varolanKayit.Visible = true;
+            }
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            _testSure = 0;
+            tmrTest.Stop();
+            disableButtonClicks = false;
+            //tmrMain.Stop();
+
+            // MessageBox.Show(_DB.RecordExists("SELECT COUNT(*) FROM produacts WHERE product_type_id = 14 AND product_group_id = 5").ToString());
+
+        }
+
+        private async void txtState_TextChanged(object sender, EventArgs e)
+        {
+            txt_son_islem_saati.Text = DateTime.Now.ToShortTimeString();
+            for (int i = 0; i < 20; i++)
+            {
+                txtState.ForeColor = (txtState.ForeColor == Color.Blue) ? txtState.ForeColor = Color.Red : txtState.ForeColor = Color.Blue;
+                await Task.Delay(100);
+            }
+            txtState.ForeColor = Color.Red;
+        }
+
+        private void btnKomutVoltaj_Click(object sender, EventArgs e)
+        {
+            int result = -1;
+            byte[] tempBuffer = new byte[4];
+            try
+            {
+                S7.SetRealAt(tempBuffer, 0, Convert.ToInt16(nmrKomutVoltaj.Value));
+                result = _plc.DBWrite(100, GlobalValues.adr_CMD_VOLT, tempBuffer.Length, tempBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Hata Yolu : Main.btnKomutVoltaj_Click");
+                _DB.AddLog(ex.Message, "Main.btnKomutVoltaj_Click");
+            }
+        }
+
+        private void btn_ybf_test_ıslem_firma_sec_Click(object sender, EventArgs e)
+        {
+            SelectCompany frm = new SelectCompany();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                lbl_ybf_test_islem_firma_ad.Text = frm.CmpName;
+                lbl_ybf_test_islem_firma_kod.Text = frm.CmpCode;
+                lbl_ybf_test_islem_firma_tel.Text = frm.CmpPhone;
+                lbl_ybf_test_islem_firma_not.Text = frm.CmpNote;
+            }
+        }
+
+        private void btn_ybf_test_ıslem_urun_sec_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset frm = new SelectProductPreset();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                DataTable dt = _DB.GetMultiple("SELECT * FROM products WHERE product_id = '" + frm.ProductId.ToString() + "'");
+                lbl_ybf_test_islem_urun_ad.Text = frm.TypeName + " " + frm.GroupName;
+                lbl_ybf_test_islem_urun_tork.Text = dt.Rows[0]["product_torque"].ToString();
+                lbl_ybf_test_islem_urun_volt.Text = dt.Rows[0]["product_voltage"].ToString();
+                lbl_ybf_test_islem_urun_watt.Text = dt.Rows[0]["product_coil_power"].ToString();
+            }
+        }
+
+        private void label46_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button46_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_abtf_test_ıslem_firma_sec_Click(object sender, EventArgs e)
+        {
+            SelectCompany frm = new SelectCompany();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                lbl_abtf_test_islem_firma_ad.Text = frm.CmpName;
+                lbl_abtf_test_islem_firma_kod.Text = frm.CmpCode;
+                lbl_abtf_test_islem_firma_tel.Text = frm.CmpPhone;
+                lbl_abtf_test_islem_firma_not.Text = frm.CmpNote;
+            }
+        }
+
+        private void btn_abtf_test_ıslem_urun_sec_Click(object sender, EventArgs e)
+        {
+            SelectProductPreset frm = new SelectProductPreset();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                DataTable dt = _DB.GetMultiple("SELECT * FROM products WHERE product_id = '" + frm.ProductId.ToString() + "'");
+                lbl_abtf_test_islem_urun_ad.Text = frm.TypeName + " " + frm.GroupName;
+                lbl_abtf_test_islem_urun_tork.Text = dt.Rows[0]["product_torque"].ToString();
+                lbl_abtf_test_islem_urun_volt.Text = dt.Rows[0]["product_voltage"].ToString();
+                lbl_abtf_test_islem_urun_watt.Text = dt.Rows[0]["product_coil_power"].ToString();
+            }
+        }
+
+        private void btn_abtf_test_plc_ayar_gönder_Click(object sender, EventArgs e)
+        {
+            int startAddress = AbtfTest.adr_frekans;
+            byte[] tmpBuffer = new byte[2];
+            int result = -1;
+            try
+            {
+                S7.SetIntAt(tmpBuffer, AbtfTest.adr_frekans - startAddress, short.Parse(txt_abtf_test_islem_frekans.Text));
+                result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
+                if (result != 0)
+                    throw new Exception(_plc.ErrorText(result));
+                txtState.Text = "ABTF Testi için PLC'e ayarlar gönderildi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + " \nHata Yolu : Main.btn_abtf_test_plc_ayar_gönder_Click\n");
+                _DB.AddLog(ex.Message, "Main.btn_abtf_test_plc_ayar_gönder_Click");
+            }
+        }
+
+        //Firma Ayarları sayfasındaki datagridviewi doldurur
+        public async void LoadDgvCompany()
+        {
+            DataTable dt = null;
+            await Task.Run(() =>
+            {
+                dt = _DB.GetMultiple("SELECT company_id, company_name AS 'Firma Adı', company_code AS 'Firma Kodu', company_phone AS 'Firma Tel No', company_note AS 'Not' FROM companies");
+            });
+            if (dt == null)
+                return;
+            dgv_veritabani_islem_firma.DataSource = dt;
+            dgv_veritabani_islem_firma.Columns[0].Visible = false;
+        }
+        public async void LoadDgvProducts()
+        {
+            DataTable dt = null;
+            await Task.Run(() =>
+            {
+                dt = _DB.GetMultiple("SELECT products.`product_id`," +
+                    " products.`product_type_id`," +
+                    " products.`product_group_id`," +
+                    " product_types.product_type_name AS `Ürün Tipi`," +
+                    " product_groups.product_group_name AS `Ürün Grubu`," +
+                    " products.`product_voltage` AS 'VOLTAJ'," +
+                    " products.`product_torque` AS 'TORK'," +
+                    " products.`product_coil_power` AS 'WATT'" +
+                    " FROM " +
+                    "`products` " +
+                    "INNER JOIN " +
+                    "product_types ON products.product_type_id = product_types.product_type_id " +
+                    "INNER JOIN " +
+                    "product_groups ON products.product_group_id = product_groups.product_group_id;");
+            });
+            if (dt == null)
+                return;
+            dgv_veritabani_islem_fren.DataSource = dt;
+            dgv_veritabani_islem_fren.Columns[0].Visible = false;
+        }
+
+    
+
+      
+
+       
+
+        private void dgv_veritabani_islem_firma_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CompanyTransactions updateCompany = new CompanyTransactions();
+            updateCompany.Text = "Kayıt Güncelle";
+            updateCompany.Transaction = "Update";
+            updateCompany.Id = int.Parse(dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[0].Value.ToString());
+            updateCompany.Ad = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[1].Value.ToString();
+            updateCompany.Kod = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[2].Value.ToString();
+            updateCompany.Tel = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[3].Value.ToString();
+            updateCompany.Not = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[4].Value.ToString();
+            if(updateCompany.ShowDialog() == DialogResult.OK)
+                txtState.Text = $"{updateCompany.Ad} isimli firmaya ait değişiklik kaydedildi";
+            LoadDgvCompany();
+        }
+
+        private void btn_veritabani_islem_firma_ekle_Click(object sender, EventArgs e)
+        {
+            CompanyTransactions addCompany = new CompanyTransactions();
+            addCompany.Text = "Kayıt Ekle";
+            addCompany.Transaction = "Add";
+            if (addCompany.ShowDialog() == DialogResult.OK)
+                txtState.Text = $"{addCompany.Ad} isimli firma başarıyla eklendi";
+            LoadDgvCompany();
+        }
+
+        private void dgv_veritabani_islem_fren_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ProductTransactions updateProduct = new ProductTransactions();
+            updateProduct.Transaction = "Update";
+            updateProduct.ShowDialog();
+        }
+
+        private void btn_veritabani_islem_fren_ekle_Click(object sender, EventArgs e)
+        {
+            ProductTransactions addProduct = new ProductTransactions();
+            addProduct.Transaction = "Add";
+            if (addProduct.ShowDialog() == DialogResult.OK)
+            {
+                
+            }
         }
     }
 }

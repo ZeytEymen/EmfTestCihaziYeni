@@ -70,7 +70,7 @@ namespace EmfTestCihazi.Forms
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int db = 1;
+       
             //if (PLC.IsConnected)
             //    PLC.ReadClass(aaa, db);
         

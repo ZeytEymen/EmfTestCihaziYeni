@@ -96,6 +96,7 @@
             this.dgvAnlik.Name = "dgvAnlik";
             this.dgvAnlik.ReadOnly = true;
             this.dgvAnlik.RowHeadersVisible = false;
+            this.dgvAnlik.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvAnlik.Size = new System.Drawing.Size(870, 141);
             this.dgvAnlik.TabIndex = 14;
             // 

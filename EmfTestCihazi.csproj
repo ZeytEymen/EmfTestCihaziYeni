@@ -160,6 +160,18 @@
     <Compile Include="Forms\ProgramSettings.Designer.cs">
       <DependentUpon>ProgramSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ToolForms\ProductTransactions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ToolForms\ProductTransactions.Designer.cs">
+      <DependentUpon>ProductTransactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ToolForms\SelectProductPreset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ToolForms\SelectProductPreset.Designer.cs">
+      <DependentUpon>SelectProductPreset.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ToolForms\SelectCompany.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,17 +184,17 @@
     <Compile Include="Forms\ToolForms\SelectProduct.Designer.cs">
       <DependentUpon>SelectProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ToolForms\CompanyTransactrions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ToolForms\CompanyTransactrions.Designer.cs">
+      <DependentUpon>CompanyTransactrions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ToolForms\YbfDetails.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ToolForms\YbfDetails.Designer.cs">
       <DependentUpon>YbfDetails.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\UIsss.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UIsss.Designer.cs">
-      <DependentUpon>UIsss.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UI\BaseChartAndGridView.cs">
       <SubType>UserControl</SubType>
@@ -204,14 +216,20 @@
     <EmbeddedResource Include="Forms\ProgramSettings.resx">
       <DependentUpon>ProgramSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ToolForms\ProductTransactions.resx">
+      <DependentUpon>ProductTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ToolForms\SelectProductPreset.resx">
+      <DependentUpon>SelectProductPreset.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ToolForms\SelectCompany.resx">
       <DependentUpon>SelectCompany.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ToolForms\SelectProduct.resx">
       <DependentUpon>SelectProduct.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UIsss.resx">
-      <DependentUpon>UIsss.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ToolForms\CompanyTransactrions.resx">
+      <DependentUpon>CompanyTransactrions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UI\BaseChartAndGridView.resx">
       <DependentUpon>BaseChartAndGridView.cs</DependentUpon>
@@ -245,14 +263,15 @@
     <Content Include="Pictures\close-button.png" />
     <Content Include="Pictures\emf-logo.png" />
     <Content Include="Pictures\EMF-Logo.ico" />
+    <Content Include="Pictures\icons8-search-50.png" />
     <Content Include="Pictures\minimize-button.png" />
     <Content Include="Pictures\play-button.png" />
     <Content Include="Pictures\refresh.png" />
+    <None Include="Resources\icons8-save-50.png" />
+    <None Include="Resources\icons8-search-50.png" />
     <None Include="Pictures\emergency-stop-button.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

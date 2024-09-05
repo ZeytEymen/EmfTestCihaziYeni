@@ -61,9 +61,10 @@ namespace EmfTestCihazi.Classes
                         case "btnFrenGrupAyar":
                             tabControl.SelectedTab = tabControl.TabPages["tbPageFrenGrupAyar"];
                             break;
-                        case "btnProgramAyar":
-                            tabControl.SelectedTab = tabControl.TabPages["tbPageProgramAyar"];
+                        case "btn_veritabani_islem":
+                            tabControl.SelectedTab = tabControl.TabPages["tbPageVeritabaniIslem"];
                             break;
+                        //tbPageVeritabaniIslem
 
                         default:
                             tabControl.SelectedTab = tabControl.TabPages["tbPageAbtfTestIslem"];

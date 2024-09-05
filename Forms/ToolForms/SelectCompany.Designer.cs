@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dgvCompanyList = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCompanyList)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -41,29 +41,35 @@
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 0;
             // 
-            // dataGridView1
+            // dgvCompanyList
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(310, 387);
-            this.dataGridView1.TabIndex = 1;
+            this.dgvCompanyList.AllowUserToAddRows = false;
+            this.dgvCompanyList.AllowUserToDeleteRows = false;
+            this.dgvCompanyList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCompanyList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCompanyList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvCompanyList.Location = new System.Drawing.Point(0, 0);
+            this.dgvCompanyList.Name = "dgvCompanyList";
+            this.dgvCompanyList.ReadOnly = true;
+            this.dgvCompanyList.RowHeadersVisible = false;
+            this.dgvCompanyList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCompanyList.Size = new System.Drawing.Size(510, 192);
+            this.dgvCompanyList.TabIndex = 1;
+            this.dgvCompanyList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompanyList_CellDoubleClick);
             // 
             // SelectCompany
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(334, 411);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(510, 192);
+            this.Controls.Add(this.dgvCompanyList);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SelectCompany";
             this.Text = "Firma Seç";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.SelectCompany_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCompanyList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -72,6 +78,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvCompanyList;
     }
 }

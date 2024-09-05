@@ -17,7 +17,7 @@ namespace EmfTestCihazi.Classes.PlcCommunication
         public const int adr_ters_süre = 84;
         public const int adr_test_bitti = 86;
 
-        public bool TestBasla { get; set; }
+        public bool TestStart { get; set; }
         public short Frekans { get; set; }
         public float FrenVoltaj { get; set; }
         public short FrenAcikSure { get; set; }

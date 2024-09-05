@@ -18,12 +18,9 @@ namespace EmfTestCihazi.Forms.UI
             InitializeComponent();
             InitializeChart();
         }
+
         private void InitializeChart()
         {
-            chartAnlik.ChartAreas[0].AxisX.ScaleView.Size = 10; // Aynı anda gösterilecek veri sayısı
-            chartAnlik.ChartAreas[0].AxisX.ScrollBar.IsPositionedInside = true; // ScrollBar'ı aktif et
-            chartAnlik.ChartAreas[0].AxisX.ScaleView.SmallScrollSize = 1; // ScrollBar adımı
-            chartAnlik.ChartAreas[0].AxisX.Interval = 1; // X ekseni aralığı
 
             // Chart'ın arka plan rengini ayarlama
             chartAnlik.BackColor = System.Drawing.Color.LightGray;
@@ -60,6 +57,12 @@ namespace EmfTestCihazi.Forms.UI
             chartAnlik.Series["Tork"].IsValueShownAsLabel = true;
             chartAnlik.Series["Akim"].IsValueShownAsLabel = true;
 
+            chartAnlik.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
+            chartAnlik.ChartAreas[0].AxisX.ScrollBar.IsPositionedInside = true;
+            chartAnlik.ChartAreas[0].AxisX.ScaleView.Size = 8;
+            chartAnlik.ChartAreas[0].AxisX.ScaleView.Scroll(ScrollType.Last);
+            chartAnlik.ChartAreas[0].AxisX.Interval = 1; // Her saniye için bir birim ekle
+  
         }
 
         public void ClearChartAndDataGridView()
@@ -80,6 +83,9 @@ namespace EmfTestCihazi.Forms.UI
             dgvAnlik.Rows.Add(sure,volt,tork,akim);
 
             dgvAnlik.FirstDisplayedScrollingRowIndex = dgvAnlik.Rows.Count - 1;
+
+            chartAnlik.ChartAreas[0].AxisX.ScaleView.Scroll(chartAnlik.Series[0].Points.Count - 1);
+            chartAnlik.ChartAreas[0].RecalculateAxesScale();
         }
     }
 }
