@@ -47,7 +47,11 @@ namespace EmfTestCihazi.Forms.ToolForms
                     break;
                 case "Update":
                     DisableControls(grp_box_add);
-                    btn_update.Enabled = false;
+                    lbl_update_type.Text = TypeName;
+                    lbl_update_group.Text = GroupName;
+                    txt_update_tork.Text = Tork;
+                    txt_update_volt.Text = Volt;
+                    txt_update_watt.Text = Watt;
                     break;
                 default:
                     this.DialogResult = DialogResult.Cancel;
@@ -58,7 +62,28 @@ namespace EmfTestCihazi.Forms.ToolForms
 
         private void btn_update_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("update tıklandı");
+            try
+            {
+                MySqlParameter[] parameters =
+                {
+                    new MySqlParameter("@id", ProductId),
+                    new MySqlParameter("@volt", txt_update_volt.Text),
+                    new MySqlParameter("@tork", txt_update_tork.Text),
+                    new MySqlParameter("@watt", txt_update_watt.Text),
+
+                };
+                dbHelper.ExecuteQuery("UPDATE `products` SET " +
+                    "`product_voltage`= @volt," +
+                    "`product_torque`= @tork," +
+                    "`product_coil_power`= @watt " +
+                    "WHERE product_id = @id", parameters);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btn_add_Click(object sender, EventArgs e)

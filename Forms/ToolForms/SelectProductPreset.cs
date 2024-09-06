@@ -79,6 +79,12 @@ namespace EmfTestCihazi.Forms.ToolForms
                 btn_save.Visible = false;
                 return;
             }
+            else if(dt.Rows.Count != 0 && Transaction == "FromAddProduct")
+            {
+                ShowLabelForLimitedTime("Bu tip ve gruba ait bir kayıt zaten var",5000);
+                btn_save.Visible = false;
+                return;
+            }
             ProductId = int.Parse(dt.Rows[0]["product_id"].ToString());
             TypeId = int.Parse(dt.Rows[0]["product_type_id"].ToString());
             GroupId = int.Parse(dt.Rows[0]["product_group_id"].ToString());

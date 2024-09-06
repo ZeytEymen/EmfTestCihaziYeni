@@ -49,7 +49,7 @@ namespace EmfTestCihazi
         const int _plcConnectionSlot = 0;
         byte[] _buffer = new byte[140];
         //DataBlock Erişimi
-        public AbtfTest _abtfTest;
+        public Classes.PlcCommunication.AbtfTest _abtfTest;
         public Alistirma _alistirma;
         public GlobalValues _globalValues;
         public YbfBirakma _ybfBirakma;
@@ -65,7 +65,7 @@ namespace EmfTestCihazi
             InitializeComponent();
             _DB = new DBHelper();
             _plc = new S7Client();
-            _abtfTest = new AbtfTest();
+            _abtfTest = new Classes.PlcCommunication.AbtfTest();
             _alistirma = new Alistirma();
             _globalValues = new GlobalValues();
             _ybfBirakma = new YbfBirakma();
@@ -192,9 +192,9 @@ namespace EmfTestCihazi
                 _alistirma.FrenKapalıSure = S7.GetIntAt(_buffer, Alistirma.adr_fren_kapa_süre);
                 _alistirma.TestBitti = S7.GetBitAt(_buffer, Alistirma.adr_test_bitti, 0);
 
-                _abtfTest.TestStart = S7.GetBitAt(_buffer, AbtfTest.adr_test_basla, 0);
-                _abtfTest.Frekans = S7.GetIntAt(_buffer, AbtfTest.adr_frekans);
-                _abtfTest.TestBitti = S7.GetBitAt(_buffer, AbtfTest.adr_test_bitti, 0);
+                _abtfTest.TestStart = S7.GetBitAt(_buffer, Classes.PlcCommunication.AbtfTest.adr_test_basla, 0);
+                _abtfTest.Frekans = S7.GetIntAt(_buffer, Classes.PlcCommunication.AbtfTest.adr_frekans);
+                _abtfTest.TestBitti = S7.GetBitAt(_buffer, Classes.PlcCommunication.AbtfTest.adr_test_bitti, 0);
 
 
             }
@@ -605,7 +605,7 @@ namespace EmfTestCihazi
         {
             if (!CheckButtonClick())
                 return;
-            StartTest(AbtfTest.adr_test_basla);
+            StartTest(Classes.PlcCommunication.AbtfTest.adr_test_basla);
             await Task.Run(() =>
             {
                 for (int i = 0; i < 5; i++)
@@ -1564,12 +1564,12 @@ namespace EmfTestCihazi
 
         private void btn_abtf_test_plc_ayar_gönder_Click(object sender, EventArgs e)
         {
-            int startAddress = AbtfTest.adr_frekans;
+            int startAddress = Classes.PlcCommunication.AbtfTest.adr_frekans;
             byte[] tmpBuffer = new byte[2];
             int result = -1;
             try
             {
-                S7.SetIntAt(tmpBuffer, AbtfTest.adr_frekans - startAddress, short.Parse(txt_abtf_test_islem_frekans.Text));
+                S7.SetIntAt(tmpBuffer, Classes.PlcCommunication.AbtfTest.adr_frekans - startAddress, short.Parse(txt_abtf_test_islem_frekans.Text));
                 result = _plc.DBWrite(100, startAddress, tmpBuffer.Length, tmpBuffer);
                 if (result != 0)
                     throw new Exception(_plc.ErrorText(result));
@@ -1619,13 +1619,16 @@ namespace EmfTestCihazi
                 return;
             dgv_veritabani_islem_fren.DataSource = dt;
             dgv_veritabani_islem_fren.Columns[0].Visible = false;
+            dgv_veritabani_islem_fren.Columns[1].Visible = false;
+            dgv_veritabani_islem_fren.Columns[2].Visible = false;
+
         }
 
-    
 
-      
 
-       
+
+
+
 
         private void dgv_veritabani_islem_firma_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -1637,7 +1640,7 @@ namespace EmfTestCihazi
             updateCompany.Kod = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[2].Value.ToString();
             updateCompany.Tel = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[3].Value.ToString();
             updateCompany.Not = dgv_veritabani_islem_firma.Rows[e.RowIndex].Cells[4].Value.ToString();
-            if(updateCompany.ShowDialog() == DialogResult.OK)
+            if (updateCompany.ShowDialog() == DialogResult.OK)
                 txtState.Text = $"{updateCompany.Ad} isimli firmaya ait değişiklik kaydedildi";
             LoadDgvCompany();
         }
@@ -1656,7 +1659,17 @@ namespace EmfTestCihazi
         {
             ProductTransactions updateProduct = new ProductTransactions();
             updateProduct.Transaction = "Update";
-            updateProduct.ShowDialog();
+            updateProduct.ProductId = int.Parse(dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[0].Value.ToString());
+            updateProduct.TypeId = int.Parse(dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[1].Value.ToString());
+            updateProduct.GroupId = int.Parse(dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[2].Value.ToString());
+            updateProduct.TypeName = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[3].Value.ToString();
+            updateProduct.GroupName = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[4].Value.ToString();
+            updateProduct.Volt = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[5].Value.ToString();
+            updateProduct.Tork = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[6].Value.ToString();
+            updateProduct.Watt = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[7].Value.ToString();
+            if(updateProduct.ShowDialog() == DialogResult.OK)
+                txtState.Text = $"{updateProduct.TypeName} {updateProduct.GroupName} ürününe ait değişiklik kaydedildi";
+            LoadDgvProducts();
         }
 
         private void btn_veritabani_islem_fren_ekle_Click(object sender, EventArgs e)
@@ -1664,9 +1677,13 @@ namespace EmfTestCihazi
             ProductTransactions addProduct = new ProductTransactions();
             addProduct.Transaction = "Add";
             if (addProduct.ShowDialog() == DialogResult.OK)
-            {
-                
-            }
+                txtState.Text = $"{addProduct.TypeName} {addProduct.GroupName} ürünü başarıyla eklendi";
+            LoadDgvProducts();
+        }
+
+        private void btn_veritabani_islem_operator_ekle_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

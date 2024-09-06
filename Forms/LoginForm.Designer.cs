@@ -33,9 +33,9 @@
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 281);
+            this.label1.Location = new System.Drawing.Point(11, 297);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(308, 23);
+            this.label1.Size = new System.Drawing.Size(263, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Program Ayalarların";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -45,7 +45,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(332, 313);
+            this.ClientSize = new System.Drawing.Size(286, 329);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "LoginForm";

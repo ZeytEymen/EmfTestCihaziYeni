@@ -432,6 +432,15 @@
             this.tmrMain = new System.Windows.Forms.Timer(this.components);
             this.flashTimer = new System.Windows.Forms.Timer(this.components);
             this.tmrTest = new System.Windows.Forms.Timer(this.components);
+            this.baseChartAndGridViewAbtfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewYbfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewAbtfTest = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewBirakma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewYakalama = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewDinamik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewStatik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.btn_abtf_test_islem_excel = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
             this.button45 = new System.Windows.Forms.Button();
             this.btnRefreshAbtfAlistirma = new System.Windows.Forms.Button();
             this.btnRefreshYbfAlistirma = new System.Windows.Forms.Button();
@@ -445,13 +454,7 @@
             this.btnKomutVoltaj = new System.Windows.Forms.Button();
             this.pctEmergencyStop = new System.Windows.Forms.PictureBox();
             this.pctBoxLogo = new System.Windows.Forms.PictureBox();
-            this.baseChartAndGridViewAbtfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewYbfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewAbtfTest = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewBirakma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewYakalama = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewDinamik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewStatik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.cboxType = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.grpBoxKomutVoltaj.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmrKomutVoltaj)).BeginInit();
@@ -2365,6 +2368,9 @@
             // tbPageAbtfTestIslem
             // 
             this.tbPageAbtfTestIslem.BackColor = System.Drawing.Color.Silver;
+            this.tbPageAbtfTestIslem.Controls.Add(this.cboxType);
+            this.tbPageAbtfTestIslem.Controls.Add(this.label13);
+            this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_islem_excel);
             this.tbPageAbtfTestIslem.Controls.Add(this.txt_abtf_test_islem_frekans);
             this.tbPageAbtfTestIslem.Controls.Add(this.label2);
             this.tbPageAbtfTestIslem.Controls.Add(this.button8);
@@ -2412,7 +2418,7 @@
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button8.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button8.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button8.Location = new System.Drawing.Point(723, 70);
+            this.button8.Location = new System.Drawing.Point(723, 104);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(151, 30);
             this.button8.TabIndex = 48;
@@ -2682,7 +2688,7 @@
             this.btn_abtf_test_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_abtf_test_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btn_abtf_test_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.btn_abtf_test_basla.Location = new System.Drawing.Point(723, 126);
+            this.btn_abtf_test_basla.Location = new System.Drawing.Point(723, 140);
             this.btn_abtf_test_basla.Name = "btn_abtf_test_basla";
             this.btn_abtf_test_basla.Size = new System.Drawing.Size(151, 30);
             this.btn_abtf_test_basla.TabIndex = 8;
@@ -4921,6 +4927,7 @@
             this.btn_veritabani_islem_operator_ekle.TabIndex = 37;
             this.btn_veritabani_islem_operator_ekle.Text = "Yeni Operatör Ekle";
             this.btn_veritabani_islem_operator_ekle.UseVisualStyleBackColor = true;
+            this.btn_veritabani_islem_operator_ekle.Click += new System.EventHandler(this.btn_veritabani_islem_operator_ekle_Click);
             // 
             // label52
             // 
@@ -5092,6 +5099,77 @@
             // 
             this.tmrTest.Interval = 1000;
             this.tmrTest.Tick += new System.EventHandler(this.tmrTest_Tick);
+            // 
+            // baseChartAndGridViewAbtfAlistirma
+            // 
+            this.baseChartAndGridViewAbtfAlistirma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewAbtfAlistirma.Name = "baseChartAndGridViewAbtfAlistirma";
+            this.baseChartAndGridViewAbtfAlistirma.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewAbtfAlistirma.TabIndex = 17;
+            // 
+            // baseChartAndGridViewYbfAlistirma
+            // 
+            this.baseChartAndGridViewYbfAlistirma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewYbfAlistirma.Name = "baseChartAndGridViewYbfAlistirma";
+            this.baseChartAndGridViewYbfAlistirma.Size = new System.Drawing.Size(870, 442);
+            this.baseChartAndGridViewYbfAlistirma.TabIndex = 18;
+            // 
+            // baseChartAndGridViewAbtfTest
+            // 
+            this.baseChartAndGridViewAbtfTest.Location = new System.Drawing.Point(8, 191);
+            this.baseChartAndGridViewAbtfTest.Name = "baseChartAndGridViewAbtfTest";
+            this.baseChartAndGridViewAbtfTest.Size = new System.Drawing.Size(870, 459);
+            this.baseChartAndGridViewAbtfTest.TabIndex = 12;
+            // 
+            // baseChartAndGridViewBirakma
+            // 
+            this.baseChartAndGridViewBirakma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewBirakma.Name = "baseChartAndGridViewBirakma";
+            this.baseChartAndGridViewBirakma.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewBirakma.TabIndex = 17;
+            // 
+            // baseChartAndGridViewYakalama
+            // 
+            this.baseChartAndGridViewYakalama.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewYakalama.Name = "baseChartAndGridViewYakalama";
+            this.baseChartAndGridViewYakalama.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewYakalama.TabIndex = 17;
+            // 
+            // baseChartAndGridViewDinamik
+            // 
+            this.baseChartAndGridViewDinamik.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewDinamik.Name = "baseChartAndGridViewDinamik";
+            this.baseChartAndGridViewDinamik.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewDinamik.TabIndex = 21;
+            // 
+            // baseChartAndGridViewStatik
+            // 
+            this.baseChartAndGridViewStatik.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewStatik.Name = "baseChartAndGridViewStatik";
+            this.baseChartAndGridViewStatik.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewStatik.TabIndex = 19;
+            // 
+            // btn_abtf_test_islem_excel
+            // 
+            this.btn_abtf_test_islem_excel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_test_islem_excel.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_test_islem_excel.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_test_islem_excel.Location = new System.Drawing.Point(723, 68);
+            this.btn_abtf_test_islem_excel.Name = "btn_abtf_test_islem_excel";
+            this.btn_abtf_test_islem_excel.Size = new System.Drawing.Size(151, 30);
+            this.btn_abtf_test_islem_excel.TabIndex = 51;
+            this.btn_abtf_test_islem_excel.Text = "Excel Raporu Al";
+            this.btn_abtf_test_islem_excel.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label13.Location = new System.Drawing.Point(769, 21);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(64, 14);
+            this.label13.TabIndex = 52;
+            this.label13.Text = "OPERATÖR";
             // 
             // button45
             // 
@@ -5280,54 +5358,15 @@
             this.pctBoxLogo.TabIndex = 5;
             this.pctBoxLogo.TabStop = false;
             // 
-            // baseChartAndGridViewAbtfAlistirma
+            // cboxType
             // 
-            this.baseChartAndGridViewAbtfAlistirma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewAbtfAlistirma.Name = "baseChartAndGridViewAbtfAlistirma";
-            this.baseChartAndGridViewAbtfAlistirma.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewAbtfAlistirma.TabIndex = 17;
-            // 
-            // baseChartAndGridViewYbfAlistirma
-            // 
-            this.baseChartAndGridViewYbfAlistirma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewYbfAlistirma.Name = "baseChartAndGridViewYbfAlistirma";
-            this.baseChartAndGridViewYbfAlistirma.Size = new System.Drawing.Size(870, 442);
-            this.baseChartAndGridViewYbfAlistirma.TabIndex = 18;
-            // 
-            // baseChartAndGridViewAbtfTest
-            // 
-            this.baseChartAndGridViewAbtfTest.Location = new System.Drawing.Point(8, 191);
-            this.baseChartAndGridViewAbtfTest.Name = "baseChartAndGridViewAbtfTest";
-            this.baseChartAndGridViewAbtfTest.Size = new System.Drawing.Size(870, 459);
-            this.baseChartAndGridViewAbtfTest.TabIndex = 12;
-            // 
-            // baseChartAndGridViewBirakma
-            // 
-            this.baseChartAndGridViewBirakma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewBirakma.Name = "baseChartAndGridViewBirakma";
-            this.baseChartAndGridViewBirakma.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewBirakma.TabIndex = 17;
-            // 
-            // baseChartAndGridViewYakalama
-            // 
-            this.baseChartAndGridViewYakalama.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewYakalama.Name = "baseChartAndGridViewYakalama";
-            this.baseChartAndGridViewYakalama.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewYakalama.TabIndex = 17;
-            // 
-            // baseChartAndGridViewDinamik
-            // 
-            this.baseChartAndGridViewDinamik.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewDinamik.Name = "baseChartAndGridViewDinamik";
-            this.baseChartAndGridViewDinamik.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewDinamik.TabIndex = 21;
-            // 
-            // baseChartAndGridViewStatik
-            // 
-            this.baseChartAndGridViewStatik.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewStatik.Name = "baseChartAndGridViewStatik";
-            this.baseChartAndGridViewStatik.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewStatik.TabIndex = 19;
+            this.cboxType.BackColor = System.Drawing.SystemColors.Menu;
+            this.cboxType.FormattingEnabled = true;
+            this.cboxType.Location = new System.Drawing.Point(723, 41);
+            this.cboxType.Name = "cboxType";
+            this.cboxType.Size = new System.Drawing.Size(155, 21);
+            this.cboxType.TabIndex = 53;
+            this.cboxType.TabStop = false;
             // 
             // MainForm
             // 
@@ -5874,6 +5913,9 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label70;
         private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Button btn_abtf_test_islem_excel;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox cboxType;
     }
 }
 

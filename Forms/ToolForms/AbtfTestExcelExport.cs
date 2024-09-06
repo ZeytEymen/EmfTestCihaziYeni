@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace EmfTestCihazi.Forms.ToolForms
 {
-    public partial class YbfDetails : Form
+    public partial class AbtfTestExcelExport : Form
     {
-        public YbfDetails()
+        public AbtfTestExcelExport()
         {
             InitializeComponent();
         }
