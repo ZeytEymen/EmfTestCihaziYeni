@@ -18,6 +18,7 @@ using System.Threading;
 using EmfTestCihazi.Forms;
 using System.Security.Cryptography;
 using System.Timers;
+using System.Runtime.CompilerServices;
 
 
 namespace EmfTestCihazi
@@ -224,10 +225,13 @@ namespace EmfTestCihazi
             StartReadindPlcDataBlock();
             GetAllValuesFromPLCtoTextBox();//Boş kalmaması adına plcdeki varolan veriler ilgili yerlere yazılı
             RefreshGroupBoxes();//Son okuma kutucuklarını dolduruyorum
+            cbox_abtf_test_islem_serino.Visible = false;
             Task.Run(() =>
             {
                 LoadDgvCompany();
                 LoadDgvProducts();
+                LoadDgvOperators();
+                _DB.FillCombobox(cbox_abtf_test_islem_operator, "SELECT * FROM operators", "FullName", "id");
             });
         }
 
@@ -1546,6 +1550,7 @@ namespace EmfTestCihazi
                 lbl_abtf_test_islem_firma_kod.Text = frm.CmpCode;
                 lbl_abtf_test_islem_firma_tel.Text = frm.CmpPhone;
                 lbl_abtf_test_islem_firma_not.Text = frm.CmpNote;
+                lbl_abtf_test_islem_firma_id.Text = frm.CmpID.ToString();
             }
         }
 
@@ -1555,10 +1560,14 @@ namespace EmfTestCihazi
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 DataTable dt = _DB.GetMultiple("SELECT * FROM products WHERE product_id = '" + frm.ProductId.ToString() + "'");
-                lbl_abtf_test_islem_urun_ad.Text = frm.TypeName + " " + frm.GroupName;
+                lbl_abtf_test_islem_urun_ad.Text = frm.TypeName + " " + frm.Group_Code;
                 lbl_abtf_test_islem_urun_tork.Text = dt.Rows[0]["product_torque"].ToString();
                 lbl_abtf_test_islem_urun_volt.Text = dt.Rows[0]["product_voltage"].ToString();
                 lbl_abtf_test_islem_urun_watt.Text = dt.Rows[0]["product_coil_power"].ToString();
+                lbl_abtf_test_islem_urun_id.Text = frm.ProductId.ToString();
+                cbox_abtf_test_islem_serino.Text = string.Empty;
+                _DB.FillCombobox(cbox_abtf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_abtf_test_islem_urun_id.Text + " ", "serial_no", "serial_no");
+                lbl_abtf_test_islem_urun_full_code.Text = frm.Type_Code + frm.Group_Code;
             }
         }
 
@@ -1580,6 +1589,18 @@ namespace EmfTestCihazi
                 MessageBox.Show(ex.Message + " \nHata Yolu : Main.btn_abtf_test_plc_ayar_gönder_Click\n");
                 _DB.AddLog(ex.Message, "Main.btn_abtf_test_plc_ayar_gönder_Click");
             }
+        }
+        public async void LoadDgvOperators()
+        {
+            DataTable dt = null;
+            await Task.Run(() =>
+            {
+                dt = _DB.GetMultiple("SELECT `id`, `FullName` AS 'Operator', `Note` AS 'Not' FROM `operators`");
+            });
+            if (dt == null)
+                return;
+            dgv_veritabani_islem_operator.DataSource = dt;
+            dgv_veritabani_islem_operator.Columns[0].Visible = false;
         }
 
         //Firma Ayarları sayfasındaki datagridviewi doldurur
@@ -1667,7 +1688,7 @@ namespace EmfTestCihazi
             updateProduct.Volt = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[5].Value.ToString();
             updateProduct.Tork = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[6].Value.ToString();
             updateProduct.Watt = dgv_veritabani_islem_fren.Rows[e.RowIndex].Cells[7].Value.ToString();
-            if(updateProduct.ShowDialog() == DialogResult.OK)
+            if (updateProduct.ShowDialog() == DialogResult.OK)
                 txtState.Text = $"{updateProduct.TypeName} {updateProduct.GroupName} ürününe ait değişiklik kaydedildi";
             LoadDgvProducts();
         }
@@ -1683,7 +1704,52 @@ namespace EmfTestCihazi
 
         private void btn_veritabani_islem_operator_ekle_Click(object sender, EventArgs e)
         {
+            OperatorTransactions frm = new OperatorTransactions();
+            frm.Transaction = "Add";
+            if (frm.ShowDialog() == DialogResult.OK)
+                txtState.Text = $"Operatör başarıyla eklendi";
+            LoadDgvOperators();
+        }
 
+        private void btn_abtf_test_islem_excel_Click(object sender, EventArgs e)
+        {
+            ExcelExportHelper _excelExport;
+            _excelExport = new ExcelExportHelper(
+                lbl_abtf_test_islem_urun_ad.Text,
+                txt_abtf_test_islem_seri_no.Text,
+                cbox_abtf_test_islem_operator.Text,
+                lbl_abtf_test_islem_firma_ad.Text,
+                baseChartAndGridViewAbtfTest.GetData());
+            _excelExport.ExportToExcel();
+        }
+
+        private void chcBox_abtf_test_islem_serino_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lbl_abtf_test_islem_urun_ad.Text == "-")
+                return;
+            cbox_abtf_test_islem_serino.Visible = chcBox_abtf_test_islem_serino.Checked;
+        }
+
+        private void btn_abtf_test_islem_son_sn_getir_Click(object sender, EventArgs e)
+        {
+            object last_serial_no = _DB.GetSingleObject("SELECT serial_no FROM `product_serial_no` WHERE product_id =" + lbl_abtf_test_islem_urun_id.Text + " ORDER BY sequence DESC");
+            if (last_serial_no != null)
+            {
+                txt_abtf_test_islem_seri_no.Text = last_serial_no.ToString();
+            }
+
+        }
+
+        private void dgv_veritabani_islem_operator_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            OperatorTransactions frm = new OperatorTransactions();
+            frm.OperatorId = int.Parse(dgv_veritabani_islem_operator.Rows[e.RowIndex].Cells[0].Value.ToString());
+            frm.OperatorName = dgv_veritabani_islem_operator.Rows[e.RowIndex].Cells[1].Value.ToString();
+            frm.Note = dgv_veritabani_islem_operator.Rows[e.RowIndex].Cells[2].Value.ToString();
+            frm.Transaction = "Update";
+            if (frm.ShowDialog() == DialogResult.OK)
+                txtState.Text = $"Operatör değişikliği kaydedildi";
+            LoadDgvOperators();
         }
     }
 }

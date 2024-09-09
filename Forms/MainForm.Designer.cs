@@ -36,7 +36,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.grpBoxKomutVoltaj = new System.Windows.Forms.GroupBox();
             this.lbl_CMD_VOLT = new System.Windows.Forms.Label();
@@ -80,7 +79,6 @@
             this.label72 = new System.Windows.Forms.Label();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tbPageYbfTestIslem = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button46 = new System.Windows.Forms.Button();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
             this.textBox52 = new System.Windows.Forms.TextBox();
@@ -188,6 +186,9 @@
             this.txt_ybf_alistirma_frekans = new System.Windows.Forms.TextBox();
             this.label64 = new System.Windows.Forms.Label();
             this.tbPageAbtfTestIslem = new System.Windows.Forms.TabPage();
+            this.cbox_abtf_test_islem_operator = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.btn_abtf_test_islem_excel = new System.Windows.Forms.Button();
             this.txt_abtf_test_islem_frekans = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
@@ -202,7 +203,7 @@
             this.lbl6 = new System.Windows.Forms.Label();
             this.lbl5 = new System.Windows.Forms.Label();
             this.btn_abtf_test_ıslem_urun_sec = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chcBox_abtf_test_islem_serino = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbl_abtf_test_islem_firma_not = new System.Windows.Forms.Label();
             this.lbl_abtf_test_islem_firma_tel = new System.Windows.Forms.Label();
@@ -213,8 +214,6 @@
             this.btn_abtf_test_ıslem_firma_sec = new System.Windows.Forms.Button();
             this.lbl1 = new System.Windows.Forms.Label();
             this.lbl2 = new System.Windows.Forms.Label();
-            this.label173 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.btn_abtf_test_basla = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lblInfoAbtfTestSonOkuma = new System.Windows.Forms.Label();
@@ -432,15 +431,15 @@
             this.tmrMain = new System.Windows.Forms.Timer(this.components);
             this.flashTimer = new System.Windows.Forms.Timer(this.components);
             this.tmrTest = new System.Windows.Forms.Timer(this.components);
-            this.baseChartAndGridViewAbtfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewYbfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewAbtfTest = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewBirakma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewYakalama = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewDinamik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.baseChartAndGridViewStatik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
-            this.btn_abtf_test_islem_excel = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
+            this.cbox_abtf_test_islem_serino = new System.Windows.Forms.ComboBox();
+            this.lbl_abtf_test_islem_urun_id = new System.Windows.Forms.Label();
+            this.lbl_abtf_test_islem_firma_id = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txt_abtf_test_islem_seri_no = new System.Windows.Forms.TextBox();
+            this.btn_abtf_test_islem_son_sn_getir = new System.Windows.Forms.Button();
+            this.btn_abtf_test_islem_seri_no_olustur = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.lbl_abtf_test_islem_urun_full_code = new System.Windows.Forms.Label();
             this.button45 = new System.Windows.Forms.Button();
             this.btnRefreshAbtfAlistirma = new System.Windows.Forms.Button();
             this.btnRefreshYbfAlistirma = new System.Windows.Forms.Button();
@@ -454,7 +453,13 @@
             this.btnKomutVoltaj = new System.Windows.Forms.Button();
             this.pctEmergencyStop = new System.Windows.Forms.PictureBox();
             this.pctBoxLogo = new System.Windows.Forms.PictureBox();
-            this.cboxType = new System.Windows.Forms.ComboBox();
+            this.baseChartAndGridViewAbtfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewYbfAlistirma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewAbtfTest = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewBirakma = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewYakalama = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewDinamik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
+            this.baseChartAndGridViewStatik = new EmfTestCihazi.Forms.UI.BaseChartAndGridView();
             this.panel1.SuspendLayout();
             this.grpBoxKomutVoltaj.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmrKomutVoltaj)).BeginInit();
@@ -520,7 +525,6 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.LightGray;
-            this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.btnMinimizeApplicaton);
             this.panel1.Controls.Add(this.btnCloseApplication);
@@ -536,15 +540,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1024, 68);
             this.panel1.TabIndex = 6;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(547, 28);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(41, 13);
-            this.label12.TabIndex = 28;
-            this.label12.Text = "label12";
             // 
             // button6
             // 
@@ -1165,7 +1160,6 @@
             // 
             this.tbPageYbfTestIslem.AllowDrop = true;
             this.tbPageYbfTestIslem.BackColor = System.Drawing.Color.Silver;
-            this.tbPageYbfTestIslem.Controls.Add(this.textBox1);
             this.tbPageYbfTestIslem.Controls.Add(this.button46);
             this.tbPageYbfTestIslem.Controls.Add(this.groupBox22);
             this.tbPageYbfTestIslem.Controls.Add(this.dgvYbfTestIslem);
@@ -1176,22 +1170,6 @@
             this.tbPageYbfTestIslem.Size = new System.Drawing.Size(886, 654);
             this.tbPageYbfTestIslem.TabIndex = 3;
             this.tbPageYbfTestIslem.Text = "tbPageYbfTestIslem";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.LightGray;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.textBox1.ForeColor = System.Drawing.Color.Purple;
-            this.textBox1.Location = new System.Drawing.Point(154, 495);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(188, 19);
-            this.textBox1.TabIndex = 17;
-            this.textBox1.TabStop = false;
-            this.textBox1.Text = "EMF FREN TEST CİHAZI";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button46
             // 
@@ -2368,7 +2346,15 @@
             // tbPageAbtfTestIslem
             // 
             this.tbPageAbtfTestIslem.BackColor = System.Drawing.Color.Silver;
-            this.tbPageAbtfTestIslem.Controls.Add(this.cboxType);
+            this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_islem_seri_no_olustur);
+            this.tbPageAbtfTestIslem.Controls.Add(this.textBox3);
+            this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_islem_son_sn_getir);
+            this.tbPageAbtfTestIslem.Controls.Add(this.txt_abtf_test_islem_seri_no);
+            this.tbPageAbtfTestIslem.Controls.Add(this.label14);
+            this.tbPageAbtfTestIslem.Controls.Add(this.lbl_abtf_test_islem_firma_id);
+            this.tbPageAbtfTestIslem.Controls.Add(this.lbl_abtf_test_islem_urun_id);
+            this.tbPageAbtfTestIslem.Controls.Add(this.cbox_abtf_test_islem_serino);
+            this.tbPageAbtfTestIslem.Controls.Add(this.cbox_abtf_test_islem_operator);
             this.tbPageAbtfTestIslem.Controls.Add(this.label13);
             this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_islem_excel);
             this.tbPageAbtfTestIslem.Controls.Add(this.txt_abtf_test_islem_frekans);
@@ -2376,10 +2362,8 @@
             this.tbPageAbtfTestIslem.Controls.Add(this.button8);
             this.tbPageAbtfTestIslem.Controls.Add(this.label41);
             this.tbPageAbtfTestIslem.Controls.Add(this.groupBox2);
-            this.tbPageAbtfTestIslem.Controls.Add(this.checkBox1);
+            this.tbPageAbtfTestIslem.Controls.Add(this.chcBox_abtf_test_islem_serino);
             this.tbPageAbtfTestIslem.Controls.Add(this.groupBox1);
-            this.tbPageAbtfTestIslem.Controls.Add(this.label173);
-            this.tbPageAbtfTestIslem.Controls.Add(this.checkBox2);
             this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_basla);
             this.tbPageAbtfTestIslem.Controls.Add(this.groupBox4);
             this.tbPageAbtfTestIslem.Controls.Add(this.btn_abtf_test_plc_ayar_gönder);
@@ -2392,14 +2376,47 @@
             this.tbPageAbtfTestIslem.TabIndex = 0;
             this.tbPageAbtfTestIslem.Text = "tbPageAbtfTestIslem";
             // 
+            // cbox_abtf_test_islem_operator
+            // 
+            this.cbox_abtf_test_islem_operator.BackColor = System.Drawing.SystemColors.Menu;
+            this.cbox_abtf_test_islem_operator.FormattingEnabled = true;
+            this.cbox_abtf_test_islem_operator.Location = new System.Drawing.Point(723, 37);
+            this.cbox_abtf_test_islem_operator.Name = "cbox_abtf_test_islem_operator";
+            this.cbox_abtf_test_islem_operator.Size = new System.Drawing.Size(151, 21);
+            this.cbox_abtf_test_islem_operator.TabIndex = 53;
+            this.cbox_abtf_test_islem_operator.TabStop = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label13.Location = new System.Drawing.Point(721, 20);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(64, 14);
+            this.label13.TabIndex = 52;
+            this.label13.Text = "OPERATÖR";
+            // 
+            // btn_abtf_test_islem_excel
+            // 
+            this.btn_abtf_test_islem_excel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_test_islem_excel.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_test_islem_excel.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_test_islem_excel.Location = new System.Drawing.Point(723, 106);
+            this.btn_abtf_test_islem_excel.Name = "btn_abtf_test_islem_excel";
+            this.btn_abtf_test_islem_excel.Size = new System.Drawing.Size(151, 30);
+            this.btn_abtf_test_islem_excel.TabIndex = 51;
+            this.btn_abtf_test_islem_excel.Text = "Excel Raporu Al";
+            this.btn_abtf_test_islem_excel.UseVisualStyleBackColor = true;
+            this.btn_abtf_test_islem_excel.Click += new System.EventHandler(this.btn_abtf_test_islem_excel_Click);
+            // 
             // txt_abtf_test_islem_frekans
             // 
             this.txt_abtf_test_islem_frekans.BackColor = System.Drawing.Color.Silver;
             this.txt_abtf_test_islem_frekans.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt_abtf_test_islem_frekans.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.txt_abtf_test_islem_frekans.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.txt_abtf_test_islem_frekans.Location = new System.Drawing.Point(568, 110);
             this.txt_abtf_test_islem_frekans.Name = "txt_abtf_test_islem_frekans";
-            this.txt_abtf_test_islem_frekans.Size = new System.Drawing.Size(128, 20);
+            this.txt_abtf_test_islem_frekans.Size = new System.Drawing.Size(128, 22);
             this.txt_abtf_test_islem_frekans.TabIndex = 49;
             this.toolTip.SetToolTip(this.txt_abtf_test_islem_frekans, "Motor Hızı 0 ila 1000 arası bir değer alır");
             // 
@@ -2418,7 +2435,7 @@
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button8.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button8.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.button8.Location = new System.Drawing.Point(723, 104);
+            this.button8.Location = new System.Drawing.Point(723, 140);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(151, 30);
             this.button8.TabIndex = 48;
@@ -2429,15 +2446,17 @@
             // 
             this.label41.Font = new System.Drawing.Font("Arial Narrow", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label41.ForeColor = System.Drawing.Color.Purple;
-            this.label41.Location = new System.Drawing.Point(481, 6);
+            this.label41.Location = new System.Drawing.Point(255, 2);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(52, 31);
+            this.label41.Size = new System.Drawing.Size(625, 16);
             this.label41.TabIndex = 47;
-            this.label41.Text = "Tamir ürünlerinde ";
+            this.label41.Text = "Tamir ürünlerinde seri numarası seçilmesi gerekir, doğru ürünün seri numaralarını" +
+    " getirmek için ÜRÜN SEÇ kısmından ürün seçiniz";
             this.label41.Visible = false;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lbl_abtf_test_islem_urun_full_code);
             this.groupBox2.Controls.Add(this.lbl_abtf_test_islem_urun_watt);
             this.groupBox2.Controls.Add(this.lbl_abtf_test_islem_urun_tork);
             this.groupBox2.Controls.Add(this.lbl_abtf_test_islem_urun_volt);
@@ -2543,17 +2562,18 @@
             this.btn_abtf_test_ıslem_urun_sec.UseVisualStyleBackColor = true;
             this.btn_abtf_test_ıslem_urun_sec.Click += new System.EventHandler(this.btn_abtf_test_ıslem_urun_sec_Click);
             // 
-            // checkBox1
+            // chcBox_abtf_test_islem_serino
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.checkBox1.Location = new System.Drawing.Point(409, 11);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(66, 20);
-            this.checkBox1.TabIndex = 45;
-            this.checkBox1.Text = "TAMİR";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
+            this.chcBox_abtf_test_islem_serino.AutoSize = true;
+            this.chcBox_abtf_test_islem_serino.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.chcBox_abtf_test_islem_serino.Location = new System.Drawing.Point(274, 18);
+            this.chcBox_abtf_test_islem_serino.Name = "chcBox_abtf_test_islem_serino";
+            this.chcBox_abtf_test_islem_serino.Size = new System.Drawing.Size(178, 20);
+            this.chcBox_abtf_test_islem_serino.TabIndex = 45;
+            this.chcBox_abtf_test_islem_serino.Text = "TAMİR ve TEKRAR TEST";
+            this.chcBox_abtf_test_islem_serino.UseVisualStyleBackColor = true;
+            this.chcBox_abtf_test_islem_serino.Visible = false;
+            this.chcBox_abtf_test_islem_serino.CheckedChanged += new System.EventHandler(this.chcBox_abtf_test_islem_serino_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -2659,36 +2679,12 @@
             this.lbl2.TabIndex = 28;
             this.lbl2.Text = "Ad :";
             // 
-            // label173
-            // 
-            this.label173.Font = new System.Drawing.Font("Arial Narrow", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label173.ForeColor = System.Drawing.Color.Purple;
-            this.label173.Location = new System.Drawing.Point(353, 6);
-            this.label173.Name = "label173";
-            this.label173.Size = new System.Drawing.Size(50, 31);
-            this.label173.TabIndex = 11;
-            this.label173.Text = "Özel testler özel ürünler içindir veritabanına kayıt edilmez";
-            this.label173.Visible = false;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.checkBox2.Location = new System.Drawing.Point(253, 11);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(96, 20);
-            this.checkBox2.TabIndex = 10;
-            this.checkBox2.Text = "ÖZEL TEST";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.Visible = false;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
-            // 
             // btn_abtf_test_basla
             // 
             this.btn_abtf_test_basla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_abtf_test_basla.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btn_abtf_test_basla.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.btn_abtf_test_basla.Location = new System.Drawing.Point(723, 140);
+            this.btn_abtf_test_basla.Location = new System.Drawing.Point(723, 173);
             this.btn_abtf_test_basla.Name = "btn_abtf_test_basla";
             this.btn_abtf_test_basla.Size = new System.Drawing.Size(151, 30);
             this.btn_abtf_test_basla.TabIndex = 8;
@@ -4955,6 +4951,7 @@
             this.dgv_veritabani_islem_operator.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_veritabani_islem_operator.Size = new System.Drawing.Size(859, 141);
             this.dgv_veritabani_islem_operator.TabIndex = 35;
+            this.dgv_veritabani_islem_operator.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_veritabani_islem_operator_CellDoubleClick);
             // 
             // label49
             // 
@@ -5100,76 +5097,103 @@
             this.tmrTest.Interval = 1000;
             this.tmrTest.Tick += new System.EventHandler(this.tmrTest_Tick);
             // 
-            // baseChartAndGridViewAbtfAlistirma
+            // cbox_abtf_test_islem_serino
             // 
-            this.baseChartAndGridViewAbtfAlistirma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewAbtfAlistirma.Name = "baseChartAndGridViewAbtfAlistirma";
-            this.baseChartAndGridViewAbtfAlistirma.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewAbtfAlistirma.TabIndex = 17;
+            this.cbox_abtf_test_islem_serino.BackColor = System.Drawing.SystemColors.Menu;
+            this.cbox_abtf_test_islem_serino.FormattingEnabled = true;
+            this.cbox_abtf_test_islem_serino.Location = new System.Drawing.Point(453, 17);
+            this.cbox_abtf_test_islem_serino.Name = "cbox_abtf_test_islem_serino";
+            this.cbox_abtf_test_islem_serino.Size = new System.Drawing.Size(71, 21);
+            this.cbox_abtf_test_islem_serino.TabIndex = 54;
+            this.cbox_abtf_test_islem_serino.TabStop = false;
+            this.cbox_abtf_test_islem_serino.Visible = false;
             // 
-            // baseChartAndGridViewYbfAlistirma
+            // lbl_abtf_test_islem_urun_id
             // 
-            this.baseChartAndGridViewYbfAlistirma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewYbfAlistirma.Name = "baseChartAndGridViewYbfAlistirma";
-            this.baseChartAndGridViewYbfAlistirma.Size = new System.Drawing.Size(870, 442);
-            this.baseChartAndGridViewYbfAlistirma.TabIndex = 18;
+            this.lbl_abtf_test_islem_urun_id.AutoSize = true;
+            this.lbl_abtf_test_islem_urun_id.Location = new System.Drawing.Point(536, 21);
+            this.lbl_abtf_test_islem_urun_id.Name = "lbl_abtf_test_islem_urun_id";
+            this.lbl_abtf_test_islem_urun_id.Size = new System.Drawing.Size(53, 13);
+            this.lbl_abtf_test_islem_urun_id.TabIndex = 45;
+            this.lbl_abtf_test_islem_urun_id.Text = "ÜRÜN ID";
+            this.lbl_abtf_test_islem_urun_id.Visible = false;
             // 
-            // baseChartAndGridViewAbtfTest
+            // lbl_abtf_test_islem_firma_id
             // 
-            this.baseChartAndGridViewAbtfTest.Location = new System.Drawing.Point(8, 191);
-            this.baseChartAndGridViewAbtfTest.Name = "baseChartAndGridViewAbtfTest";
-            this.baseChartAndGridViewAbtfTest.Size = new System.Drawing.Size(870, 459);
-            this.baseChartAndGridViewAbtfTest.TabIndex = 12;
+            this.lbl_abtf_test_islem_firma_id.AutoSize = true;
+            this.lbl_abtf_test_islem_firma_id.Location = new System.Drawing.Point(595, 21);
+            this.lbl_abtf_test_islem_firma_id.Name = "lbl_abtf_test_islem_firma_id";
+            this.lbl_abtf_test_islem_firma_id.Size = new System.Drawing.Size(54, 13);
+            this.lbl_abtf_test_islem_firma_id.TabIndex = 55;
+            this.lbl_abtf_test_islem_firma_id.Text = "FİRMA ID";
+            this.lbl_abtf_test_islem_firma_id.Visible = false;
             // 
-            // baseChartAndGridViewBirakma
+            // label14
             // 
-            this.baseChartAndGridViewBirakma.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewBirakma.Name = "baseChartAndGridViewBirakma";
-            this.baseChartAndGridViewBirakma.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewBirakma.TabIndex = 17;
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label14.Location = new System.Drawing.Point(720, 61);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(48, 14);
+            this.label14.TabIndex = 56;
+            this.label14.Text = "SERİ NO";
             // 
-            // baseChartAndGridViewYakalama
+            // txt_abtf_test_islem_seri_no
             // 
-            this.baseChartAndGridViewYakalama.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewYakalama.Name = "baseChartAndGridViewYakalama";
-            this.baseChartAndGridViewYakalama.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewYakalama.TabIndex = 17;
+            this.txt_abtf_test_islem_seri_no.BackColor = System.Drawing.Color.Silver;
+            this.txt_abtf_test_islem_seri_no.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt_abtf_test_islem_seri_no.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.txt_abtf_test_islem_seri_no.Location = new System.Drawing.Point(723, 78);
+            this.txt_abtf_test_islem_seri_no.Name = "txt_abtf_test_islem_seri_no";
+            this.txt_abtf_test_islem_seri_no.Size = new System.Drawing.Size(151, 22);
+            this.txt_abtf_test_islem_seri_no.TabIndex = 57;
             // 
-            // baseChartAndGridViewDinamik
+            // btn_abtf_test_islem_son_sn_getir
             // 
-            this.baseChartAndGridViewDinamik.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewDinamik.Name = "baseChartAndGridViewDinamik";
-            this.baseChartAndGridViewDinamik.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewDinamik.TabIndex = 21;
+            this.btn_abtf_test_islem_son_sn_getir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_test_islem_son_sn_getir.Font = new System.Drawing.Font("Franklin Gothic Demi", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_test_islem_son_sn_getir.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_test_islem_son_sn_getir.Location = new System.Drawing.Point(196, 175);
+            this.btn_abtf_test_islem_son_sn_getir.Name = "btn_abtf_test_islem_son_sn_getir";
+            this.btn_abtf_test_islem_son_sn_getir.Size = new System.Drawing.Size(80, 25);
+            this.btn_abtf_test_islem_son_sn_getir.TabIndex = 58;
+            this.btn_abtf_test_islem_son_sn_getir.Text = "Son SN Getir";
+            this.btn_abtf_test_islem_son_sn_getir.UseVisualStyleBackColor = true;
+            this.btn_abtf_test_islem_son_sn_getir.Visible = false;
+            this.btn_abtf_test_islem_son_sn_getir.Click += new System.EventHandler(this.btn_abtf_test_islem_son_sn_getir_Click);
             // 
-            // baseChartAndGridViewStatik
+            // btn_abtf_test_islem_seri_no_olustur
             // 
-            this.baseChartAndGridViewStatik.Location = new System.Drawing.Point(8, 200);
-            this.baseChartAndGridViewStatik.Name = "baseChartAndGridViewStatik";
-            this.baseChartAndGridViewStatik.Size = new System.Drawing.Size(870, 440);
-            this.baseChartAndGridViewStatik.TabIndex = 19;
+            this.btn_abtf_test_islem_seri_no_olustur.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_abtf_test_islem_seri_no_olustur.Font = new System.Drawing.Font("Franklin Gothic Demi", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btn_abtf_test_islem_seri_no_olustur.ForeColor = System.Drawing.Color.DarkSlateBlue;
+            this.btn_abtf_test_islem_seri_no_olustur.Location = new System.Drawing.Point(332, 175);
+            this.btn_abtf_test_islem_seri_no_olustur.Name = "btn_abtf_test_islem_seri_no_olustur";
+            this.btn_abtf_test_islem_seri_no_olustur.Size = new System.Drawing.Size(130, 25);
+            this.btn_abtf_test_islem_seri_no_olustur.TabIndex = 61;
+            this.btn_abtf_test_islem_seri_no_olustur.Text = "Sıra No ile SN Oluştur";
+            this.btn_abtf_test_islem_seri_no_olustur.UseVisualStyleBackColor = true;
+            this.btn_abtf_test_islem_seri_no_olustur.Visible = false;
             // 
-            // btn_abtf_test_islem_excel
+            // textBox3
             // 
-            this.btn_abtf_test_islem_excel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_abtf_test_islem_excel.Font = new System.Drawing.Font("Franklin Gothic Demi", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btn_abtf_test_islem_excel.ForeColor = System.Drawing.Color.DarkSlateBlue;
-            this.btn_abtf_test_islem_excel.Location = new System.Drawing.Point(723, 68);
-            this.btn_abtf_test_islem_excel.Name = "btn_abtf_test_islem_excel";
-            this.btn_abtf_test_islem_excel.Size = new System.Drawing.Size(151, 30);
-            this.btn_abtf_test_islem_excel.TabIndex = 51;
-            this.btn_abtf_test_islem_excel.Text = "Excel Raporu Al";
-            this.btn_abtf_test_islem_excel.UseVisualStyleBackColor = true;
+            this.textBox3.BackColor = System.Drawing.Color.Silver;
+            this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox3.Font = new System.Drawing.Font("Arial Narrow", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.textBox3.Location = new System.Drawing.Point(282, 178);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(44, 22);
+            this.textBox3.TabIndex = 60;
+            this.textBox3.Visible = false;
             // 
-            // label13
+            // lbl_abtf_test_islem_urun_full_code
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label13.Location = new System.Drawing.Point(769, 21);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(64, 14);
-            this.label13.TabIndex = 52;
-            this.label13.Text = "OPERATÖR";
+            this.lbl_abtf_test_islem_urun_full_code.AutoSize = true;
+            this.lbl_abtf_test_islem_urun_full_code.Location = new System.Drawing.Point(176, 49);
+            this.lbl_abtf_test_islem_urun_full_code.Name = "lbl_abtf_test_islem_urun_full_code";
+            this.lbl_abtf_test_islem_urun_full_code.Size = new System.Drawing.Size(13, 16);
+            this.lbl_abtf_test_islem_urun_full_code.TabIndex = 62;
+            this.lbl_abtf_test_islem_urun_full_code.Text = " -";
             // 
             // button45
             // 
@@ -5358,15 +5382,54 @@
             this.pctBoxLogo.TabIndex = 5;
             this.pctBoxLogo.TabStop = false;
             // 
-            // cboxType
+            // baseChartAndGridViewAbtfAlistirma
             // 
-            this.cboxType.BackColor = System.Drawing.SystemColors.Menu;
-            this.cboxType.FormattingEnabled = true;
-            this.cboxType.Location = new System.Drawing.Point(723, 41);
-            this.cboxType.Name = "cboxType";
-            this.cboxType.Size = new System.Drawing.Size(155, 21);
-            this.cboxType.TabIndex = 53;
-            this.cboxType.TabStop = false;
+            this.baseChartAndGridViewAbtfAlistirma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewAbtfAlistirma.Name = "baseChartAndGridViewAbtfAlistirma";
+            this.baseChartAndGridViewAbtfAlistirma.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewAbtfAlistirma.TabIndex = 17;
+            // 
+            // baseChartAndGridViewYbfAlistirma
+            // 
+            this.baseChartAndGridViewYbfAlistirma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewYbfAlistirma.Name = "baseChartAndGridViewYbfAlistirma";
+            this.baseChartAndGridViewYbfAlistirma.Size = new System.Drawing.Size(870, 442);
+            this.baseChartAndGridViewYbfAlistirma.TabIndex = 18;
+            // 
+            // baseChartAndGridViewAbtfTest
+            // 
+            this.baseChartAndGridViewAbtfTest.Location = new System.Drawing.Point(8, 207);
+            this.baseChartAndGridViewAbtfTest.Name = "baseChartAndGridViewAbtfTest";
+            this.baseChartAndGridViewAbtfTest.Size = new System.Drawing.Size(870, 443);
+            this.baseChartAndGridViewAbtfTest.TabIndex = 12;
+            // 
+            // baseChartAndGridViewBirakma
+            // 
+            this.baseChartAndGridViewBirakma.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewBirakma.Name = "baseChartAndGridViewBirakma";
+            this.baseChartAndGridViewBirakma.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewBirakma.TabIndex = 17;
+            // 
+            // baseChartAndGridViewYakalama
+            // 
+            this.baseChartAndGridViewYakalama.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewYakalama.Name = "baseChartAndGridViewYakalama";
+            this.baseChartAndGridViewYakalama.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewYakalama.TabIndex = 17;
+            // 
+            // baseChartAndGridViewDinamik
+            // 
+            this.baseChartAndGridViewDinamik.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewDinamik.Name = "baseChartAndGridViewDinamik";
+            this.baseChartAndGridViewDinamik.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewDinamik.TabIndex = 21;
+            // 
+            // baseChartAndGridViewStatik
+            // 
+            this.baseChartAndGridViewStatik.Location = new System.Drawing.Point(8, 200);
+            this.baseChartAndGridViewStatik.Name = "baseChartAndGridViewStatik";
+            this.baseChartAndGridViewStatik.Size = new System.Drawing.Size(870, 440);
+            this.baseChartAndGridViewStatik.TabIndex = 19;
             // 
             // MainForm
             // 
@@ -5383,7 +5446,6 @@
             this.Text = resources.GetString("$this.Text");
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.grpBoxKomutVoltaj.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nmrKomutVoltaj)).EndInit();
             this.grpBoxAkim.ResumeLayout(false);
@@ -5823,8 +5885,6 @@
         private System.Windows.Forms.Label label172;
         private System.Windows.Forms.TabPage tbPageVeritabaniIslem;
         private System.Windows.Forms.Timer tmrMain;
-        private System.Windows.Forms.Label label173;
-        private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Timer flashTimer;
         private System.Windows.Forms.Timer tmrTest;
         private Forms.UI.BaseChartAndGridView baseChartAndGridViewYbfAlistirma;
@@ -5863,7 +5923,7 @@
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.Label lbl_ybf_test_islem_urun_watt;
         private System.Windows.Forms.Label lbl_ybf_test_islem_urun_tork;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chcBox_abtf_test_islem_serino;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lbl_abtf_test_islem_firma_not;
         private System.Windows.Forms.Label lbl_abtf_test_islem_firma_tel;
@@ -5888,11 +5948,9 @@
         private System.Windows.Forms.Button btn_abtf_test_ıslem_urun_sec;
         private System.Windows.Forms.TextBox txt_abtf_test_islem_frekans;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btn_veritabani_islem;
         private System.Windows.Forms.TextBox txt_son_islem_saati;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.DataGridView dgv_fren_grup_ayar;
         private System.Windows.Forms.Label label23;
@@ -5915,7 +5973,16 @@
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Button btn_abtf_test_islem_excel;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox cboxType;
+        private System.Windows.Forms.ComboBox cbox_abtf_test_islem_operator;
+        private System.Windows.Forms.ComboBox cbox_abtf_test_islem_serino;
+        private System.Windows.Forms.Label lbl_abtf_test_islem_firma_id;
+        private System.Windows.Forms.Label lbl_abtf_test_islem_urun_id;
+        private System.Windows.Forms.Button btn_abtf_test_islem_seri_no_olustur;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button btn_abtf_test_islem_son_sn_getir;
+        private System.Windows.Forms.TextBox txt_abtf_test_islem_seri_no;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lbl_abtf_test_islem_urun_full_code;
     }
 }
 

@@ -18,7 +18,27 @@ namespace EmfTestCihazi.Forms.UI
             InitializeComponent();
             InitializeChart();
         }
-
+        public DataTable GetData()
+        {
+            DataTable dt = new DataTable();
+            foreach (DataGridViewColumn column in dgvAnlik.Columns)
+            {
+                dt.Columns.Add(column.HeaderText);
+            }
+            foreach (DataGridViewRow row in dgvAnlik.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    DataRow dr = dt.NewRow();
+                    for (int i = 0; i < dgvAnlik.Columns.Count; i++)
+                    {
+                        dr[i] = row.Cells[i].Value ?? DBNull.Value;
+                    }
+                    dt.Rows.Add(dr);
+                }
+            }
+            return dt;
+        }
         private void InitializeChart()
         {
 

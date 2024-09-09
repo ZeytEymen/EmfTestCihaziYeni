@@ -171,6 +171,12 @@
     <Compile Include="Forms\ToolForms\AbtfTestExcelExport.Designer.cs">
       <DependentUpon>AbtfTestExcelExport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ToolForms\OperatorTransactions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ToolForms\OperatorTransactions.Designer.cs">
+      <DependentUpon>OperatorTransactions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ToolForms\ProductTransactions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ToolForms\AbtfTestExcelExport.resx">
       <DependentUpon>AbtfTestExcelExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ToolForms\OperatorTransactions.resx">
+      <DependentUpon>OperatorTransactions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ToolForms\ProductTransactions.resx">
       <DependentUpon>ProductTransactions.cs</DependentUpon>

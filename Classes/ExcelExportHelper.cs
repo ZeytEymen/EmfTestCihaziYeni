@@ -19,9 +19,9 @@ namespace EmfTestCihazi.Classes
         private string _productSerialNo;
         private string _testOperator;
         private string _companyName;
-        private System.Windows.Forms.DataGridView _testValues;
+        private System.Data.DataTable _testValues;
 
-        public ExcelExportHelper(string productFullName, string productSerialNo, string testOperator, string companyName, System.Windows.Forms.DataGridView testValues)
+        public ExcelExportHelper(string productFullName, string productSerialNo, string testOperator, string companyName, System.Data.DataTable testValues)
         {
             _productFullName = productFullName;
             _productSerialNo = productSerialNo;
@@ -35,12 +35,11 @@ namespace EmfTestCihazi.Classes
             CreateExcelFileWithTemplate();
 
             object missing = Type.Missing;
-
-            // Excel uygulamasını başlat
             Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
             Workbook workbook = excelApp.Workbooks.Open(destinationFile, missing, false, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
-            Worksheet worksheet = (Worksheet)workbook.Sheets[0];
+            Worksheet worksheet = (Worksheet)workbook.Sheets[1];
             Range range = worksheet.UsedRange;
+
 
             range.Replace("<urun>", _productFullName, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true, missing, missing, missing);
             range.Replace("<seriNo>", _productSerialNo, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true, missing, missing, missing);
@@ -49,18 +48,23 @@ namespace EmfTestCihazi.Classes
             range.Replace("<operator>", _testOperator, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true, missing, missing, missing);
 
 
-
-            int startRow = 11;
+            int startRow = 12;
             int startColumn = 1;
-
-
+            int seperate = (_testValues.Rows.Count + 1) / 2;
             for (int rowIndex = 0; rowIndex < _testValues.Rows.Count; rowIndex++)
             {
+                if (rowIndex > 0 && rowIndex % seperate == 0)
+                    startColumn += 5;
                 for (int columnIndex = 0; columnIndex < _testValues.Columns.Count; columnIndex++)
-                {
-                    worksheet.Cells[startRow + rowIndex, startColumn + columnIndex].Value = Convert.ToDouble(_testValues[columnIndex, rowIndex].Value);
-                }
+                    worksheet.Cells[startRow + (rowIndex % seperate), startColumn + columnIndex].Value = Convert.ToDouble(_testValues.Rows[rowIndex][columnIndex]);    
             }
+
+            workbook.Save();
+            workbook.Close(false, missing, missing);
+            excelApp.Quit();
+            ReleaseObject(excelApp);
+            ReleaseObject(workbook);
+            ReleaseObject(worksheet);
 
         }
         public void CreateExcelFileWithTemplate()
@@ -68,7 +72,7 @@ namespace EmfTestCihazi.Classes
             filename = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             sourceFile = Path.Combine(filename, "AbtfSablon.xlsx");
             destinationFileDirectory = Path.Combine(filename, $"ABTF\\Rapor_{DateTime.Now:yyyy_MM_dd_HH_mm}");
-            destinationFile = Path.Combine(destinationFileDirectory, "Rapor.xlsx");
+            destinationFile = Path.Combine(destinationFileDirectory, $"Rapor_{DateTime.Now:yyyy_MM_dd_HH_mm}.xlsx");
 
             if (!Directory.Exists(destinationFileDirectory))
             {
@@ -76,8 +80,6 @@ namespace EmfTestCihazi.Classes
                 File.Copy(sourceFile, destinationFile);
                 SetFullControlPermission(destinationFileDirectory);
             }
-
-            ModifyExcelFile(destinationFile, "Sheet1", "replace_value", "replacement_value");
         }
 
         private void SetFullControlPermission(string folderPath)
@@ -93,56 +95,6 @@ namespace EmfTestCihazi.Classes
             directoryInfo.SetAccessControl(accessControl);
         }
 
-        private void ModifyExcelFile(string filePath, string sheetName, string replace, string replacement)
-        {
-            object missing = Type.Missing;
-
-            // Excel uygulamasını başlat
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
-            Workbook workbook = excelApp.Workbooks.Open(filePath, missing, false, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
-            Worksheet worksheet = (Worksheet)workbook.Sheets[sheetName];
-            Range range = worksheet.UsedRange;
-
-            // Hücrelerde değişiklik yap
-            range.Replace(replace, replacement, XlLookAt.xlWhole, XlSearchOrder.xlByRows, true, missing, missing, missing);
-
-            // Kaydet ve kapat
-            workbook.Save();
-            workbook.Close(false, missing, missing);
-            excelApp.Quit();
-            ReleaseObject(excelApp);
-            ReleaseObject(workbook);
-            ReleaseObject(worksheet);
-        }
-
-        public void TransferTestResultsToExcel(string filePath, DataGridView dgv)
-        {
-            object missing = Type.Missing;
-            int startRow = 11;
-            int startColumn = 1;
-
-            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
-            Workbook workbook = excelApp.Workbooks.Open(filePath, missing, false, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing, missing);
-            Worksheet worksheet = (Worksheet)workbook.Sheets[2];
-
-            // Verileri hücrelere aktar
-            for (int rowIndex = 0; rowIndex < dgv.Rows.Count; rowIndex++)
-            {
-                for (int columnIndex = 0; columnIndex < dgv.Columns.Count; columnIndex++)
-                {
-                    worksheet.Cells[startRow + rowIndex, startColumn + columnIndex].Value = Convert.ToDouble(dgv[columnIndex, rowIndex].Value);
-                }
-            }
-
-            // Kaydet ve kapat
-            workbook.Save();
-            workbook.Close(false, missing, missing);
-            excelApp.Quit();
-            ReleaseObject(excelApp);
-            ReleaseObject(workbook);
-            ReleaseObject(worksheet);
-        }
-
         private void ReleaseObject(object obj)
         {
             try
@@ -153,7 +105,7 @@ namespace EmfTestCihazi.Classes
             catch (Exception ex)
             {
                 obj = null;
-                Console.WriteLine("Error releasing object: " + ex.Message);
+                MessageBox.Show($"Excel uygulamasını serbest bırakılırken bir hata ile karşılaşıldı\nHata Mesajı : {ex.Message}\nStack Trace : {ex.StackTrace}");
             }
             finally
             {

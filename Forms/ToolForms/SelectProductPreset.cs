@@ -21,7 +21,9 @@ namespace EmfTestCihazi.Forms.ToolForms
         public int GroupId { get; set; }
         public int ProductId { get; set; }
         public string TypeName { get; set; }
+        public string Type_Code { get; set; }
         public string GroupName { get; set; }
+        public string Group_Code { get; set; }
         public SelectProductPreset()
         {
             InitializeComponent();
@@ -93,6 +95,9 @@ namespace EmfTestCihazi.Forms.ToolForms
             lblDurum.Visible = true;
             lblDurum.Text = $"Seçilen ürün {TypeName} {GroupName} kayıt butonuna basınız";
             btn_save.Visible = true;
+            Type_Code = dbHelper.GetSingleObject("SELECT product_type_code FROM product_types WHERE product_type_id = " + TypeId.ToString() + "").ToString();
+            Group_Code = dbHelper.GetSingleObject("SELECT product_group_code FROM product_groups WHERE product_group_id = " + GroupId.ToString() + "").ToString();
+
         }
 
         private void btn_save_Click(object sender, EventArgs e)
