@@ -44,7 +44,7 @@ namespace EmfTestCihazi.Forms.ToolForms
                     new MySqlParameter("@name", txt_update_operator.Text),
                     new MySqlParameter("@note", txt_update_not.Text)
                 };
-                dBHelper.ExecuteQuery("UPDATE `operators` SET `FullName`=@name,`Note`=@not WHERE id = @id", parameters);
+                dBHelper.ExecuteQuery("UPDATE `operators` SET `FullName`=@name,`Note`=@note WHERE id = @id", parameters);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -63,7 +63,7 @@ namespace EmfTestCihazi.Forms.ToolForms
                     new MySqlParameter("@name", txt_add_operator.Text),
                     new MySqlParameter("@note", txt_add_not.Text)
                 };
-                dBHelper.ExecuteQuery("INSERT INTO `operators`(`FullName`, `Note`) VALUES (@name,@note), parameters)",parameters);
+                dBHelper.ExecuteQuery("INSERT INTO `operators`(`FullName`, `Note`) VALUES (@name,@note)",parameters);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

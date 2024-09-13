@@ -19,7 +19,8 @@ using EmfTestCihazi.Forms;
 using System.Security.Cryptography;
 using System.Timers;
 using System.Runtime.CompilerServices;
-
+using Org.BouncyCastle.Asn1.Cmp;
+using Newtonsoft.Json;
 
 namespace EmfTestCihazi
 {
@@ -226,13 +227,54 @@ namespace EmfTestCihazi
             GetAllValuesFromPLCtoTextBox();//Boş kalmaması adına plcdeki varolan veriler ilgili yerlere yazılı
             RefreshGroupBoxes();//Son okuma kutucuklarını dolduruyorum
             cbox_abtf_test_islem_serino.Visible = false;
-            Task.Run(() =>
+            cbox_ybf_test_islem_serino.Visible = false;
+            LoadDgvCompany();
+            LoadDgvProducts();
+            LoadDgvOperators();
+            LoadDgvYbfTest();
+        }
+        public async void LoadDgvYbfTest()
+        {
+            DataTable dt = null;
+            string query = $"SELECT " +
+                $"ybf_test.id AS `TEST_ID`, " +
+                $"products.product_id AS `PRODUCT_ID`, " +
+                $"ybf_test.company_id AS `COMPANY_ID`, " +
+                $"ybf_test.operator_id AS `OPERATOR_ID`, " +
+                $"ybf_test.serial_no_id AS `SERIAL_NO_ID`, " +
+                $"companies.company_name AS `FIRMA`, " +
+                $"CONCAT(product_types.product_type_name, ' - ', product_groups.product_group_code) AS `URUN`, " +
+                $"product_serial_no.serial_no AS `SERI NO`, " +
+                $"operators.FullName AS `TEST SORUMLUSU`, " +
+                $"ybf_test.test_date AS `TEST TARIH`, " +
+                $"ybf_test.enduktans AS `ENDUKTANS`, " +
+                $"ybf_test.direnc AS `BOBIN DIRENC`, " +
+                $"ybf_test.hava_aralik AS `HAVA ARALIK`, " +
+                $"ybf_test.alistirma AS `ALISTIRMA SURE`, " +
+                $"ybf_test.yakalama AS `YAKALAMA VOLTAJ`, " +
+                $"ybf_test.birakma AS `BIRAKMA VOLTAJ`, " +
+                $"ybf_test.dinamik AS `DINAMIK TORK`, " +
+                $"ybf_test.statik AS `STATIK TORK` " +
+                $"FROM ybf_test " +
+                $"INNER JOIN companies ON ybf_test.company_id = companies.company_id " +
+                $"INNER JOIN product_serial_no ON ybf_test.serial_no_id = product_serial_no.id " +
+                $"INNER JOIN operators ON ybf_test.operator_id = operators.id " +
+                $"INNER JOIN products ON product_serial_no.product_id = products.product_id " +
+                $"INNER JOIN product_types ON products.product_type_id = product_types.product_type_id " +
+                $"INNER JOIN product_groups ON products.product_group_id = product_groups.product_group_id " +
+                $"ORDER BY `TEST TARIH` DESC";
+            await Task.Run(() =>
             {
-                LoadDgvCompany();
-                LoadDgvProducts();
-                LoadDgvOperators();
-                _DB.FillCombobox(cbox_abtf_test_islem_operator, "SELECT * FROM operators", "FullName", "id");
+                dt = _DB.GetMultiple(query);
             });
+            if (dt == null)
+                return;
+            dgv_ybf_test_islem.DataSource = dt;
+            dgv_ybf_test_islem.Columns["TEST_ID"].Visible = false;
+            dgv_ybf_test_islem.Columns["PRODUCT_ID"].Visible = false;
+            dgv_ybf_test_islem.Columns["COMPANY_ID"].Visible = false;
+            dgv_ybf_test_islem.Columns["OPERATOR_ID"].Visible = false;
+            dgv_ybf_test_islem.Columns["SERIAL_NO_ID"].Visible = false;
         }
 
         //Uygulamayı görev çubuğuna indirir
@@ -1510,6 +1552,7 @@ namespace EmfTestCihazi
                 lbl_ybf_test_islem_firma_kod.Text = frm.CmpCode;
                 lbl_ybf_test_islem_firma_tel.Text = frm.CmpPhone;
                 lbl_ybf_test_islem_firma_not.Text = frm.CmpNote;
+                lbl_ybf_test_islem_firma_id.Text = frm.CmpID.ToString();
             }
         }
 
@@ -1523,22 +1566,11 @@ namespace EmfTestCihazi
                 lbl_ybf_test_islem_urun_tork.Text = dt.Rows[0]["product_torque"].ToString();
                 lbl_ybf_test_islem_urun_volt.Text = dt.Rows[0]["product_voltage"].ToString();
                 lbl_ybf_test_islem_urun_watt.Text = dt.Rows[0]["product_coil_power"].ToString();
+                lbl_ybf_test_islem_urun_id.Text = frm.ProductId.ToString();
+                cbox_ybf_test_islem_serino.Text = string.Empty;
+                _DB.FillCombobox(cbox_ybf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_ybf_test_islem_urun_id.Text + " ORDER BY sequence DESC", "serial_no", "id");
+                lbl_ybf_test_islem_urun_full_code.Text = frm.Type_Code + frm.Group_Code;
             }
-        }
-
-        private void label46_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button46_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btn_abtf_test_ıslem_firma_sec_Click(object sender, EventArgs e)
@@ -1566,7 +1598,7 @@ namespace EmfTestCihazi
                 lbl_abtf_test_islem_urun_watt.Text = dt.Rows[0]["product_coil_power"].ToString();
                 lbl_abtf_test_islem_urun_id.Text = frm.ProductId.ToString();
                 cbox_abtf_test_islem_serino.Text = string.Empty;
-                _DB.FillCombobox(cbox_abtf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_abtf_test_islem_urun_id.Text + " ", "serial_no", "serial_no");
+                _DB.FillCombobox(cbox_abtf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_abtf_test_islem_urun_id.Text + " ORDER BY sequence DESC", "serial_no", "id");
                 lbl_abtf_test_islem_urun_full_code.Text = frm.Type_Code + frm.Group_Code;
             }
         }
@@ -1599,6 +1631,8 @@ namespace EmfTestCihazi
             });
             if (dt == null)
                 return;
+            _DB.FillCombobox(cbox_abtf_test_islem_operator, "SELECT * FROM operators", "FullName", "id");
+            _DB.FillCombobox(cbox_ybf_test_islem_operator, "SELECT * FROM operators", "FullName", "id");
             dgv_veritabani_islem_operator.DataSource = dt;
             dgv_veritabani_islem_operator.Columns[0].Visible = false;
         }
@@ -1713,20 +1747,32 @@ namespace EmfTestCihazi
 
         private void btn_abtf_test_islem_excel_Click(object sender, EventArgs e)
         {
-            ExcelExportHelper _excelExport;
-            _excelExport = new ExcelExportHelper(
-                lbl_abtf_test_islem_urun_ad.Text,
-                txt_abtf_test_islem_seri_no.Text,
-                cbox_abtf_test_islem_operator.Text,
-                lbl_abtf_test_islem_firma_ad.Text,
-                baseChartAndGridViewAbtfTest.GetData());
-            _excelExport.ExportToExcel();
+            try
+            {
+                txtState.Text = "Excel Raporu Alınıyor";
+                AbtfTestExcelExportHelper _excelExport;
+                _excelExport = new AbtfTestExcelExportHelper(
+                    lbl_abtf_test_islem_urun_ad.Text,
+                    txt_abtf_test_islem_seri_no.Text,
+                    cbox_abtf_test_islem_operator.Text,
+                    lbl_abtf_test_islem_firma_ad.Text,
+                    baseChartAndGridViewAbtfTest.GetData());
+                _excelExport.ExportToExcel();
+                txtState.Text = "Excel Raporuna Oluşturuldu !!! Belgelerim klasöründen erişebilirsiniz.";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"İlgili alalnların dolu olduğuna emin olunuz\n{ex.Message}\n{ex.StackTrace}");
+            }
         }
 
         private void chcBox_abtf_test_islem_serino_CheckedChanged(object sender, EventArgs e)
         {
             if (lbl_abtf_test_islem_urun_ad.Text == "-")
+            {
+                txtState.Text = "İlk Önce Ürün Seçiniz";
                 return;
+            }
             cbox_abtf_test_islem_serino.Visible = chcBox_abtf_test_islem_serino.Checked;
         }
 
@@ -1751,19 +1797,151 @@ namespace EmfTestCihazi
                 txtState.Text = $"Operatör değişikliği kaydedildi";
             LoadDgvOperators();
         }
+        public string GenerateSerialNo(string productCode, int sequence)
+        {
+            return $"{(DateTime.Now.Year % 100).ToString()}{productCode}{sequence.ToString("D4")}";
+        }
+        private void btn_abtf_test_islem_seri_no_olustur_Click(object sender, EventArgs e)
+        {
+            if (lbl_abtf_test_islem_urun_id.Text == "urun_id")
+                return;
+
+            MySqlParameter[] parameters =
+            {
+                new MySqlParameter("@p_id",int.Parse(lbl_abtf_test_islem_urun_id.Text)),
+                new MySqlParameter("@sequence", nmr_abtf_test_islem_seri_no_sequence.Value),
+                new MySqlParameter("@year", DateTime.Now.Year),
+            };
+            bool serial_no_exist = _DB.RecordExists("SELECT * FROM product_serial_no WHERE product_id = @p_id AND sequence = @sequence AND serial_year = @year", parameters);
+            if (serial_no_exist)
+            {
+                MessageBox.Show("Bu ürün ve sıra numarası için zaten bir kayıt oluşturulmuş aynı serideki ürün için TAMİR ve TEKRAR TEST alanını kullanmalısınız");
+                return;
+            }
+            MySqlParameter[] parameters2 =
+            {
+                new MySqlParameter("@p_id",int.Parse(lbl_abtf_test_islem_urun_id.Text)),
+                new MySqlParameter("@sequence", nmr_abtf_test_islem_seri_no_sequence.Value),
+                new MySqlParameter("@year", DateTime.Now.Year),
+                new MySqlParameter("@sn", GenerateSerialNo(lbl_abtf_test_islem_urun_full_code.Text, Convert.ToInt32(nmr_abtf_test_islem_seri_no_sequence.Value)))
+            };
+            int new_sn_id = Convert.ToInt32(_DB.ExecuteAndGetId("INSERT INTO `product_serial_no`(`product_id`, `serial_no`, `sequence`, `serial_year`) VALUES (@p_id,@sn,@sequence,@year)", parameters2));
+            lbl_abtf_test_islem_serial_no_id.Text = new_sn_id.ToString();
+            txt_abtf_test_islem_seri_no.Text = _DB.GetSingleObject("SELECT serial_no FROM product_serial_no WHERE id = " + new_sn_id).ToString();
+            _DB.FillCombobox(cbox_abtf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_abtf_test_islem_urun_id.Text + " ORDER BY sequence DESC", "serial_no", "id");
+        }
+
+
+        private void cbox_abtf_test_islem_serino_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            lbl_abtf_test_islem_serial_no_id.Text = cbox_abtf_test_islem_serino.SelectedValue.ToString();
+            txt_abtf_test_islem_seri_no.Text = cbox_abtf_test_islem_serino.GetItemText(cbox_abtf_test_islem_serino.SelectedItem);
+        }
+
+        private void btn_abtf_test_islem_veritabani_ekle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MySqlParameter[] parameters =
+                {
+                    new MySqlParameter("@sn_id",int.Parse(lbl_abtf_test_islem_serial_no_id.Text)),
+                    new MySqlParameter("@cmp_id", int.Parse(lbl_abtf_test_islem_firma_id.Text)),
+                    new MySqlParameter("@op_id", cbox_abtf_test_islem_operator.SelectedValue),
+                    new MySqlParameter("@date", DateTime.Now.ToString("yyyy-MM-dd")),
+                    new MySqlParameter("@test_value", JsonConvert.SerializeObject(baseChartAndGridViewAbtfTest.GetData(),Formatting.Indented))
+                };
+                _DB.ExecuteQuery("INSERT INTO `abtf_test`" +
+                    "(`serial_no_id`, `company_id`, `operator_id`, `test_date`, `test_values`)" +
+                    " VALUES (@sn_id,@cmp_id,@op_id,@date,@test_value)",parameters);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Firma, Ürün seçmeden ve test başlatmadan veritabanına ekleme yapmayınız");
+            }
+        }
+
+        private void cbox_ybf_test_islem_serino_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            lbl_ybf_test_islem_serial_no_id.Text = cbox_ybf_test_islem_serino.SelectedValue.ToString();
+            txt_ybf_test_islem_seri_no.Text = cbox_ybf_test_islem_serino.GetItemText(cbox_ybf_test_islem_serino.SelectedItem);
+        }
+
+        private void chcBox_ybf_test_islem_serino_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lbl_ybf_test_islem_urun_ad.Text == "-")
+            {
+                txtState.Text = "İlk Önce Ürün Seçiniz";
+                return;
+            }
+            cbox_ybf_test_islem_serino.Visible = chcBox_ybf_test_islem_serino.Checked;
+        }
+
+        private void btn_ybf_test_islem_seri_no_olustur_Click(object sender, EventArgs e)
+        {
+            if (lbl_ybf_test_islem_urun_id.Text == "urun_id")
+                return;
+
+            MySqlParameter[] parameters =
+            {
+                new MySqlParameter("@p_id",int.Parse(lbl_ybf_test_islem_urun_id.Text)),
+                new MySqlParameter("@sequence", nmr_ybf_test_islem_seri_no_sequence.Value),
+                new MySqlParameter("@year", DateTime.Now.Year),
+            };
+            bool serial_no_exist = _DB.RecordExists("SELECT * FROM product_serial_no WHERE product_id = @p_id AND sequence = @sequence AND serial_year = @year", parameters);
+            if (serial_no_exist)
+            {
+                MessageBox.Show("Bu ürün ve sıra numarası için zaten bir kayıt oluşturulmuş aynı serideki ürün için TAMİR ve TEKRAR TEST alanını kullanmalısınız");
+                return;
+            }
+            MySqlParameter[] parameters2 =
+            {
+                new MySqlParameter("@p_id",int.Parse(lbl_ybf_test_islem_urun_id.Text)),
+                new MySqlParameter("@sequence", nmr_ybf_test_islem_seri_no_sequence.Value),
+                new MySqlParameter("@year", DateTime.Now.Year),
+                new MySqlParameter("@sn", GenerateSerialNo(lbl_ybf_test_islem_urun_full_code.Text, Convert.ToInt32(nmr_ybf_test_islem_seri_no_sequence.Value)))
+            };
+            int new_sn_id = Convert.ToInt32(_DB.ExecuteAndGetId("INSERT INTO `product_serial_no`(`product_id`, `serial_no`, `sequence`, `serial_year`) VALUES (@p_id,@sn,@sequence,@year)", parameters2));
+            lbl_ybf_test_islem_serial_no_id.Text = new_sn_id.ToString();
+            txt_ybf_test_islem_seri_no.Text = _DB.GetSingleObject("SELECT serial_no FROM product_serial_no WHERE id = " + new_sn_id).ToString();
+            _DB.FillCombobox(cbox_ybf_test_islem_serino, "SELECT * FROM product_serial_no WHERE product_id = " + lbl_ybf_test_islem_urun_id.Text + " ORDER BY sequence DESC", "serial_no", "id");
+        }
+
+        private void btn_ybf_test_islem_veritabani_ekle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MySqlParameter[] parameters =
+                {
+                    new MySqlParameter ("@cmp_id", int.Parse(lbl_ybf_test_islem_firma_id.Text)),
+                    new MySqlParameter ("@op_id", cbox_abtf_test_islem_operator.SelectedValue),
+                    new MySqlParameter ("@sn_id", int.Parse(lbl_ybf_test_islem_serial_no_id.Text)),
+                    new MySqlParameter ("@date", DateTime.Now.ToString("yyyy-MM-dd")),
+                    new MySqlParameter ("@yakalama", txtTestIslemYakalamaSonuc.Text),
+                    new MySqlParameter ("@birakma",txtTestIslemBirakmaSonuc.Text),
+                    new MySqlParameter ("@statik", txtTestIslemStatikSonuc.Text),
+                    new MySqlParameter ("@dinamik", txtTestIslemDinamikSonuc.Text),
+                    new MySqlParameter ("@alistirma", txtTestIslemBalataAlistir.Text),
+                    new MySqlParameter ("@enduktans", txtTestIslemEnduktans.Text),
+                    new MySqlParameter ("@direnc", txtTestIslemBobinDirenc.Text),
+                    new MySqlParameter ("@hava_aralik", txtTestIslemHavaAralik.Text)
+                };
+                _DB.ExecuteQuery("INSERT INTO `ybf_test`" +
+                    "(`company_id`, `operator_id`, `serial_no_id`, `test_date`, `yakalama`, `birakma`, `dinamik`, `statik`, `alistirma`, `enduktans`, `direnc`, `hava_aralik`)" +
+                    " VALUES " +
+                    "(@cmp_id,@op_id,@sn_id,@date,@yakalama,@birakma,@statik,@dinamik,@alistirma,@enduktans,@direnc,@hava_aralik)", parameters);
+                txtState.Text = "Test Kaydı Veritabanına Başarıyla Eklendi";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"HATA : {ex.Message}\n{ex.StackTrace}");
+                return;
+            }
+        }
+
+        private void btn_ybf_test_islem_raporlama_Click(object sender, EventArgs e)
+        {
+            YbfTestExcelExport frm = new YbfTestExcelExport();
+            frm.Show();
+        }
     }
 }
-
-
-/*
- *   private void btnRefreshYbfAlistirma_Click(object sender, EventArgs e)
-        {
-            //  GetBiseyBisey();
-            // lblInfoYbfAlistirmaSonOkuma.Text = DateTime.Now.ToShortTimeString();
-            lblInfoYbfAlistirmaFrekans.Text = _alistirma.Frekans.ToString();
-            lblInfoYbfAlistirmaFrenAcik.Text = _alistirma.FrenAcikSure.ToString();
-            lblInfoYbfAlistirmaFrenKapali.Text = _alistirma.FrenKapalıSure.ToString();
-            lblInfoYbfAlistirmaSagaDonus.Text = _alistirma.SureSag.ToString();
-            lblInfoYbfAlistirmaSolaDonus.Text = _alistirma.SureSol.ToString();
-        }
- */

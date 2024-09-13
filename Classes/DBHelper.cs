@@ -35,7 +35,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu : DBHelper.ExecuteQuery");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu : DBHelper.ExecuteQuery");
                 return false;
             }
         }
@@ -59,7 +59,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu : DBHelper.ExecuteQuery");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu : DBHelper.ExecuteQuery");
                 return null;
             }
         }
@@ -82,7 +82,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu : RecordExits");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu : RecordExits");
                 return false;
             }
         }
@@ -108,7 +108,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu = DBHelper.GetMultiple");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException}Hata Yolu = DBHelper.GetMultiple");
                 return null;
             }
         }
@@ -117,7 +117,6 @@ namespace EmfTestCihazi.Classes
         {
             try
             {
-
                 using (MySqlConnection conn = new MySqlConnection(_connString))
                 {
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -135,7 +134,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu = DBHelper.FillCombobox");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu = DBHelper.FillCombobox");
             }
         }
 
@@ -157,7 +156,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu = DBHelper.GetSingleObject");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu = DBHelper.GetSingleObject");
                 return null;
             }
         }
@@ -174,7 +173,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + " Hata Yolu = DBHelper.AddLog()","HATA");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu = DBHelper.AddLog()","HATA");
             }
 
         }
@@ -186,7 +185,7 @@ namespace EmfTestCihazi.Classes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "Hata Yolu = DBHelper.GetLogs()", "HATA");
+                MessageBox.Show($"{ex.Message} \n{ex.InnerException} Hata Yolu = DBHelper.GetLogs()", "HATA");
                 return null;
             }
         }
